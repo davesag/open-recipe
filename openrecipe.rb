@@ -2,7 +2,7 @@ require 'sinatra'
 require 'haml'
 require 'omniauth-facebook'
 
-enable :sessions
+enable :sessions, :logging, :show_exceptions
 
 #Here you have to put your own Application ID and Secret
 APP_ID = "435425809841072"
@@ -29,16 +29,30 @@ helpers do
     @articles << {:title => 'Learn Ruby in twenty minutes', :url => 'http://www.ruby-lang.org/en/documentation/quickstart/'}
   end
 
-  def logged_in
-    return true unless session['fb_auth'] == nil || session['fb_auth'].empty?
-    return false
+  # true if the user has logged in with their Facebook credentials.
+  def logged_in?
+    if session['fb_auth'] == nil || session['fb_auth'].empty?
+      logger.info "No Facebook user in session."
+      return false
+    else
+      logger.info "Discovered Facebook user #{session['fb_auth']['user_info']['first_name']} in session."
+      return true
+    end
+  end
+  
+  # clears all the facebook tokens out
+  def clear_session
+    logger.info "Clearing session of Facebook tokens."
+    session['fb_auth'] = nil
+    session['fb_token'] = nil
+    session['fb_error'] = nil
   end
 
 end
 
 # web requests will come in here.
 get '/' do
-    puts "Direct Web Request detected.  Developing a response."
+    logger.info "Direct Web Request detected.  Developing a response."
 
     homepage
     haml :index
@@ -46,7 +60,7 @@ end
 
 # facebook app requests will come in here.
 post '/' do
-    puts "Facebook AppRequest detected.  Developing a response."
+    logger.info "Facebook AppRequest detected.  Developing a response."
 
     homepage
     haml :index
@@ -71,11 +85,4 @@ end
 get '/logout' do
   clear_session
   redirect '/'
-end
-
-# handler for the facebook authentication api.
-def clear_session
-  session['fb_auth'] = nil
-  session['fb_token'] = nil
-  session['fb_error'] = nil
 end

@@ -1,5 +1,5 @@
 =session['fb_error']
--if logged_in
+-if logged_in?
   %a{:href => 'logout'}
     %img{:src => 'images/fb_logout_button.png'}
 -else
@@ -19,7 +19,7 @@
           %a{:href=>"#{article[:url]}", :target=>'_blank'}
             #{article[:title]}
         %td
-          -if logged_in
+          -if logged_in?
             %iframe{:src => "http://www.facebook.com/plugins/like.php?href=#{article[:url]}&amp;layout=button_count&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=21",
                     :scrolling => "no",
                     :frameborder => "0",
@@ -27,7 +27,7 @@
                     :allowTransparency => "true"}
           -else
             Not Linked
--if logged_in
+-if logged_in?
   %hr
   %p{:class=>'like_site'} Do you like this site?
   %p
