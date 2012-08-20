@@ -1,58 +1,54 @@
-Open Recipe
+_Open Recipe_
 ===========
 
-A facebook app that allows people to share their favourite home recipes.
+> Where Facebook friends can upload their own recipies in a standard format
+> that be searched and shared easily to their friends.
 
-Open Recipe Facebook app
-------------------------
+---
 
-Where people can upload their own recipies in a standard format
-that can be searched and shared easily via their network of facebook
-friends.
+## Features
 
-Guests have access to the following features
---------------------------------------------
+### _Guests_ have access to the following features
 
 * browse public recipes and photos, and user profiles.
 * log in using their Facebook id.
 
-Those who don't pay but who do log in via Facebook have access to the following additional features
----------------------------------------------------------------------------------------------------
+### _Free Members_; Those who don't pay but who do log in via Facebook have access to the following additional features
 
 * upload of recipes and photos for use by anyone under the following
 creative commons license 'Attribution-Noncommercial-Share Alike' -
 http://creativecommons.org/licenses/by-nc-sa/3.0/au/
 * Posting a link to any recipe you can access to your Facebook
 timeline, or sharing it with selected friends.
-* uploading photos linked to a recipe.
+* 'Like' a recipe
+* uploading photos linked to a recipe, restaurant, or retailer.
+* check in to a location on Facebook, based on photo or recipe upload.
 
-Those who do pay and who log in via Facebook can
-------------------------------------------------
+### _Paying Members_; Those who do pay and who log in via Facebook can
 
 * upload recipes under creative commons licence, but whose audience is
-restricted to specific people only.
+restricted to friends only.
 * earn reputation credit to allow wider permissions such as
-** editing retailer and restaurant meta-data
-** moderating recipe placement within appropriate meals and meal
+ * editing retailer and restaurant meta-data
+ * moderating recipe placement within appropriate meals and meal
 types, moderating tags, creation of and merging of retailers,
-restaurants, meals and meal-types, and tags.
+restaurants, photos, meals and meal-types, and tags.
 
-To Install
-==========
+---
 
-Requirements
-------------
+## To Install
+
+### Requirements
 
 * Mac OS X with Developer Tools and Ruby 1.9.3 installed.
 
-How to Run Open Recipe on your local Mac
-----------------------------------------
+### How to Run _Open Recipe_ on your local Mac
 
-Open your Terminal and enter:
+1. Open your Terminal and enter:  
+    > `gem install bundler`  
+    > `bundle install`  
+    > `ruby openrecipe.rb`
 
-# `gem install bundler`
-# `bundle install`
-# `ruby openrecipe.rb`
+2. Point your web-browser at `http://localhost:4567`
 
-Then point your web-browser at `http://localhost:4567`
-
+---
