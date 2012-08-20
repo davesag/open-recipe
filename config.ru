@@ -1,4 +1,5 @@
 require 'openrecipe' #this is to load openrecipe.rb
+require 'rack/protection'
 
-set :protection, :except => [:remote_token, :frame_options]
+use Rack::Protection, :except => [:remote_token, :frame_options]
 run Sinatra::Application
