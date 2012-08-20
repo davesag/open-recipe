@@ -38,7 +38,11 @@ helpers do
       a = session['fb_auth']
       logger.info "a) #{a.keys.inspect}"
       
-      logger.info "Credentials: '#{a[:credentials].inspect}'"
+      logger.info "Provider: '#{a[:provider].inspect}'"
+      logger.info "UUID: '#{a[:uid].inspect}'"
+      logger.info "Info: '#{a[:info].inspect}'"
+      logger.info "Credentials: '#{a[:credentials].keys.inspect}'"
+      logger.info "Extra: '#{a[:extra].inspect}'"
       
       u = a['user_info']
       if u == nil || u.empty?
