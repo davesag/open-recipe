@@ -1,10 +1,10 @@
 =session['fb_error']
--if session['fb_auth']
+-if logged_in
   %a{:href => 'logout'}
     %img{:src => 'images/fb_logout_button.png'}
 -else
   %a{:href=>'auth/facebook'}
-    %img{:src=>'images/fb_login_button.png'}
+    %img{:src => 'images/fb_login_button.png'}
 %h3 #{session['fb_auth'] ? 'Hello ' + session['fb_auth']['user_info']['first_name'] + ', w' : 'W'}elcome to my list of interesting articles.
 %table
   %tr
@@ -19,7 +19,7 @@
           %a{:href=>"#{article[:url]}", :target=>'_blank'}
             #{article[:title]}
         %td
-          -if session['fb_auth']
+          -if logged_in
             %iframe{:src => "http://www.facebook.com/plugins/like.php?href=#{article[:url]}&amp;layout=button_count&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=21",
                     :scrolling => "no",
                     :frameborder => "0",
@@ -27,7 +27,7 @@
                     :allowTransparency => "true"}
           -else
             Not Linked
--if session['fb_auth']
+-if logged_in
   %hr
   %p{:class=>'like_site'} Do you like this site?
   %p

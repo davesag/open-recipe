@@ -29,6 +29,11 @@ helpers do
     @articles << {:title => 'Learn Ruby in twenty minutes', :url => 'http://www.ruby-lang.org/en/documentation/quickstart/'}
   end
 
+  def logged_in
+    return true unless session['fb_auth'] == nil || session['fb_auth'].empty?
+    return false
+  end
+
 end
 
 # web requests will come in here.
