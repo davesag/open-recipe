@@ -55,4 +55,8 @@ restaurants, photos, meals and meal-types, and tags.
 
 2. Point your web-browser at `http://localhost:5000`
 
+### Heroku
+
+* A production copy of the app is running at http://open-recipe.herokuapp.com for the moment.
+
 ---
