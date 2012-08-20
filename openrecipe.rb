@@ -35,7 +35,10 @@ helpers do
       logger.info "No Facebook user in session."
       return false
     else
-      logger.info "Discovered Facebook user #{session['fb_auth']['user_info']['first_name']} in session."
+      a = session['fb_auth']
+      u = a['user_info']
+      n = u['first_name']
+      logger.info "Discovered Facebook user #{n} in session."
       return true
     end
   end
