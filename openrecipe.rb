@@ -36,13 +36,19 @@ helpers do
       return false
     else
       a = session['fb_auth']
-      logger.info "a) #{a.inspect}"
+      logger.info "a) #{a.public_methods}"
       u = a['user_info']
-      logger.info "Could not access user_info from data returned by Facebook." if u == nil || u.empty?;
+      if u == nil || u.empty?
+        logger.error "Could not access user_info from data returned by Facebook."
+        return false
+      end
       logger.info "u) #{u.inspect}"
       n = u['first_name']
-      logger.info "Could not access first_name from credentials returned by Facebook." if n == nil || n.empty?;
-      logger.info "Discovered Facebook user #{n} in session." unless u == nil || u.empty?
+      if n == nil || n.empty?
+        logger.error "Could not access first_name from credentials returned by Facebook." 
+        return false
+      end
+      logger.info "Discovered Facebook user #{n} in session."
       return true
     end
   end
