@@ -31,11 +31,11 @@ helpers do
 
   # true if the user has logged in with their Facebook credentials.
   def logged_in?
-    if session['fb_auth'] == nil || session['fb_auth'].empty?
+    if session[:fb_auth] == nil || session[:fb_auth].empty?
       logger.info "No Facebook user in session."
       return false
     else
-      a = session['fb_auth']
+      a = session[:fb_auth]
       logger.info "a) #{a.keys.inspect}" # ["provider", "uid", "info", "credentials", "extra"]
       logger.info "Provider: '#{a[:provider]}'" # facebook
       logger.info "UUID: '#{a[:uid]}'" # 677015415
@@ -44,7 +44,8 @@ helpers do
       logger.info "  Token: '#{a[:credentials][:token].inspect}'"
       logger.info "  Expires At: '#{a[:credentials][:expires_at].inspect}'"
       logger.info "  Expires: '#{a[:credentials][:expires].inspect}'"
-      logger.info "Extra: '#{a[:extra].keys.inspect}'"
+      logger.info "Extra: '#{a[:extra].keys.inspect}'" # ["raw_info"]
+      logger.info "  Raw Info: '#{a[:extra][:raw_info].inspect}'"
       
       u = a[:info]
       if u == nil || u.empty?
@@ -65,9 +66,9 @@ helpers do
   # clears all the facebook tokens out
   def clear_session
     logger.info "Clearing session of Facebook tokens."
-    session['fb_auth'] = nil
-    session['fb_token'] = nil
-    session['fb_error'] = nil
+    session[:fb_auth] = nil
+    session[:fb_token] = nil
+    session[:fb_error] = nil
   end
 
 end
