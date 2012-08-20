@@ -9,6 +9,9 @@
 %h3 #{session['fb_auth'] ? 'Hello ' + session['fb_auth']['user_info']['first_name'] + ', w' : 'W'}elcome to my list of interesting articles.
 
 %table
+  %tr
+    %th Article
+    %th Facebook
   -for article in @articles.each do
     %tr
       %td{:class=>'article'}
@@ -21,6 +24,8 @@
                   :frameborder => "0",
                   :style => "border:none; overflow:hidden; width:450px; height:21px;",
                   :allowTransparency => "true"}
+        -else
+          Not Linked
 
 -if session['fb_auth']
   %hr
