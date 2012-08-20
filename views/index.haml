@@ -12,21 +12,23 @@
   %tr
     %th Article
     %th Facebook
-  -for article in @articles.each do
-    %tr
-      %td{:class=>'article'}
-        %a{:href=>"#{article[:url]}", :target=>'_blank'}
-          #{article[:title]}
-      %td
-        -if session['fb_auth']
-          %iframe{:src=>"http://www.facebook.com/plugins/like.php?href=#{article[:url]}&amp;layout=button_count&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=21",
-                  :scrolling => "no",
-                  :frameborder => "0",
-                  :style => "border:none; overflow:hidden; width:450px; height:21px;",
-                  :allowTransparency => "true"}
-        -else
-          Not Linked
-
+  -if @articles == nil || @articles.empty?
+    No articles. Sorry.
+  -else
+    -for article in @articles.each do
+      %tr
+        %td{:class=>'article'}
+          %a{:href=>"#{article[:url]}", :target=>'_blank'}
+            #{article[:title]}
+        %td
+          -if session['fb_auth']
+            %iframe{:src=>"http://www.facebook.com/plugins/like.php?href=#{article[:url]}&amp;layout=button_count&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=21",
+                    :scrolling => "no",
+                    :frameborder => "0",
+                    :style => "border:none; overflow:hidden; width:450px; height:21px;",
+                    :allowTransparency => "true"}
+          -else
+            Not Linked
 -if session['fb_auth']
   %hr
   %p
