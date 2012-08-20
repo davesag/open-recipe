@@ -40,6 +40,14 @@ restaurants, meals and meal-types, and tags.
 To Install
 ==========
 
+Requirements
+------------
+
+* Mac OS X with Developer Tools and Ruby 1.9.3 installed.
+
+How to Run Open Recipe on your local Mac
+----------------------------------------
+
 Open your Terminal and enter:
 
 # `gem install bundler`
