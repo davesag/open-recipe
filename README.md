@@ -40,15 +40,19 @@ restaurants, photos, meals and meal-types, and tags.
 
 ### Requirements
 
-* Mac OS X with Developer Tools and Ruby 1.9.3 installed.
+* `Mac OS X` with `Developer Tools` and `Ruby 1.9.3` installed, and the following Gems.
+ * `Bundler`
+ * `Git`
+ * `Heroku`
+ * `Foreman`
 
 ### How to Run _Open Recipe_ on your local Mac
 
 1. Open your Terminal and enter:  
     > `gem install bundler`  
     > `bundle install`  
-    > `ruby openrecipe.rb`
+    > `foreman start`
 
-2. Point your web-browser at `http://localhost:4567`
+2. Point your web-browser at `http://localhost:5000`
 
 ---
