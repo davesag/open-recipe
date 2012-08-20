@@ -37,7 +37,7 @@ helpers do
     else
       a = session['fb_auth']
       u = a['user_info']
-      n = u['first_name']
+      n = u['name']
       logger.info "Discovered Facebook user #{n} in session."
       return true
     end
