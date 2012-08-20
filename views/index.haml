@@ -5,9 +5,7 @@
 -else
   %a{:href=>'auth/facebook'}
     %img{:src=>'images/fb_login_button.png'}
-
 %h3 #{session['fb_auth'] ? 'Hello ' + session['fb_auth']['user_info']['first_name'] + ', w' : 'W'}elcome to my list of interesting articles.
-
 %table
   %tr
     %th Article
