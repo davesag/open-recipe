@@ -36,7 +36,9 @@ helpers do
       return false
     else
       a = session['fb_auth']
+      logger.info "a) #{a.inspect}"
       u = a['user_info']
+      logger.info "u) #{a.inspect}"
       n = u['name']
       logger.info "Discovered Facebook user #{n} in session."
       return true
