@@ -38,9 +38,11 @@ helpers do
       a = session['fb_auth']
       logger.info "a) #{a.inspect}"
       u = a['user_info']
+      logger.info "Could not access user_info from data returned by Facebook." if u == nil || u.empty?;
       logger.info "u) #{u.inspect}"
-      n = u['name']
-      logger.info "Discovered Facebook user #{n} in session."
+      n = u['first_name']
+      logger.info "Could not access first_name from credentials returned by Facebook." if n == nil || n.empty?;
+      logger.info "Discovered Facebook user #{n} in session." unless u == nil || u.empty?
       return true
     end
   end
