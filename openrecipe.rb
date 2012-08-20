@@ -24,9 +24,10 @@ helpers do
 
   # this is where the magic happens. Prepare local page data for the Open Recipe's homepage.
   def homepage
-    @articles = []
-    @articles << {:title => 'Deploying Rack-based apps in Heroku', :url => 'http://docs.heroku.com/rack'}
-    @articles << {:title => 'Learn Ruby in twenty minutes', :url => 'http://www.ruby-lang.org/en/documentation/quickstart/'}
+    @recipes = []
+    @recipes << {:title => 'Delicious Duck in Orange Sauce', :url => 'http://about.me/davesag'}
+    @recipes << {:title => 'Goat Cheese Pankakes', :url => 'http://www.ruby-lang.org/en/documentation/quickstart/'}
+    @recipes << {:title => 'Fudge Soup', :url => 'http://www.ruby-lang.org/en/documentation/quickstart/'}
   end
 
   # true if the user has logged in with their Facebook credentials.
@@ -39,20 +40,29 @@ helpers do
       logger.info "a) #{a.keys.inspect}" # ["provider", "uid", "info", "credentials", "extra"]
       logger.info "Provider: '#{a[:provider]}'" # facebook
       logger.info "UUID: '#{a[:uid]}'" # 677015415
-      logger.info "Info: '#{a[:info].keys.inspect}'"
+      logger.info "Info: '#{a[:info].keys.inspect}'" # ["nickname", "email", "name", "first_name", "last_name", "image", "description", "urls", "verified"]
+      logger.info "  Nickname: #{a[:info][:nickname]}"
+      logger.info "  Email: #{a[:info][:email]}"
+      logger.info "  Name: #{a[:info][:name]}"
+      logger.info "  First Name: #{a[:info][:first_name]}"
+      logger.info "  Last Name: #{a[:info][:last_name]}"
+      logger.info "  Image URL: #{a[:info][:image]}"
+      logger.info "  Description: #{a[:info][:description]}"
+      logger.info "  URLs: #{a[:info][:urls]}"
+      logger.info "  Verified: #{a[:info][:verified]}"
       logger.info "Credentials: '#{a[:credentials].keys.inspect}'" # ["token", "expires_at", "expires"]
       logger.info "  Token: '#{a[:credentials][:token].inspect}'"
       logger.info "  Expires At: '#{a[:credentials][:expires_at].inspect}'"
       logger.info "  Expires: '#{a[:credentials][:expires].inspect}'"
       logger.info "Extra: '#{a[:extra].keys.inspect}'" # ["raw_info"]
-      logger.info "  Raw Info: '#{a[:extra][:raw_info].inspect}'"
+      logger.info "  Raw Info: '#{a[:extra][:raw_info].keys.inspect}'"
       
       u = a[:info]
       if u == nil || u.empty?
         logger.error "Could not access user_info from data returned by Facebook."
         return false
       end
-      logger.info "u) #{u.inspect}"
+      logger.info "u) #{u.keys.inspect}"
       n = u[:first_name]
       if n == nil || n.empty?
         logger.error "Could not access first_name from credentials returned by Facebook." 

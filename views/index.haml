@@ -5,22 +5,22 @@
 -else
   %a{:href=>'auth/facebook'}
     %img{:src => 'images/fb_login_button.png'}
-%h3 #{logged_in? ? 'Hello ' + session[:fb_auth][:info][:first_name] + ', w' : 'W'}elcome to my list of interesting articles.
+%h3 #{logged_in? ? 'Hello ' + session[:fb_auth][:info][:first_name] + ', w' : 'W'}elcome to my list of delicious recipes.
 %table
   %tr
-    %th Article
+    %th recipe
     %th Facebook
-  -if @articles == nil || @articles.empty?
-    No articles. Sorry.
+  -if @recipes == nil || @recipes.empty?
+    No recipes. Sorry.
   -else
-    -for article in @articles.each do
+    -for recipe in @recipes.each do
       %tr
-        %td{:class=>'article'}
-          %a{:href=>"#{article[:url]}", :target=>'_blank'}
-            #{article[:title]}
+        %td{:class=>'recipe'}
+          %a{:href=>"#{recipe[:url]}", :target=>'_blank'}
+            #{recipe[:title]}
         %td
           -if logged_in?
-            %iframe{:src => "http://www.facebook.com/plugins/like.php?href=#{article[:url]}&amp;layout=button_count&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=21",
+            %iframe{:src => "http://www.facebook.com/plugins/like.php?href=#{recipe[:url]}&amp;layout=button_count&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=21",
                     :scrolling => "no",
                     :frameborder => "0",
                     :style => "border:none; overflow:hidden; width:450px; height:21px;",
