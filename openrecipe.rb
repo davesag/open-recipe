@@ -36,21 +36,23 @@ helpers do
       return false
     else
       a = session['fb_auth']
-      logger.info "a) #{a.keys.inspect}"
+      logger.info "a) #{a.keys.inspect}" # ["provider", "uid", "info", "credentials", "extra"]
+      logger.info "Provider: '#{a[:provider]}'" # facebook
+      logger.info "UUID: '#{a[:uid]}'" # 677015415
+      logger.info "Info: '#{a[:info].keys.inspect}'"
+      logger.info "Credentials: '#{a[:credentials].keys.inspect}'" # ["token", "expires_at", "expires"]
+      logger.info "  Token: '#{a[:credentials][:token].inspect}'"
+      logger.info "  Expires At: '#{a[:credentials][:expires_at].inspect}'"
+      logger.info "  Expires: '#{a[:credentials][:expires].inspect}'"
+      logger.info "Extra: '#{a[:extra].keys.inspect}'"
       
-      logger.info "Provider: '#{a[:provider].inspect}'"
-      logger.info "UUID: '#{a[:uid].inspect}'"
-      logger.info "Info: '#{a[:info].inspect}'"
-      logger.info "Credentials: '#{a[:credentials].keys.inspect}'"
-      logger.info "Extra: '#{a[:extra].inspect}'"
-      
-      u = a['user_info']
+      u = a[:info]
       if u == nil || u.empty?
         logger.error "Could not access user_info from data returned by Facebook."
         return false
       end
       logger.info "u) #{u.inspect}"
-      n = u['first_name']
+      n = u[:first_name]
       if n == nil || n.empty?
         logger.error "Could not access first_name from credentials returned by Facebook." 
         return false
