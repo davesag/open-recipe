@@ -1,0 +1,20 @@
+!!! Basic utf-8
+%html{:xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang => "en" }
+  %head
+    %meta{ :'http-equiv' => "Content-Type", :content => "text/html; charset=UTF-8"}
+    %meta{ :property => "og:title", :content => "Open Recipes"}
+    %meta{ :property => "og:type", :content => "website"}
+    %meta{ :property => "og:image", :content => "http://openrecipe.heroku.com/images/openrecipe_logo.png"}
+    %meta{ :property => "og:url", :content => "http://openrecipe.heroku.com/"}
+    %meta{ :property => "og:site_name", :content => "Open Recipe - Food with friends."}
+    %meta{ :property => "fb:admins", :content => "davesag"}
+
+    %title Open Recipe
+    :css
+      body { font-family: Arial; font-size: 20px ;}
+      a { text-decoration: none; color: #333; }
+      .logout a { color: #2554C7; font-size: 15px; }
+      .article { font-size: 1.2em; }
+      .like_site { font-size: 0.8em }
+  %body
+    = yield
