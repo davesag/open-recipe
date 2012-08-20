@@ -8,6 +8,10 @@ enable :sessions
 APP_ID = "435425809841072"
 APP_SECRET = "b8c359ffe13e3ed7e90670e4bb5ec5bd"
 
+configure do
+    set :protection, :except => [:remote_token, :frame_options]
+end
+
 use OmniAuth::Builder do
   puts "Checking with Facebook using ID #{APP_ID}."
   provider :facebook, APP_ID, APP_SECRET, { :scope => 'email, status_update, publish_stream' }
