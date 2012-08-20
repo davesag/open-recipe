@@ -38,7 +38,7 @@ helpers do
       a = session['fb_auth']
       logger.info "a) #{a.inspect}"
       u = a['user_info']
-      logger.info "u) #{a.inspect}"
+      logger.info "u) #{u.inspect}"
       n = u['name']
       logger.info "Discovered Facebook user #{n} in session."
       return true
