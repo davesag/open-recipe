@@ -8,7 +8,7 @@
 %h3 #{logged_in? ? 'Hello ' + session[:fb_auth][:info][:first_name] + ', w' : 'W'}elcome to my list of delicious recipes.
 %table
   %tr
-    %th recipe
+    %th Recipe
     %th Facebook
   -if @recipes == nil || @recipes.empty?
     No recipes. Sorry.

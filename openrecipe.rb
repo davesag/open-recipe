@@ -48,21 +48,20 @@ helpers do
       logger.info "  Last Name: #{a[:info][:last_name]}"
       logger.info "  Image URL: #{a[:info][:image]}"
       logger.info "  Description: #{a[:info][:description]}"
-      logger.info "  URLs: #{a[:info][:urls]}"
+      logger.info "  URLs: #{a[:info][:urls].keys.inspect}"
       logger.info "  Verified: #{a[:info][:verified]}"
       logger.info "Credentials: '#{a[:credentials].keys.inspect}'" # ["token", "expires_at", "expires"]
       logger.info "  Token: '#{a[:credentials][:token].inspect}'"
       logger.info "  Expires At: '#{a[:credentials][:expires_at].inspect}'"
-      logger.info "  Expires: '#{a[:credentials][:expires].inspect}'"
+      logger.info "  Expires: '#{a[:credentials][:expires].inspect}'" # true
       logger.info "Extra: '#{a[:extra].keys.inspect}'" # ["raw_info"]
-      logger.info "  Raw Info: '#{a[:extra][:raw_info].keys.inspect}'"
+      logger.info "  Raw Info: '#{a[:extra][:raw_info].keys.inspect}'" # ["id", "name", "first_name", "last_name", "link", "username", "bio", "quotes", "sports", "inspirational_people", "gender", "email", "timezone", "locale", "languages", "verified", "updated_time"]
       
       u = a[:info]
       if u == nil || u.empty?
         logger.error "Could not access user_info from data returned by Facebook."
         return false
       end
-      logger.info "u) #{u.keys.inspect}"
       n = u[:first_name]
       if n == nil || n.empty?
         logger.error "Could not access first_name from credentials returned by Facebook." 
