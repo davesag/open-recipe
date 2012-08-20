@@ -37,6 +37,9 @@ helpers do
     else
       a = session['fb_auth']
       logger.info "a) #{a.keys.inspect}"
+      
+      logger.info "Credentials: '#{a[:credentials].inspect}'"
+      
       u = a['user_info']
       if u == nil || u.empty?
         logger.error "Could not access user_info from data returned by Facebook."
