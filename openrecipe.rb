@@ -4,8 +4,8 @@ require 'omniauth-facebook'
 enable :sessions
 
 #Here you have to put your own Application ID and Secret
-APP_ID = "153304591365687"
-APP_SECRET = "7a7663099ccb62f180d985ba1252a3e2"
+APP_ID = "435425809841072"
+APP_SECRET = "b8c359ffe13e3ed7e90670e4bb5ec5bd"
 
 use OmniAuth::Builder do
   puts "Checking with Facebook using ID #{APP_ID}."
