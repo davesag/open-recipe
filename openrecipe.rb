@@ -19,17 +19,35 @@ use OmniAuth::Builder do
 end
 
 # this is where the magic happens. Present the Open Recipe's homepage.
-get '/' do
 
-    puts "Request detected.  Developing a response."
+helpers do
 
+  # this is where the magic happens. Prepare local page data for the Open Recipe's homepage.
+  def homepage
     @articles = []
     @articles << {:title => 'Deploying Rack-based apps in Heroku', :url => 'http://docs.heroku.com/rack'}
     @articles << {:title => 'Learn Ruby in twenty minutes', :url => 'http://www.ruby-lang.org/en/documentation/quickstart/'}
+  end
 
+end
+
+# web requests will come in here.
+get '/' do
+    puts "Direct Web Request detected.  Developing a response."
+
+    homepage
     haml :index
 end
 
+# facebook app requests will come in here.
+post '/' do
+    puts "Facebook AppRequest detected.  Developing a response."
+
+    homepage
+    haml :index
+end
+
+# handler for the facebook authentication api.
 get '/auth/facebook/callback' do
   session['fb_auth'] = request.env['omniauth.auth']
   session['fb_token'] = session['fb_auth']['credentials']['token']
@@ -37,17 +55,20 @@ get '/auth/facebook/callback' do
   redirect '/'
 end
 
+# handler for the facebook authentication api.
 get '/auth/failure' do
   clear_session
   session['fb_error'] = 'In order to use this site you must grant us permission to have access to some of your Facebook data<br />'
   redirect '/'
 end
 
+# handler for the facebook authentication api.
 get '/logout' do
   clear_session
   redirect '/'
 end
 
+# handler for the facebook authentication api.
 def clear_session
   session['fb_auth'] = nil
   session['fb_token'] = nil
