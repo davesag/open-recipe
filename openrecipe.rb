@@ -13,8 +13,8 @@ configure do
     set :protection, :except => [:remote_token, :frame_options]
     
     puts "Environment Variables: #{ENV.inspect}"
-    puts "Connecting to database at #{(ENV['HEROKU_POSTGRESQL_NAVY'] || "sqlite3:///#{Dir.pwd}/db/development.sqlite3")}"
-    DataMapper.setup(:default, (ENV['HEROKU_POSTGRESQL_NAVY'] || "sqlite3:///#{Dir.pwd}/db/development.sqlite3"))
+    puts "Connecting to database at #{(ENV['HEROKU_POSTGRESQL_NAVY_URL'] || "sqlite3:///#{Dir.pwd}/db/development.sqlite3")}"
+    DataMapper.setup(:default, (ENV['HEROKU_POSTGRESQL_NAVY_URL'] || "sqlite3:///#{Dir.pwd}/db/development.sqlite3"))
     DataMapper.auto_upgrade!
 end
 
