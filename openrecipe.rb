@@ -11,7 +11,7 @@ APP_SECRET = "b8c359ffe13e3ed7e90670e4bb5ec5bd"
 
 configure do
     set :protection, :except => [:remote_token, :frame_options]
-    logger.info "Connecting to database at #{(ENV["HEROKU_POSTGRESQL_NAVY"] || "sqlite3:///#{Dir.pwd}/db/development.sqlite3")}"
+    puts "Connecting to database at #{(ENV["HEROKU_POSTGRESQL_NAVY"] || "sqlite3:///#{Dir.pwd}/db/development.sqlite3")}"
     DataMapper.setup(:default, (ENV["HEROKU_POSTGRESQL_NAVY"] || "sqlite3:///#{Dir.pwd}/db/development.sqlite3"))
     DataMapper.auto_upgrade!
 end
