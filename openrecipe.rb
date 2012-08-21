@@ -52,32 +52,31 @@ class User
     logger.info "Extra: '#{fb_auth[:extra].keys.inspect}'" # ["raw_info"]
     logger.info "  Raw Info: '#{fb_auth[:extra][:raw_info].keys.inspect}'" # ["id", "name", "first_name", "last_name", "link", "username", "bio", "quotes", "sports", "inspirational_people", "gender", "email", "timezone", "locale", "languages", "verified", "updated_time"]
     
-    u = fb_auth[:info]
-    if u == nil || u.empty?
+    inf = fb_auth[:info]
+    if inf == nil || inf.empty?
       logger.error "Could not access user_info from data returned by Facebook."
       return false
     end
-    n = u[:first_name]
+    n = inf[:name]
     if n == nil || n.empty?
-      logger.error "Could not access first_name from credentials returned by Facebook." 
+      logger.error "Could not access name from credentials returned by Facebook." 
       return false
     end
     logger.info "Discovered Facebook user #{n} in session."
-    verified = fb_auth[:info][:verified] == 'true'
-    if !verified
+    if inf[:verified] != 'true'
       logger.info "Facebook user #{n} is unverified by Facebook."
       return false
     end
     
-    self.name = fb_auth[:info][:name]
-    self.first_name = fb_auth[:info][:first_name]
-    self.last_name = fb_auth[:info][:last_name]
+    self.name = n
+    self.first_name = inf[:first_name]
+    self.last_name = inf[:last_name]
     self.username = fb_auth[:extra][:raw_info][:username]
     self.email = fb_auth[:extra][:raw_info][:email]
     self.sex = fb_auth[:extra][:raw_info][:gender]
     self.authentication_token = fb_auth[:credentials][:token]
     self.remote_id = fb_auth[:extra][:raw_info][:id]
-    self.profile_picture_url = fb_auth[:info][:image]
+    self.profile_picture_url = inf[:image]
     return true
   end
 
