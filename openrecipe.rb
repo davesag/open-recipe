@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'haml'
 require 'omniauth-facebook'
+require 'data_mapper'
 
 enable :sessions, :logging, :show_exceptions
 
@@ -10,12 +11,91 @@ APP_SECRET = "b8c359ffe13e3ed7e90670e4bb5ec5bd"
 
 configure do
     set :protection, :except => [:remote_token, :frame_options]
+    DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///#{Dir.pwd}/db/development.sqlite3"))
+    DataMapper.auto_upgrade!
+end
+
+class User
+  include DataMapper::Resource
+  property :id, Serial
+  property :name, String
+  property :sex, String
+  property :first_name, String
+  property :last_name, String
+  property :username, String
+  property :email, String
+  property :authentication_token, String
+  property :remote_id, String
+  property :profile_picture_url, String
+
+  def update_from_facebook?(fb_auth)
+    logger.info "a) #{fb_auth.keys.inspect}" # ["provider", "uid", "info", "credentials", "extra"]
+    logger.info "Provider: '#{fb_auth[:provider]}'" # facebook
+    logger.info "UUID: '#{fb_auth[:uid]}'" # 677015415
+    logger.info "Info: '#{fb_auth[:info].keys.inspect}'" # ["nickname", "email", "name", "first_name", "last_name", "image", "description", "urls", "verified"]
+    logger.info "  Nickname: #{fb_auth[:info][:nickname]}"
+    logger.info "  Email: #{fb_auth[:info][:email]}"
+    logger.info "  Name: #{fb_auth[:info][:name]}"
+    logger.info "  First Name: #{fb_auth[:info][:first_name]}"
+    logger.info "  Last Name: #{fb_auth[:info][:last_name]}"
+    logger.info "  Image URL: #{fb_auth[:info][:image]}"
+    logger.info "  Description: #{fb_auth[:info][:description]}"
+    logger.info "  URLs: #{fb_auth[:info][:urls].keys.inspect}"
+    logger.info "  Verified: #{fb_auth[:info][:verified]}"
+    logger.info "Credentials: '#{fb_auth[:credentials].keys.inspect}'" # ["token", "expires_at", "expires"]
+    logger.info "  Token: '#{fb_auth[:credentials][:token].inspect}'"
+    logger.info "  Expires At: '#{fb_auth[:credentials][:expires_at].inspect}'"
+    logger.info "  Expires: '#{fb_auth[:credentials][:expires].inspect}'" # true
+    logger.info "Extra: '#{fb_auth[:extra].keys.inspect}'" # ["raw_info"]
+    logger.info "  Raw Info: '#{fb_auth[:extra][:raw_info].keys.inspect}'" # ["id", "name", "first_name", "last_name", "link", "username", "bio", "quotes", "sports", "inspirational_people", "gender", "email", "timezone", "locale", "languages", "verified", "updated_time"]
+    
+    u = fb_auth[:info]
+    if u == nil || u.empty?
+      logger.error "Could not access user_info from data returned by Facebook."
+      return false
+    end
+    n = u[:first_name]
+    if n == nil || n.empty?
+      logger.error "Could not access first_name from credentials returned by Facebook." 
+      return false
+    end
+    logger.info "Discovered Facebook user #{n} in session."
+    verified = fb_auth[:info][:verified] == 'true'
+    if !verified
+      logger.info "Facebook user #{n} is unverified by Facebook."
+      return false
+    end
+    
+    self.name = fb_auth[:info][:name]
+    self.first_name = fb_auth[:info][:first_name]
+    self.last_name = fb_auth[:info][:last_name]
+    self.username = fb_auth[:extra][:raw_info][:username]
+    self.email = fb_auth[:extra][:raw_info][:email]
+    self.sex = fb_auth[:extra][:raw_info][:gender]
+    self.authentication_token = fb_auth[:credentials][:token]
+    self.remote_id = fb_auth[:extra][:raw_info][:id]
+    self.profile_picture_url = fb_auth[:info][:image]
+    return true
+  end
+
 end
 
 use OmniAuth::Builder do
   puts "Checking with Facebook using ID #{APP_ID}."
   provider :facebook, APP_ID, APP_SECRET, { :scope => 'email, status_update, publish_stream' }
   puts "Provider established."
+end
+
+before do
+  return if session[:fb_auth] == nil || session[:fb_auth].empty?
+  
+  user = User.first(:username => session[:fb_auth][:extra][:raw_info][:username])
+  if user == nil
+    logger.info "No matching user for #{session[:fb_auth][:extra][:raw_info][:username]} in our database."
+    return nil
+  end
+  logger.info "Loaded user #{user.username} from our database."
+  session[:app_user] = user
 end
 
 # this is where the magic happens. Present the Open Recipe's homepage.
@@ -36,40 +116,21 @@ helpers do
       logger.info "No Facebook user in session."
       return false
     else
-      a = session[:fb_auth]
-      logger.info "a) #{a.keys.inspect}" # ["provider", "uid", "info", "credentials", "extra"]
-      logger.info "Provider: '#{a[:provider]}'" # facebook
-      logger.info "UUID: '#{a[:uid]}'" # 677015415
-      logger.info "Info: '#{a[:info].keys.inspect}'" # ["nickname", "email", "name", "first_name", "last_name", "image", "description", "urls", "verified"]
-      logger.info "  Nickname: #{a[:info][:nickname]}"
-      logger.info "  Email: #{a[:info][:email]}"
-      logger.info "  Name: #{a[:info][:name]}"
-      logger.info "  First Name: #{a[:info][:first_name]}"
-      logger.info "  Last Name: #{a[:info][:last_name]}"
-      logger.info "  Image URL: #{a[:info][:image]}"
-      logger.info "  Description: #{a[:info][:description]}"
-      logger.info "  URLs: #{a[:info][:urls].keys.inspect}"
-      logger.info "  Verified: #{a[:info][:verified]}"
-      logger.info "Credentials: '#{a[:credentials].keys.inspect}'" # ["token", "expires_at", "expires"]
-      logger.info "  Token: '#{a[:credentials][:token].inspect}'"
-      logger.info "  Expires At: '#{a[:credentials][:expires_at].inspect}'"
-      logger.info "  Expires: '#{a[:credentials][:expires].inspect}'" # true
-      logger.info "Extra: '#{a[:extra].keys.inspect}'" # ["raw_info"]
-      logger.info "  Raw Info: '#{a[:extra][:raw_info].keys.inspect}'" # ["id", "name", "first_name", "last_name", "link", "username", "bio", "quotes", "sports", "inspirational_people", "gender", "email", "timezone", "locale", "languages", "verified", "updated_time"]
-      
-      u = a[:info]
-      if u == nil || u.empty?
-        logger.error "Could not access user_info from data returned by Facebook."
+      user = session[:app_user]
+      if not user.update_from_facebook? session[:fb_auth]
+        user = nil
         return false
       end
-      n = u[:first_name]
-      if n == nil || n.empty?
-        logger.error "Could not access first_name from credentials returned by Facebook." 
-        return false
-      end
-      logger.info "Discovered Facebook user #{n} in session."
+      user.save
       return true
     end
+  end
+  
+  def active_user
+    return nil unless logged_in?
+    user = session[:app_user]
+    logger.info "Loaded user #{user.username} from our database."
+    return user
   end
   
   # clears all the facebook tokens out
@@ -78,6 +139,7 @@ helpers do
     session[:fb_auth] = nil
     session[:fb_token] = nil
     session[:fb_error] = nil
+    session[:app_user] = nil
   end
 
 end
