@@ -3,7 +3,7 @@ source "https://rubygems.org"
 
 gem 'sinatra'
 gem 'haml'
-gem 'omniauth-facebook'
+gem 'omniauth-facebook', '1.4.0'  # see http://stackoverflow.com/questions/11597130/omniauth-facebook-keeps-reporting-invalid-credentials
 gem 'data_mapper'
 
 group :development do
