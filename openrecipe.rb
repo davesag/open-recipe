@@ -118,21 +118,25 @@ helpers do
     if session[:fb_auth] == nil || session[:fb_auth].empty?
       logger.info "No Facebook user in session."
       return false
-    else
-      user = session[:app_user]
-      if not user.update_from_facebook? session[:fb_auth]
-        user = nil
-        return false
-      end
-      user.save
-      return true
     end
+    user = session[:app_user]
+    if user == nil
+      logger.info "Found Facebook user #{session[:fb_auth][:extra][:raw_info][:username]} but there was no corresponding User object stored in the session."
+      return false
+    end
+    if not user.update_from_facebook? session[:fb_auth]
+      logger.info "Updating #{user.username}'s database with details from Facebook failed."
+      user = nil
+      return false
+    end
+    user.save
+    return true
   end
   
   def active_user
     return nil unless logged_in?
     user = session[:app_user]
-    logger.info "Loaded user #{user.username} from our database."
+    logger.info "Returning user #{user.username}."
     return user
   end
   
