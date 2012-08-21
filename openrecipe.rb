@@ -10,97 +10,104 @@ APP_ID = "435425809841072"
 APP_SECRET = "b8c359ffe13e3ed7e90670e4bb5ec5bd"
 
 configure do
-    set :protection, :except => [:remote_token, :frame_options]
-    
-    puts "Environment Variables: #{ENV.inspect}"
-    puts "Connecting to database at #{(ENV['HEROKU_POSTGRESQL_NAVY_URL'] || "sqlite3:///#{Dir.pwd}/db/development.sqlite3")}"
-    DataMapper.setup(:default, (ENV['HEROKU_POSTGRESQL_NAVY_URL'] || "sqlite3:///#{Dir.pwd}/db/development.sqlite3"))
-    DataMapper.auto_upgrade!
-end
+  set :protection, :except => [:remote_token, :frame_options]
 
-class User
-  include DataMapper::Resource
-  property :id, Serial
-  property :name, String
-  property :sex, String
-  property :first_name, String
-  property :last_name, String
-  property :username, String
-  property :email, String
-  property :authentication_token, String
-  property :remote_id, String
-  property :profile_picture_url, String
-
-  def update_from_facebook?(fb_auth)
-    logger.info "a) #{fb_auth.keys.inspect}" # ["provider", "uid", "info", "credentials", "extra"]
-    logger.info "Provider: '#{fb_auth[:provider]}'" # facebook
-    logger.info "UUID: '#{fb_auth[:uid]}'" # 677015415
-    logger.info "Info: '#{fb_auth[:info].keys.inspect}'" # ["nickname", "email", "name", "first_name", "last_name", "image", "description", "urls", "verified"]
-    logger.info "  Nickname: #{fb_auth[:info][:nickname]}"
-    logger.info "  Email: #{fb_auth[:info][:email]}"
-    logger.info "  Name: #{fb_auth[:info][:name]}"
-    logger.info "  First Name: #{fb_auth[:info][:first_name]}"
-    logger.info "  Last Name: #{fb_auth[:info][:last_name]}"
-    logger.info "  Image URL: #{fb_auth[:info][:image]}"
-    logger.info "  Description: #{fb_auth[:info][:description]}"
-    logger.info "  URLs: #{fb_auth[:info][:urls].keys.inspect}"
-    logger.info "  Verified: #{fb_auth[:info][:verified]}"
-    logger.info "Credentials: '#{fb_auth[:credentials].keys.inspect}'" # ["token", "expires_at", "expires"]
-    logger.info "  Token: '#{fb_auth[:credentials][:token].inspect}'"
-    logger.info "  Expires At: '#{fb_auth[:credentials][:expires_at].inspect}'"
-    logger.info "  Expires: '#{fb_auth[:credentials][:expires].inspect}'" # true
-    logger.info "Extra: '#{fb_auth[:extra].keys.inspect}'" # ["raw_info"]
-    logger.info "  Raw Info: '#{fb_auth[:extra][:raw_info].keys.inspect}'" # ["id", "name", "first_name", "last_name", "link", "username", "bio", "quotes", "sports", "inspirational_people", "gender", "email", "timezone", "locale", "languages", "verified", "updated_time"]
-    
-    inf = fb_auth[:info]
-    if inf == nil || inf.empty?
-      logger.error "Could not access user_info from data returned by Facebook."
-      return false
+  class User
+    include DataMapper::Resource
+    property :id, Serial
+    property :name, String, :length => 1..50
+    property :sex, String, :length => 1..6
+    property :first_name, String, :length => 1..20
+    property :last_name, String, :length => 1..20
+    property :username, String, :length => 1..20, :unique => true
+    property :email, String, :length => 1..50
+    property :authentication_token, String, :length => 1..255
+    property :remote_id, String, :length => 1..50
+    property :profile_picture_url, String, :length => 1..255
+  
+    def update_from_facebook?(fb_auth)
+  #    logger.info "a) #{fb_auth.keys.inspect}" # ["provider", "uid", "info", "credentials", "extra"]
+  #    logger.info "Provider: '#{fb_auth[:provider]}'" # facebook
+  #    logger.info "UUID: '#{fb_auth[:uid]}'" # 677015415
+  #    logger.info "Info: '#{fb_auth[:info].keys.inspect}'" # ["nickname", "email", "name", "first_name", "last_name", "image", "description", "urls", "verified"]
+  #    logger.info "  Nickname: #{fb_auth[:info][:nickname]}"
+  #    logger.info "  Email: #{fb_auth[:info][:email]}"
+  #    logger.info "  Name: #{fb_auth[:info][:name]}"
+  #    logger.info "  First Name: #{fb_auth[:info][:first_name]}"
+  #    logger.info "  Last Name: #{fb_auth[:info][:last_name]}"
+  #    logger.info "  Image URL: #{fb_auth[:info][:image]}"
+  #    logger.info "  Description: #{fb_auth[:info][:description]}"
+  #    logger.info "  URLs: #{fb_auth[:info][:urls].keys.inspect}"
+  #    logger.info "  Verified: #{fb_auth[:info][:verified]}"
+  #    logger.info "Credentials: '#{fb_auth[:credentials].keys.inspect}'" # ["token", "expires_at", "expires"]
+  #    logger.info "  Token: '#{fb_auth[:credentials][:token].inspect}'"
+  #    logger.info "  Expires At: '#{fb_auth[:credentials][:expires_at].inspect}'"
+  #    logger.info "  Expires: '#{fb_auth[:credentials][:expires].inspect}'" # true
+  #    logger.info "Extra: '#{fb_auth[:extra].keys.inspect}'" # ["raw_info"]
+  #    logger.info "  Raw Info: '#{fb_auth[:extra][:raw_info].keys.inspect}'" # ["id", "name", "first_name", "last_name", "link", "username", "bio", "quotes", "sports", "inspirational_people", "gender", "email", "timezone", "locale", "languages", "verified", "updated_time"]
+      
+      inf = fb_auth[:info]
+      if inf == nil || inf.empty?
+        puts "Could not access user_info from data returned by Facebook."
+        return false
+      end
+      n = inf[:name]
+      if n == nil || n.empty?
+        puts "Could not access name from credentials returned by Facebook." 
+        return false
+      end
+      puts "Loaded Facebook user #{n}."
+      if 'true' != inf[:verified].to_s
+        puts "But alas Facebook user #{n} is unverified by Facebook."
+        puts "verified = '#{inf[:verified]}'"
+        return false
+      end
+      
+      self.name = n
+      self.first_name = inf[:first_name]
+      self.last_name = inf[:last_name]
+      self.username = fb_auth[:extra][:raw_info][:username]
+      self.email = fb_auth[:extra][:raw_info][:email]
+      self.sex = fb_auth[:extra][:raw_info][:gender]
+      self.authentication_token = fb_auth[:credentials][:token]
+      self.remote_id = fb_auth[:extra][:raw_info][:id]
+      self.profile_picture_url = inf[:image]
+      return true
     end
-    n = inf[:name]
-    if n == nil || n.empty?
-      logger.error "Could not access name from credentials returned by Facebook." 
-      return false
-    end
-    logger.info "Discovered Facebook user #{n} in session."
-    if inf[:verified] != 'true'
-      logger.info "Facebook user #{n} is unverified by Facebook."
-      return false
-    end
-    
-    self.name = n
-    self.first_name = inf[:first_name]
-    self.last_name = inf[:last_name]
-    self.username = fb_auth[:extra][:raw_info][:username]
-    self.email = fb_auth[:extra][:raw_info][:email]
-    self.sex = fb_auth[:extra][:raw_info][:gender]
-    self.authentication_token = fb_auth[:credentials][:token]
-    self.remote_id = fb_auth[:extra][:raw_info][:id]
-    self.profile_picture_url = inf[:image]
-    return true
+  
   end
 
+  DataMapper::Logger.new($stdout, :debug)
+  DataMapper.setup(:default, (ENV['HEROKU_POSTGRESQL_NAVY_URL'] || "sqlite3:///#{Dir.pwd}/db/development.sqlite3"))
+  DataMapper.finalize
+  DataMapper.auto_upgrade!
 end
 
 use OmniAuth::Builder do
-  puts "Checking with Facebook using ID #{APP_ID}."
+#  puts "Checking with Facebook using ID #{APP_ID} and secret #{APP_SECRET}."
   provider :facebook, APP_ID, APP_SECRET, { :scope => 'email, status_update, publish_stream' }
-  puts "Provider established."
 end
 
 before do
+  logger.info "Handling request."
   return if session[:fb_auth] == nil || session[:fb_auth].empty?
   
-  user = User.first(:username => session[:fb_auth][:extra][:raw_info][:username])
-  if user == nil
-    logger.info "No matching user for #{session[:fb_auth][:extra][:raw_info][:username]} in our database."
-    return nil
-  end
-  logger.info "Loaded user #{user.username} from our database."
-  session[:app_user] = user
-end
+  logger.info "Found a Facebook Authentication object in the session."
+  n = session[:fb_auth][:extra][:raw_info][:username]
 
-# this is where the magic happens. Present the Open Recipe's homepage.
+  logger.info "Facebook User is #{n}"  
+  user = User.first_or_create(:username => n)
+
+  if !user.update_from_facebook?(session[:fb_auth])
+    logger.info "Updating #{user.username}'s database with details from Facebook failed."
+    user = nil
+    return
+  end
+  User.raise_on_save_failure = true
+  user.save
+  logger.info "Saved user #{user.username} (#{user.first_name} #{user.last_name}) to our database."
+  session[:app_username] = user.username
+end
 
 helpers do
 
@@ -118,34 +125,30 @@ helpers do
       logger.info "No Facebook user in session."
       return false
     end
-    user = session[:app_user]
-    if user == nil
+    if session[:app_username] == nil
       logger.info "Found Facebook user #{session[:fb_auth][:extra][:raw_info][:username]} but there was no corresponding User object stored in the session."
       return false
     end
-    if not user.update_from_facebook? session[:fb_auth]
-      logger.info "Updating #{user.username}'s database with details from Facebook failed."
-      user = nil
-      return false
-    end
-    user.save
     return true
   end
   
   def active_user
     return nil unless logged_in?
-    user = session[:app_user]
-    logger.info "Returning user #{user.username}."
+    
+    logger.info "Trying to find user with username #{session[:app_username]}"
+    user = User.first(:username => session[:app_username])
+    logger.info "Returning user #{user.username} (#{user.first_name} #{user.last_name})." if user
+    logger.error "No User Found in Database." unless user
     return user
   end
-  
+
   # clears all the facebook tokens out
   def clear_session
     logger.info "Clearing session of Facebook tokens."
     session[:fb_auth] = nil
     session[:fb_token] = nil
     session[:fb_error] = nil
-    session[:app_user] = nil
+    session[:app_username] = nil
   end
 
 end
