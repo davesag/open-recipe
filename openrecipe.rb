@@ -94,33 +94,7 @@ end
 
 before do
   logger.info "Handling request."
-  if session[:app_username] == nil
-    logger.info "No username in session."
-    return
-  end
-  logger.info "Found username '#{session[:app_username]}' in session."
-  
-  if session[:fb_auth] == nil
-    logger.info "No Facebook data in session."
-    return
-  end
-  
-  @user = nil
-  user = User.first_or_create(:username => session[:app_username])
-  if !user.update_from_facebook?(session[:fb_auth])
-    logger.info "Updating database with #{user.username}'s Facebook details failed."
-    user = nil
-    session[:app_username] == nil
-    session[:fb_error] = "Updating database with #{user.username}'s Facebook details failed."
-    return
-  end
-
-  logger.info "About to attempt to save #{user.username}'s data."
-  user.save # will raise an exception if this fails
-  logger.info "Saved user #{user.username} (#{user.first_name} #{user.last_name}) to our database."
-  session[:app_username] = user.username
-  @user = user
-  session[:fb_error] = nil
+  record_user
 end
 
 helpers do
@@ -131,6 +105,36 @@ helpers do
     @recipes << {:title => 'Delicious Duck in Orange Sauce', :url => 'http://about.me/davesag'}
     @recipes << {:title => 'Goat Cheese Pankakes', :url => 'http://www.ruby-lang.org/en/documentation/quickstart/'}
     @recipes << {:title => 'Fudge Soup', :url => 'http://www.ruby-lang.org/en/documentation/quickstart/'}
+  end
+
+  def record_user
+    if session[:app_username] == nil
+      logger.info "No username in session."
+      return
+    end
+    logger.info "Found username '#{session[:app_username]}' in session."
+    
+    if session[:fb_auth] == nil
+      logger.info "No Facebook data in session."
+      return
+    end
+    
+    @user = nil
+    user = User.first_or_create(:username => session[:app_username])
+    if !user.update_from_facebook?(session[:fb_auth])
+      logger.info "Updating database with #{user.username}'s Facebook details failed."
+      user = nil
+      session[:app_username] == nil
+      session[:fb_error] = "Updating database with #{user.username}'s Facebook details failed."
+      return
+    end
+  
+    logger.info "About to attempt to save #{user.username}'s data."
+    user.save # will raise an exception if this fails
+    logger.info "Saved user #{user.username} (#{user.first_name} #{user.last_name}) to our database."
+    session[:app_username] = user.username
+    @user = user
+    session[:fb_error] = nil
   end
 
   # true if the user has logged in with their Facebook credentials.
@@ -199,6 +203,8 @@ get '/auth/facebook/callback' do
   # write the data to DB is needs be.
   session[:app_username] = session[:fb_auth][:extra][:raw_info][:username]
   logger.info "Stored Authenticated Facebook user #{session[:app_username]}'s username in the session."
+
+  record_user
 
   redirect '/'
 end
