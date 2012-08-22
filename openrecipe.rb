@@ -90,7 +90,27 @@ end
 
 before do
   logger.info "Handling request."
+  return if session[:app_username] == nil
+  @user = nil
+  user = User.first_or_create(:username => session[:app_username])
+  if !user.update_from_facebook?(session[:fb_auth])
+    logger.info "Updating database with #{user.username}'s Facebook details failed."
+    user = nil
+    session[:app_username] == nil
+    session[:fb_error] = "Updating database with #{user.username}'s Facebook details failed."
+    return
+  end
 
+  if !user.save
+    logger.error "Could not #{user.username} (#{user.first_name} #{user.last_name}) to our database."
+    session[:app_username] = nil
+    session[:fb_error] = "Internal Error: Could not #{user.username} (#{user.first_name} #{user.last_name}) to our database."
+    return
+  end
+  logger.info "Saved user #{user.username} (#{user.first_name} #{user.last_name}) to our database."
+  session[:app_username] = user.username
+  @user = user
+  session[:fb_error] = nil
 end
 
 helpers do
@@ -105,10 +125,8 @@ helpers do
 
   # true if the user has logged in with their Facebook credentials.
   def logged_in?
-    if session[:fb_auth] == nil || session[:fb_auth].empty?
-      logger.info "No Facebook user in session."
-      return false
-    end
+    return false if session[:fb_auth] == nil || session[:fb_auth].empty?
+
     if session[:app_username] == nil
       logger.info "Found Facebook user #{session[:fb_auth][:extra][:raw_info][:username]} but there was no corresponding User object stored in the session."
       return false
@@ -118,12 +136,13 @@ helpers do
   
   def active_user
     return nil unless logged_in?
+    return @user if @user != nil
     
     logger.info "Trying to find user with username #{session[:app_username]}"
-    user = User.first(:username => session[:app_username])
-    logger.info "Returning user #{user.username} (#{user.first_name} #{user.last_name})." if user
-    logger.error "No User Found in Database." unless user
-    return user
+    @user = User.first(:username => session[:app_username])
+    logger.info "Returning user #{@user.username} (#{@user.first_name} #{@user.last_name})." if @user
+    logger.error "No User Found in Database." unless @user
+    return @user
   end
 
   # clears all the facebook tokens out
@@ -133,6 +152,7 @@ helpers do
     session[:fb_token] = nil
     session[:fb_error] = nil
     session[:app_username] = nil
+    @user = nil
   end
 
 end
@@ -155,33 +175,14 @@ end
 
 # handler for the facebook authentication api.
 get '/auth/facebook/callback' do
-#  logger.info "Incoming request is carrying keys #{request.env.keys}"
+
   session[:fb_auth] = request.env['omniauth.auth']
-  logger.info "Callback brings the following: #{session[:fb_auth].keys.inspect}"
   session[:fb_token] = session[:fb_auth][:credentials][:token]
   
   # write the data to DB is needs be.
   logger.info "Found a Facebook Authentication object in the session."
-  n = session[:fb_auth][:extra][:raw_info][:username]
+  session[:app_username] = session[:fb_auth][:extra][:raw_info][:username]
 
-  logger.info "Facebook User is #{n}"  
-  user = User.first_or_create(:username => n)
-
-  if !user.update_from_facebook?(session[:fb_auth])
-    logger.info "Updating database with #{user.username}'s Facebook details failed."
-    user = nil
-    return
-  end
-
-  if user.save
-    logger.info "Saved user #{user.username} (#{user.first_name} #{user.last_name}) to our database."
-    session[:app_username] = user.username
-    session[:fb_error] = nil
-  else
-    logger.error "Could not #{user.username} (#{user.first_name} #{user.last_name}) to our database."
-    session[:app_username] = nil
-    session[:fb_error] = "Internal Error: Could not #{user.username} (#{user.first_name} #{user.last_name}) to our database."
-  end
   redirect '/'
 end
 
