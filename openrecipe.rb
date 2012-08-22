@@ -171,6 +171,7 @@ end
 
 # handler for the facebook authentication api.
 get '/auth/facebook/callback' do
+  logger.info "Incoming request is carrying keys #{request.env.keys}"
   session['fb_auth'] = request.env['omniauth.auth']
   session['fb_token'] = session['fb_auth']['credentials']['token']
   session['fb_error'] = nil
