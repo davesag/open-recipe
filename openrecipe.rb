@@ -156,7 +156,8 @@ end
 # handler for the facebook authentication api.
 get '/auth/facebook/callback' do
 #  logger.info "Incoming request is carrying keys #{request.env.keys}"
-  session[:fb_auth] = request.env[:'omniauth.auth']
+  session[:fb_auth] = request.env['omniauth.auth']
+  logger.info "Callback brings the following: #{session[:fb_auth].keys.inspect}"
   session[:fb_token] = session[:fb_auth][:credentials][:token]
   
   # write the data to DB is needs be.
