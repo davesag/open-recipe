@@ -90,23 +90,7 @@ end
 
 before do
   logger.info "Handling request."
-  return if session[:fb_auth] == nil || session[:fb_auth].empty?
-  
-  logger.info "Found a Facebook Authentication object in the session."
-  n = session[:fb_auth][:extra][:raw_info][:username]
 
-  logger.info "Facebook User is #{n}"  
-  user = User.first_or_create(:username => n)
-
-  if !user.update_from_facebook?(session[:fb_auth])
-    logger.info "Updating #{user.username}'s database with details from Facebook failed."
-    user = nil
-    return
-  end
-  User.raise_on_save_failure = true
-  user.save
-  logger.info "Saved user #{user.username} (#{user.first_name} #{user.last_name}) to our database."
-  session[:app_username] = user.username
 end
 
 helpers do
@@ -171,17 +155,39 @@ end
 
 # handler for the facebook authentication api.
 get '/auth/facebook/callback' do
-  logger.info "Incoming request is carrying keys #{request.env.keys}"
-  session['fb_auth'] = request.env['omniauth.auth']
-  session['fb_token'] = session['fb_auth']['credentials']['token']
-  session['fb_error'] = nil
+#  logger.info "Incoming request is carrying keys #{request.env.keys}"
+  session[:fb_auth] = request.env[:'omniauth.auth']
+  session[:fb_token] = session[:fb_auth][:credentials][:token]
+  
+  # write the data to DB is needs be.
+  logger.info "Found a Facebook Authentication object in the session."
+  n = session[:fb_auth][:extra][:raw_info][:username]
+
+  logger.info "Facebook User is #{n}"  
+  user = User.first_or_create(:username => n)
+
+  if !user.update_from_facebook?(session[:fb_auth])
+    logger.info "Updating database with #{user.username}'s Facebook details failed."
+    user = nil
+    return
+  end
+
+  if user.save
+    logger.info "Saved user #{user.username} (#{user.first_name} #{user.last_name}) to our database."
+    session[:app_username] = user.username
+    session[:fb_error] = nil
+  else
+    logger.error "Could not #{user.username} (#{user.first_name} #{user.last_name}) to our database."
+    session[:app_username] = nil
+    session[:fb_error] = "Internal Error: Could not #{user.username} (#{user.first_name} #{user.last_name}) to our database."
+  end
   redirect '/'
 end
 
 # handler for the facebook authentication api.
 get '/auth/failure' do
   clear_session
-  session['fb_error'] = 'In order to use this site you must grant us permission to have access to some of your Facebook data<br />'
+  session[:fb_error] = 'In order to use this site you must grant us permission to have access to some of your Facebook data<br />'
   redirect '/'
 end
 

@@ -1,4 +1,5 @@
-=session['fb_error']
+-if session[:fb_error] != nil
+  %p{:class => "error"} #{session[:fb_error]}
 -if logged_in?
   %a{:href => 'logout'}
     %img{:src => 'images/fb_logout_button.png'}
