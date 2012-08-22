@@ -132,6 +132,13 @@ helpers do
       logger.info "Found Facebook user #{session[:fb_auth][:extra][:raw_info][:username]} but there was no corresponding User object stored in the session."
       return false
     end
+
+    if @user == nil
+      logger.info "Found App User #{session[:app_username]} in the session but no actual user object was found."
+      return false
+    end
+
+    logger.info "User #{@user.username} is logged in."
     return true
   end
   
