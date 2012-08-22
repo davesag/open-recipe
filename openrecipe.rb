@@ -102,7 +102,7 @@ before do
   end
 
   if !user.save
-    logger.error "Could not #{user.username} (#{user.first_name} #{user.last_name}) to our database."
+    logger.info "Could not #{user.username} (#{user.first_name} #{user.last_name}) to our database."
     session[:app_username] = nil
     session[:fb_error] = "Internal Error: Could not #{user.username} (#{user.first_name} #{user.last_name}) to our database."
     return
@@ -180,8 +180,8 @@ get '/auth/facebook/callback' do
   session[:fb_token] = session[:fb_auth][:credentials][:token]
   
   # write the data to DB is needs be.
-  logger.info "Found a Facebook Authentication object in the session."
   session[:app_username] = session[:fb_auth][:extra][:raw_info][:username]
+  logger.info "Stored Authenticated Facebook user #{session[:app_username]}'s username in the session."
 
   redirect '/'
 end
