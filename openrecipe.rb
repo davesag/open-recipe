@@ -82,6 +82,7 @@ configure do
 
   DataMapper::Logger.new($stdout, :debug)
   DataMapper.setup(:default, (ENV['DATABASE_URL'] || "sqlite3:///#{Dir.pwd}/db/development.sqlite3"))
+  DataMapper::Model.raise_on_save_failure = true  # while debugging.
   DataMapper.finalize
   DataMapper.auto_upgrade!
 end
@@ -115,12 +116,7 @@ before do
   end
 
   logger.info "About to attempt to save #{user.username}'s data."
-  if !user.save
-    logger.info "Could not add #{user.username} (#{user.first_name} #{user.last_name}) to our database."
-    session[:app_username] = nil
-    session[:fb_error] = "Internal Error: Could not #{user.username} (#{user.first_name} #{user.last_name}) to our database."
-    return
-  end
+  user.save # will raise an exception if this fails
   logger.info "Saved user #{user.username} (#{user.first_name} #{user.last_name}) to our database."
   session[:app_username] = user.username
   @user = user
