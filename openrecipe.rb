@@ -2,6 +2,7 @@ require 'sinatra'
 require 'haml'
 require 'omniauth-facebook'
 require 'data_mapper'
+require 'logger'
 
 # testing at http://ppp167-251-9.static.internode.on.net:5000/
 # production tests at http://open-recipe.herokuapp.com
@@ -14,6 +15,7 @@ APP_SECRET = "b8c359ffe13e3ed7e90670e4bb5ec5bd"
 
 configure do
   set :protection, :except => [:remote_token, :frame_options]
+  set :haml, {:format => :html5}
 
   class User
     include DataMapper::Resource
@@ -93,7 +95,8 @@ use OmniAuth::Builder do
 end
 
 before do
-  logger.info "Handling request."
+  logger.level = Logger::DEBUG
+  logger.debug "Handling request."
   record_user
 end
 
@@ -107,6 +110,7 @@ helpers do
     @recipes << {:title => 'Fudge Soup', :url => 'http://www.ruby-lang.org/en/documentation/quickstart/'}
   end
 
+  # save the user data to database.
   def record_user
     if session[:app_username] == nil
       logger.info "No username in session."
@@ -140,17 +144,14 @@ helpers do
   # true if the user has logged in with their Facebook credentials.
   def logged_in?
     return false if session[:fb_auth] == nil || session[:fb_auth].empty?
-
     if session[:app_username] == nil
       logger.info "Found Facebook user #{session[:fb_auth][:extra][:raw_info][:username]} but there was no corresponding User object stored in the session."
       return false
     end
-
     if @user == nil
       logger.info "Found App User #{session[:app_username]} in the session but no actual user object was found."
       return false
     end
-
     logger.info "User #{@user.username} is logged in."
     return true
   end
@@ -200,7 +201,7 @@ get '/auth/facebook/callback' do
   session[:fb_auth] = request.env['omniauth.auth']
   session[:fb_token] = session[:fb_auth][:credentials][:token]
   
-  # write the data to DB is needs be.
+  # write the data to DB if needs be.
   session[:app_username] = session[:fb_auth][:extra][:raw_info][:username]
   logger.info "Stored Authenticated Facebook user #{session[:app_username]}'s username in the session."
 
