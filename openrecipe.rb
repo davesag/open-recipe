@@ -3,6 +3,9 @@ require 'haml'
 require 'omniauth-facebook'
 require 'data_mapper'
 
+# testing at http://ppp167-251-9.static.internode.on.net:5000/
+# production tests at http://open-recipe.herokuapp.com
+
 enable :sessions, :logging, :show_exceptions
 
 #Here you have to put your own Application ID and Secret
@@ -78,7 +81,7 @@ configure do
   end
 
   DataMapper::Logger.new($stdout, :debug)
-  DataMapper.setup(:default, (ENV['HEROKU_POSTGRESQL_NAVY_URL'] || "sqlite3:///#{Dir.pwd}/db/development.sqlite3"))
+  DataMapper.setup(:default, (ENV['DATABASE_URL'] || "sqlite3:///#{Dir.pwd}/db/development.sqlite3"))
   DataMapper.finalize
   DataMapper.auto_upgrade!
 end
@@ -90,7 +93,17 @@ end
 
 before do
   logger.info "Handling request."
-  return if session[:app_username] == nil
+  if session[:app_username] == nil
+    logger.info "No username in session."
+    return
+  end
+  logger.info "Found username '#{session[:app_username]}' in session."
+  
+  if session[:fb_auth] == nil
+    logger.info "No Facebook data in session."
+    return
+  end
+  
   @user = nil
   user = User.first_or_create(:username => session[:app_username])
   if !user.update_from_facebook?(session[:fb_auth])
