@@ -112,29 +112,29 @@ helpers do
 
   # save the user data to database.
   def record_user
-    if session[:app_username] == nil
-      logger.info "No username in session."
-      return
-    end
-    logger.info "Found username '#{session[:app_username]}' in session."
-    
     if session[:fb_auth] == nil
-      logger.info "No Facebook data in session."
+      logger.debug "No Facebook data in session."
       return
     end
+    
+    if session[:app_username] == nil
+      logger.debug "No username in session."
+      return
+    end
+    logger.debug "Found username '#{session[:app_username]}' in session."
     
     @user = nil
     user = User.first_or_create(:username => session[:app_username])
     if !user.update_from_facebook?(session[:fb_auth])
-      logger.info "Updating database with #{user.username}'s Facebook details failed."
+      logger.error "Updating database with #{user.username}'s Facebook details failed."
       user = nil
       session[:fb_error] = "Updating database with #{user.username}'s Facebook details failed."
       return
     end
 
-    logger.info "About to attempt to save #{user.username}'s data."
+    logger.debug "About to attempt to save #{user.username}'s data."
     user.save # will raise an exception if this fails
-    logger.info "Saved user #{user.username} (#{user.first_name} #{user.last_name}) to our database."
+    logger.debug "Saved user #{user.username} (#{user.first_name} #{user.last_name}) to our database."
     session[:app_username] = user.username
     @user = user
     session[:fb_error] = nil
@@ -144,14 +144,14 @@ helpers do
   def logged_in?
     return false if session[:fb_auth] == nil || session[:fb_auth].empty?
     if session[:app_username] == nil
-      logger.info "Found Facebook user #{session[:fb_auth][:extra][:raw_info][:username]} but there was no corresponding User object stored in the session."
+      logger.debug "Found Facebook user #{session[:fb_auth][:extra][:raw_info][:username]} but there was no corresponding User object stored in the session."
       return false
     end
     if @user == nil
-      logger.info "Found App User #{session[:app_username]} in the session but no actual user object was found."
+      logger.debug "Found App User #{session[:app_username]} in the session but no actual user object was found."
       return false
     end
-    logger.info "User #{@user.username} is logged in."
+    logger.debug "User #{@user.username} is logged in."
     return true
   end
   
@@ -159,16 +159,16 @@ helpers do
     return nil unless logged_in?
     return @user if @user != nil
     
-    logger.info "Trying to find user with username #{session[:app_username]}"
+    logger.debug "Trying to find user with username #{session[:app_username]}"
     @user = User.first(:username => session[:app_username])
-    logger.info "Returning user #{@user.username} (#{@user.first_name} #{@user.last_name})." if @user
+    logger.debug "Returning user #{@user.username} (#{@user.first_name} #{@user.last_name})." if @user
     logger.error "No User Found in Database." unless @user
     return @user
   end
 
   # clears all the facebook tokens out
   def clear_session
-    logger.info "Clearing session of Facebook tokens."
+    logger.debug "Clearing session of Facebook tokens."
     session[:fb_auth] = nil
     session[:fb_token] = nil
     session[:fb_error] = nil
@@ -180,7 +180,7 @@ end
 
 # web requests will come in here.
 get '/' do
-    logger.info "Direct Web Request detected.  Developing a response."
+    logger.debug "Direct Web Request detected.  Developing a response."
 
     homepage
     haml :index
@@ -188,7 +188,7 @@ end
 
 # facebook app requests will come in here.
 post '/' do
-    logger.info "Facebook AppRequest detected.  Developing a response."
+    logger.debug "Facebook AppRequest detected.  Developing a response."
 
     homepage
     haml :index
@@ -202,7 +202,7 @@ get '/auth/facebook/callback' do
   
   # write the data to DB if needs be.
   session[:app_username] = session[:fb_auth][:extra][:raw_info][:username]
-  logger.info "Stored Authenticated Facebook user #{session[:app_username]}'s username in the session."
+  logger.debug "Stored Authenticated Facebook user #{session[:app_username]}'s username in the session."
 
   record_user
 
