@@ -128,11 +128,10 @@ helpers do
     if !user.update_from_facebook?(session[:fb_auth])
       logger.info "Updating database with #{user.username}'s Facebook details failed."
       user = nil
-      session[:app_username] == nil
       session[:fb_error] = "Updating database with #{user.username}'s Facebook details failed."
       return
     end
-  
+
     logger.info "About to attempt to save #{user.username}'s data."
     user.save # will raise an exception if this fails
     logger.info "Saved user #{user.username} (#{user.first_name} #{user.last_name}) to our database."
