@@ -18,14 +18,14 @@ configure do
   class User
     include DataMapper::Resource
     property :id, Serial
-    property :name, String, :length => 1..50
-    property :sex, String, :length => 1..6
-    property :first_name, String, :length => 1..20
-    property :last_name, String, :length => 1..20
-    property :username, String, :length => 1..20, :unique => true
-    property :email, String, :length => 1..50
+    property :name, String, :length => 1..75
+    property :sex, String, :length => 1..7
+    property :first_name, String, :length => 1..25
+    property :last_name, String, :length => 1..25
+    property :username, String, :length => 1..25, :unique => true
+    property :email, String, :length => 1..75
     property :authentication_token, String, :length => 1..255
-    property :remote_id, String, :length => 1..50
+    property :remote_id, String, :length => 1..255
     property :profile_picture_url, String, :length => 1..255
   
     def update_from_facebook?(fb_auth)
@@ -82,7 +82,7 @@ configure do
 
   DataMapper::Logger.new($stdout, :debug)
   DataMapper.setup(:default, (ENV['DATABASE_URL'] || "sqlite3:///#{Dir.pwd}/db/development.sqlite3"))
-  DataMapper::Model.raise_on_save_failure = true  # while debugging.
+  User.raise_on_save_failure = true  # while debugging.
   DataMapper.finalize
   DataMapper.auto_upgrade!
 end
