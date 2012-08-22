@@ -101,8 +101,9 @@ before do
     return
   end
 
+  logger.info "About to attempt to save #{user.username}'s data."
   if !user.save
-    logger.info "Could not #{user.username} (#{user.first_name} #{user.last_name}) to our database."
+    logger.info "Could not add #{user.username} (#{user.first_name} #{user.last_name}) to our database."
     session[:app_username] = nil
     session[:fb_error] = "Internal Error: Could not #{user.username} (#{user.first_name} #{user.last_name}) to our database."
     return
