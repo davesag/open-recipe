@@ -78,6 +78,7 @@ class OpenRecipeApp < Sinatra::Application
 		# generate a new oauth object with your app data and your callback url
 		session['oauth'] = Facebook::OAuth.new(APP_ID, APP_CODE, CALLBACK_URL)
 		logger.debug "Set session['oauth'] : #{session['oauth'].inspect}"
+    logger.debug "Session now looks like: #{session.inspect}"
 		# redirect to facebook to get your code
 		redirect session['oauth'].url_for_oauth_code()
 	end
