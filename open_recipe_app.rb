@@ -11,7 +11,7 @@ APP_CODE = 'b8c359ffe13e3ed7e90670e4bb5ec5bd' # the app's secret code
 
 # testing at http://ppp167-251-9.static.internode.on.net:5000/
 # production tests at http://open-recipe.herokuapp.com
-SITE_URL = 'http://open-recipe.herokuapp.com/' # your app site url
+SITE_URL = 'http://ppp167-251-9.static.internode.on.net:5000/' # your app site url
 
 # don't change this without changing the callback route below.
 CALLBACK_URL = SITE_URL + 'callback'
@@ -113,5 +113,21 @@ class OpenRecipeApp < Sinatra::Application
 		end
 		redirect '/'
 	end
+
+  get '/privacy' do
+    haml :privacy
+  end
+
+  get '/terms' do
+    haml :terms
+  end
+
+  get '/support' do
+    haml :support
+  end
+
+  get '/about' do
+    haml :about
+  end
 
 end
