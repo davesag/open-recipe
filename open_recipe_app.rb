@@ -27,7 +27,7 @@ class OpenRecipeApp < Sinatra::Application
   configure do
     set :protection, :except => [:remote_token, :frame_options]
     set :haml, {:format => :html5}
-  
+    set :session_secret, ENV['SESSION_SECRET'] ||= 'super secret'
   end
 
   helpers do
