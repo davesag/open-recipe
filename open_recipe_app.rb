@@ -62,7 +62,7 @@ class OpenRecipeApp < Sinatra::Application
 
   before do
     logger.level = Logger::DEBUG
-    logger.debug "handling request for #{request.env[:remote_host]}"
+    logger.debug "handling request for #{request.env['REMOTE_HOST']}"
   end
 
 	post '/' do
