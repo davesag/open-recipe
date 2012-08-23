@@ -3,9 +3,9 @@ source "https://rubygems.org"
 
 gem 'sinatra'
 gem 'haml'
-#gem 'omniauth-facebook', '1.4.0'  # see http://stackoverflow.com/questions/11597130/omniauth-facebook-keeps-reporting-invalid-credentials
 gem 'koala'
 gem 'data_mapper'
+gem "rake"
 
 group :development do
 	gem 'sqlite3'

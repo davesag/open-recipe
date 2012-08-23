@@ -21,13 +21,56 @@ class OpenRecipeApp < Sinatra::Application
 	include Koala
 
 	set :root, APP_ROOT
+  set :name, 'Open Recipe'
+  set :short_name, 'open-recipe'
+  set :owner, 'Amy and Dave'
+  set :owner_website, 'http://open-recipe.heroku.com'
+  set :notification_email, 'davesag@gmail.com'
+  set :no_reply_email, 'davesag+no_reply@gmail.com'
+  set :no_reply_identity, 'OR Bot'
+  set :author, 'Dave Sag'
+  set :author_email, 'davesag@gmail.com'
+  set :description, 'Open Recipe is a Facebook app for sharing and discovering recipes with your friends.'
+  set :keywords, 'recipe, food, eating, drinking, cocktails, meals, restuarants'
+  set :root, File.dirname(__FILE__)
+  set :models, Proc.new { root && File.join(root, 'models') }
+  set :haml, { :format => :html5 }
 
 	enable :sessions, :logging, :show_exceptions
+
+  @graph = nil               # the facebook graph is reloaded on each request in the before method.
+  @active_user = nil         # the active user is reloaded on each request in the before method.
+
+  class << self
+    def load_models
+      if !@models_are_loaded
+        raise "No models folder found at #{models}" unless File.directory? models
+        Dir.glob("#{models}/**.rb").sort.each { |m| require m }
+        @models_are_loaded = true
+      end
+    end
+  end
+
+  # TIMEZONES
+  # @todo: On Heroku you need to set the TZ environment variable. You won't want to keep using the Rails time zones
+  # but instead use the official abbreviations http://www.timeanddate.com/library/abbreviations/timezones
 
   configure do
     set :protection, :except => [:remote_token, :frame_options]
     set :haml, {:format => :html5}
     set :session_secret, ENV['SESSION_SECRET'] ||= 'super secret'
+    mime_type :'x-icon', 'image/x-icon'
+
+    @models_are_loaded = false
+    load_models
+
+    DataMapper::Logger.new($stdout, :debug)
+    DataMapper.setup(:default, (ENV['DATABASE_URL'] || "sqlite3:///#{Dir.pwd}/db/development.sqlite3"))
+    User.raise_on_save_failure = true  # while debugging.
+    DataMapper.finalize
+    DataMapper.auto_upgrade!
+
+    puts "Open Recipe is running."
   end
 
   helpers do
@@ -51,13 +94,21 @@ class OpenRecipeApp < Sinatra::Application
     end
 
     def active_user
-      return unless logged_in?
-      
-      graph = Koala::Facebook::API.new(session['access_token'])
-      me = graph.get_object('me')
-      logger.debug me.inspect
-      return me['name']
+      return nil unless logged_in?
+      load_active_user
+      return @active_user
     end
+  end
+
+  def load_active_user
+    return unless @active_user == nil
+    return unless logged_in?
+    
+    @graph = Koala::Facebook::API.new(session['access_token']) if @graph == nil
+    me = @graph.get_object('me')
+    @active_user = User.first_or_create(:username => me['username'], :remote_id => me['id'].to_i)
+    @active_user.update_from_facebook me
+    @active_user.save
   end
 
   before do
@@ -67,6 +118,8 @@ class OpenRecipeApp < Sinatra::Application
     logger.debug "Handling request from host #{request.env['REMOTE_HOST']}"
     logger.debug "Session ID: #{session['session_id']}"
     logger.debug "---------------------------------------------------------"
+
+    load_active_user
   end
 
   after do
@@ -100,6 +153,8 @@ class OpenRecipeApp < Sinatra::Application
 	  logger.debug "Logout from session #{session['session_id']}"
 		session['oauth'] = nil
 		session['access_token'] = nil
+		@active_user = nil
+		@graph = nil
 		redirect '/'
 	end
 
@@ -110,6 +165,7 @@ class OpenRecipeApp < Sinatra::Application
 		  logger.error "Could not find oauth key in session #{session['session_id']}"
     else
       session['access_token'] = session['oauth'].get_access_token(params[:code])
+      load_active_user
 		end
 		redirect '/'
 	end
