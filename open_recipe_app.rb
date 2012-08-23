@@ -30,13 +30,12 @@ class OpenRecipeApp < Sinatra::Application
   helpers do
   
     # this is where the magic happens. Prepare local page data for the Open Recipe's homepage.
-    # do some stuff with facebook here
-    # for example:
-    # @graph = Koala::Facebook::GraphAPI.new(session["access_token"])
+    # Could do some stuff with facebook here, for example:
+    # graph = Koala::Facebook::API.new(session['access_token'])
     # publish to your wall (if you have the permissions)
-    # @graph.put_wall_post("I'm posting from my new cool app!")
+    # graph.put_wall_post("I'm posting from my new cool app!")
     # or publish to someone else (if you have the permissions too ;) )
-    # @graph.put_wall_post("Checkout my new cool app!", {}, "someoneelse's id")
+    # graph.put_wall_post("Checkout my new cool app!", {}, "someoneelse's id")
     def homepage
       @recipes = []
       @recipes << {:title => 'Delicious Duck in Orange Sauce', :url => 'http://about.me/davesag'}
@@ -88,7 +87,11 @@ class OpenRecipeApp < Sinatra::Application
 	#method to handle the redirect from facebook back to you
 	get '/callback' do
 		#get the access token from facebook with your code
-		session['access_token'] = session['oauth'].get_access_token(params[:code])
+		if session['oauth'] == nil
+		  logger.error "Could not find oauth key in session. Session keys are: #{session.keys.inspect}"
+    else
+      session['access_token'] = session['oauth'].get_access_token(params[:code])
+		end
 		redirect '/'
 	end
 
