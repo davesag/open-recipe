@@ -13,6 +13,9 @@ APP_CODE = 'b8c359ffe13e3ed7e90670e4bb5ec5bd' # the app's secret code
 # production tests at http://open-recipe.herokuapp.com
 SITE_URL = 'http://open-recipe.herokuapp.com/' # your app site url
 
+# don't change this without changing the callback route below.
+CALLBACK_URL = SITE_URL + 'callback'
+
 class OpenRecipeApp < Sinatra::Application
 
 	include Koala
@@ -63,17 +66,27 @@ class OpenRecipeApp < Sinatra::Application
 
 	post '/' do
     homepage
-    haml :index
+#    haml :index
+
+    if logged_in?
+      return "Logged in. <a href='logout'>Logout</a>"
+    end
+    return "Logged out. <a href='login'>Login</a>"
 	end
 
 	get '/' do
     homepage
-    haml :index
+#    haml :index
+
+    if logged_in?
+      return "Logged in. <a href='logout'>Logout</a>"
+    end
+    return "Logged out. <a href='login'>Login</a>"
 	end
 
 	get '/login' do
 		# generate a new oauth object with your app data and your callback url
-		session['oauth'] = Facebook::OAuth.new(APP_ID, APP_CODE, SITE_URL + 'callback')
+		session['oauth'] = Facebook::OAuth.new(APP_ID, APP_CODE, CALLBACK_URL)
 		logger.debug "Set session['oauth'] : #{session['oauth'].inspect}"
 		# redirect to facebook to get your code
 		redirect session['oauth'].url_for_oauth_code()
