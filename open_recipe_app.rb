@@ -66,22 +66,12 @@ class OpenRecipeApp < Sinatra::Application
 
 	post '/' do
     homepage
-#    haml :index
-
-    if logged_in?
-      return "Logged in. <a href='logout'>Logout</a>"
-    end
-    return "Logged out. <a href='login'>Login</a>"
+    haml :index
 	end
 
 	get '/' do
     homepage
-#    haml :index
-
-    if logged_in?
-      return "Logged in. <a href='logout'>Logout</a>"
-    end
-    return "Logged out. <a href='login'>Login</a>"
+    haml :index
 	end
 
 	get '/login' do
@@ -103,7 +93,7 @@ class OpenRecipeApp < Sinatra::Application
 	get '/callback' do
 		#get the access token from facebook with your code
 		if session['oauth'] == nil
-		  logger.error "Could not find oauth key in session. Session keys are: #{session.keys.inspect}"
+		  logger.error "Could not find oauth key in session. Session looks like: #{session.inspect}"
     else
       session['access_token'] = session['oauth'].get_access_token(params[:code])
 		end
