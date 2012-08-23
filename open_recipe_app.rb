@@ -72,7 +72,7 @@ class OpenRecipeApp < Sinatra::Application
   after do
     logger.debug "---------------------------------------------------------"
     logger.debug "Session ID: #{session['session_id']}"
-    logger.debug "Request from host #{request.env['REMOTE_HOST']} complete"
+    logger.debug "Completed request from host #{request.env['REMOTE_HOST']}"
     logger.debug "---------------------------------------------------------"
     logger.debug "---------------------------------------------------------"
   end
