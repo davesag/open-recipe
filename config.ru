@@ -1,6 +1,4 @@
-require 'openrecipe'
-require 'rack/protection'
+require './open_recipe_app'
 
-# use Rack::Protection, :except => [:remote_token, :frame_options]
-set :protection, :except => [:remote_token, :frame_options]
-run Sinatra::Application
+run OpenRecipeApp
+

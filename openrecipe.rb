@@ -67,7 +67,7 @@ end
 
 # web requests will come in here.
 get '/' do
-    logger.debug "Direct Web Request detected.  Developing a response."
+    logger.debug "Direct Web Request detected. Generating a response."
 
     homepage
     haml :index
@@ -75,7 +75,7 @@ end
 
 # facebook app requests will come in here.
 post '/' do
-    logger.debug "Facebook AppRequest detected.  Developing a response."
+    logger.debug "Facebook AppRequest detected. Generating a response."
 
     homepage
     haml :index
