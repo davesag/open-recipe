@@ -62,8 +62,19 @@ class OpenRecipeApp < Sinatra::Application
 
   before do
     logger.level = Logger::DEBUG
-    logger.debug "handling request for #{request.env['REMOTE_HOST']}"
-    logger.debug "Session id: #{session['session_id']}"
+    logger.debug "---------------------------------------------------------"
+    logger.debug "---------------------------------------------------------"
+    logger.debug "Handling request from host #{request.env['REMOTE_HOST']}"
+    logger.debug "Session ID: #{session['session_id']}"
+    logger.debug "---------------------------------------------------------"
+  end
+
+  after do
+    logger.debug "---------------------------------------------------------"
+    logger.debug "Session ID: #{session['session_id']}"
+    logger.debug "Request from host #{request.env['REMOTE_HOST']} complete"
+    logger.debug "---------------------------------------------------------"
+    logger.debug "---------------------------------------------------------"
   end
 
 	post '/' do
@@ -86,7 +97,7 @@ class OpenRecipeApp < Sinatra::Application
 	end
 
 	get '/logout' do
-	  logger.debug "Logout."
+	  logger.debug "Logout from session #{session['session_id']}"
 		session['oauth'] = nil
 		session['access_token'] = nil
 		redirect '/'
@@ -96,7 +107,7 @@ class OpenRecipeApp < Sinatra::Application
 	get '/callback' do
 		#get the access token from facebook with your code
 		if session['oauth'] == nil
-		  logger.error "Could not find oauth key in session. Session looks like: #{session.inspect}"
+		  logger.error "Could not find oauth key in session #{session['session_id']}"
     else
       session['access_token'] = session['oauth'].get_access_token(params[:code])
 		end
