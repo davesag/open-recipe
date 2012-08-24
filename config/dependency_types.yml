@@ -1,0 +1,9 @@
+- requires:
+    is_symmetric: false
+    forward_text: needs
+    reverse_text: is needed by
+
+- follows:
+    is_symmetric: false
+    forward_text: follows
+    reverse_text: is followed by
