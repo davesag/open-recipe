@@ -1,0 +1,181 @@
+# tags you specify here will be added to the startup collection of tags.
+- fishandchips:
+    name: Fish and Chips
+    meal_type: food
+    description: A piece of fish, often battered, grilled or fried and served with hot cooked slices of potato.
+    tags:
+      - batter
+      - comfort
+      - easy
+      - English
+      - fish
+      - flour
+      - grill
+      - potatoes
+      - traditional
+
+- sausageandmash:
+    name: Sausage and Mash
+    meal_type: food
+    description: Sausages, gravy, and mashed potatoes. What's not to like?
+    tags:
+      - comfort
+      - easy
+      - English
+      - pan fry
+      - potatoes
+      - sausages
+      - traditional
+
+- blackforestcake:
+    name: Blackforest Cake
+    meal_type: food
+    description: A delicious traditional Bavarian cherry torte.
+    tags:
+      - cake
+      - cherries
+      - chocolate
+      - comfort
+      - complex
+      - cream
+      - dessert
+      - German
+      - torte
+
+- englishbreakfast:
+    name: A full English breakfast
+    meal_type: food
+    description: Bacon, sausgaes, eggs, beans, mushrooms, black-pudding, and toast.
+    tags:
+      - bacon
+      - black-pudding
+      - breakfast
+      - brunch
+      - comfort
+      - easy
+      - English
+      - mushrooms
+      - sausage
+      - traditional
+
+- potoftea:
+    name: A pot of fresh tea
+    meal_type: drink
+    description: Yes the milk goes in first if you make a pot of tea.
+    tags:
+      - after-dinner
+      - breakfast
+      - comfort
+      - easy
+      - English
+      - lunch
+      - milk
+      - snack
+      - tea
+      - traditional
+
+- tequilasunrise:
+    name: Tequila Sunrise
+    meal_type: drink
+    description: Colourful mix of tequila, grandine and orange juice.
+    tags:
+      - cocktail
+      - easy
+      - Mexico
+      - traditional
+      - tropical
+
+- steaksandwich:
+    name: Steak Sandwich
+    meal_type: food
+    description: So many ways to put a bit of meat between two bits of bread.
+    tags:
+      - easy
+      - lunch
+      - pan fry
+      - red meat
+      - sandwich
+      - traditional
+
+- burger:
+    name: Burger
+    meal_type: food
+    description: Ground up meat between buns; what could possibly go wrong?
+    tags:
+      - burger
+      - easy
+      - lunch
+      - meat
+      - pan fry
+      - sandwich
+      - traditional
+
+- veggieburger:
+    name: Veggie Burger
+    meal_type: food
+    description: Ground up TVP between buns; what could possibly go wrong?
+    tags:
+      - burger
+      - easy
+      - lunch
+      - pan fry
+      - sandwich
+      - vegetarian
+
+- coqauvin:
+    name: Coq au Vin
+    meal_type: food
+    description: Take one rooster, chop up, emherbinate and cook slowly.
+    tags:
+      - chicken
+      - complex
+      - contains alcohol
+      - dinner
+      - French
+      - lunch
+      - oven
+      - rooster
+
+- legoflamb:
+    name: Roast Leg of Lamb
+    meal_type: food
+    description: Is there anything more delicious than a leg of lamb?
+    tags:
+      - dinner
+      - easy
+      - lamb
+      - lunch
+      - oven
+      - red meat
+
+- shepherdspie:
+    name: Shepherds Pie
+    meal_type: food
+    description: Minced been and mashed potatoe. Yum!
+    tags:
+      - beef
+      - dinner
+      - easy
+      - lunch
+      - mashed potato
+      - oven
+      - oven
+      - potato
+      - red meat
+
+- vealragu:
+    name: Veal Ragu
+    meal_type: food
+    description: The basis for all Bolognese souces is the humble Ragu!
+    tags:
+      - beef
+      - Bolognese
+      - dinner
+      - easy
+      - lunch
+      - pasta
+      - pasta
+      - red meat
+      - saucepan
+      - tomato
+      - veal
