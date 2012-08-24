@@ -31,4 +31,12 @@ dependency_types.each do |dt|
   puts "#{key} : #{dt[key].inspect}"
   dtype = DependencyType.first_or_create({:name => key}, dt[key])
 end
+
+# tags
+tags = YAML.load(File.read('./config/tags.yml'))
+
+tags.each do |t|
+  puts t
+  tag = Tag.first_or_create({:name => t})
+end
 puts 'Database Seeded.'
