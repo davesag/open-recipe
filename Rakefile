@@ -1,7 +1,10 @@
 require 'data_mapper'
+require 'rake/testtask'
 
 raise "No models folder found." unless File.directory? './models'
 Dir.glob("./models/**.rb").sort.each { |m| require m }
+
+task :default => :test
 
 namespace :db do
   desc "Reset the database."
@@ -26,5 +29,15 @@ namespace :db do
         puts "WARNING -- NO DATABASE SEED DATA FOUND."
       end
     end
+  end
+end
+
+desc "run the tests"
+task(:test => 'db:reset') do
+  puts "Tests running in environment '#{ENV['RACK_ENV']}'"
+  Rake::TestTask.new do |t|
+    t.libs << "./test"
+    t.test_files = FileList['./test/*_test.rb']
+    t.verbose = false
   end
 end

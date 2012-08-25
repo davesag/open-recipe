@@ -8,5 +8,6 @@ class Meal
   property :name, String, :length => 1..75, :unique => true
   property :description, Text
   belongs_to :meal_type, :required => true
-  has n, :tags, :through => Resource
+#   belongs_to :recipe
+#   has n, :tags, :through => Resource
 end

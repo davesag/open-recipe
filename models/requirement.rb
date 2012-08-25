@@ -8,4 +8,5 @@ class Requirement
   property :name, String, :length => 1..75
   property :summary, String, :length => 1..255
   has n, :dependencies
+#   has n, :recipes
 end

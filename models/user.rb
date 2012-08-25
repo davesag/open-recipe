@@ -5,16 +5,20 @@ require 'data_mapper'
 class User
   include DataMapper::Resource
   property :id, Serial
+  property :username, String, :length => 1..25, :unique => true
   property :name, String, :length => 1..75
   property :sex, String, :length => 1..7
   property :first_name, String, :length => 1..25
   property :last_name, String, :length => 1..25
-  property :username, String, :length => 1..25, :unique => true
   property :email, String, :length => 1..75
   property :remote_id, Integer, :unique => true
   property :profile_picture_url, String, :length => 1..255
   property :locale, String, :length => 1..6
 
+  has n, :tags
+  has n, :favourite_tags, :model => 'Tag', :through => Resource
+#  has n, :recipes, :through => Resource, :required => false
+  
   def update_from_facebook(me)
     n = me['name']
     if n == nil || n.empty?
