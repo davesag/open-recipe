@@ -73,8 +73,7 @@ class OpenRecipeApp < Sinatra::Application
     ActiveRecord::Base.logger = Logger.new(STDOUT)
     ActiveRecord::Base.logger.level = Logger::DEBUG      #not interested in database stuff right now.
 
-    dbconfig = YAML.load(File.read('./config/database.yml'))
-    ActiveRecord::Base.establish_connection dbconfig['test']
+    ActiveRecord::Base.establish_connection (ENV['DATABASE_URL'] || "sqlite3:///#{Dir.pwd}/db/test.sqlite3")
 
     @models_are_loaded = false
     load_models
@@ -98,8 +97,7 @@ class OpenRecipeApp < Sinatra::Application
     ActiveRecord::Base.logger = Logger.new(STDOUT)
     ActiveRecord::Base.logger.level = Logger::WARN      #not interested in database stuff right now.
 
-    dbconfig = YAML.load(File.read('./config/database.yml'))
-    ActiveRecord::Base.establish_connection dbconfig['development']
+    ActiveRecord::Base.establish_connection (ENV['DATABASE_URL'] || "sqlite3:///#{Dir.pwd}/db/development.sqlite3")
 
     @models_are_loaded = false
     load_models
@@ -123,8 +121,7 @@ class OpenRecipeApp < Sinatra::Application
     ActiveRecord::Base.logger = Logger.new(STDOUT)
     ActiveRecord::Base.logger.level = Logger::WARN      #not interested in database stuff right now.
 
-    dbconfig = YAML.load(File.read('./config/database.yml'))
-    ActiveRecord::Base.establish_connection dbconfig['production']
+    ActiveRecord::Base.establish_connection (ENV['DATABASE_URL'])
 
     @models_are_loaded = false
     load_models

@@ -9,12 +9,12 @@ class UserTest < HandlerTestBase
 
     ActiveRecord::Base.transaction do |t|
       # create a tag
-      lunch = Tag.create(:name => 'lunch')
+      lunch = Tag.create(:name => 'not quite lunch')
       assert lunch != nil, "Expected lunch to be non nil."
       lunch.reload
       
       # now check - is the Tag saved to the database?
-      loaded_lunch = Tag.where(:name => 'lunch').first
+      loaded_lunch = Tag.where(:name => 'not quite lunch').first
       assert loaded_lunch != nil, "Expected loaded_lunch to be non nil."
       assert loaded_lunch.id == lunch.id, "The loaded lunch (id=#{loaded_lunch.id}) was not the same as the created lunch (id=#{lunch.id}.)"
    

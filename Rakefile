@@ -11,16 +11,11 @@ task :default => :test
 namespace :db do
   desc "Set up the connection to the database"
   task :environment do
-    dbconfig = YAML.load(File.read('./config/database.yml'))
-
-    # in showpony.rb we configure for test, development and production only right now.
-    # and no matter what you sepcify, the tests are always run against the test database
-    # so be sure to seed all the databases before running this
     # %> RACK_ENV=test rake db:seed
     # %> RACK_ENV=development rake db:seed
     # %> RACK_ENV=production rake db:seed
     # Note also that, when pushed to Heroku, the databases will switch to PostGRES
-    ActiveRecord::Base.establish_connection dbconfig[ENV['RACK_ENV']||'development']
+    ActiveRecord::Base.establish_connection (ENV['DATABASE_URL'] || "sqlite3:///#{Dir.pwd}/db/#{ENV['RACK_ENV'] || 'development'}.sqlite3")
     Time.zone = 'UTC'
     ActiveRecord::Base.time_zone_aware_attributes = true
     ActiveRecord::Base.default_timezone = :utc
