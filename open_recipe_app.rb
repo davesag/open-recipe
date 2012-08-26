@@ -1,9 +1,11 @@
 APP_ROOT = File.dirname(__FILE__)
 
-require 'sinatra'
+require 'sinatra/base'
 require 'haml'
 require 'koala'
 require 'logger'
+require 'active_record'
+require 'active_support/all'  # added for Time.zone support below
 
 # register your app at facebook to get those infos
 APP_ID = 435425809841072 # the app's id
@@ -55,23 +57,81 @@ class OpenRecipeApp < Sinatra::Application
   # @todo: On Heroku you need to set the TZ environment variable. You won't want to keep using the Rails time zones
   # but instead use the official abbreviations http://www.timeanddate.com/library/abbreviations/timezones
 
-  configure do
+  configure :test do
+    set :environment, :test
     set :protection, :except => [:remote_token, :frame_options]
     set :haml, {:format => :html5}
     set :session_secret, ENV['SESSION_SECRET'] ||= 'super secret'
     mime_type :'x-icon', 'image/x-icon'
 
+    enable :logging
+
+    Time.zone = "UTC"
+    ActiveRecord::Base.time_zone_aware_attributes = true
+    ActiveRecord::Base.default_timezone = :utc
+
+    ActiveRecord::Base.logger = Logger.new(STDOUT)
+    ActiveRecord::Base.logger.level = Logger::DEBUG      #not interested in database stuff right now.
+
+    dbconfig = YAML.load(File.read('./config/database.yml'))
+    ActiveRecord::Base.establish_connection dbconfig['test']
+
     @models_are_loaded = false
     load_models
 
-    DataMapper::Logger.new($stdout, :debug)
-    DataMapper.setup(:default, (ENV['DATABASE_URL'] || "sqlite3:///#{Dir.pwd}/db/development.sqlite3"))
-    User.raise_on_save_failure = true  # while debugging.
-    DataMapper.finalize
-    DataMapper.auto_upgrade!
+    puts "Open Recipe is running in TEST MODE."
+  end
+
+  configure :development do
+    set :environment, :development
+    set :protection, :except => [:remote_token, :frame_options]
+    set :haml, {:format => :html5}
+    set :session_secret, ENV['SESSION_SECRET'] ||= 'super secret'
+    mime_type :'x-icon', 'image/x-icon'
+
+    enable :logging
+
+    Time.zone = "UTC"
+    ActiveRecord::Base.time_zone_aware_attributes = true
+    ActiveRecord::Base.default_timezone = :utc
+
+    ActiveRecord::Base.logger = Logger.new(STDOUT)
+    ActiveRecord::Base.logger.level = Logger::WARN      #not interested in database stuff right now.
+
+    dbconfig = YAML.load(File.read('./config/database.yml'))
+    ActiveRecord::Base.establish_connection dbconfig['development']
+
+    @models_are_loaded = false
+    load_models
 
     puts "Open Recipe is running."
   end
+
+  configure :production do
+    set :environment, :production
+    set :protection, :except => [:remote_token, :frame_options]
+    set :haml, {:format => :html5}
+    set :session_secret, ENV['SESSION_SECRET'] ||= 'seriously super secret'
+    mime_type :'x-icon', 'image/x-icon'
+
+    enable :logging
+
+    Time.zone = "UTC"
+    ActiveRecord::Base.time_zone_aware_attributes = true
+    ActiveRecord::Base.default_timezone = :utc
+
+    ActiveRecord::Base.logger = Logger.new(STDOUT)
+    ActiveRecord::Base.logger.level = Logger::WARN      #not interested in database stuff right now.
+
+    dbconfig = YAML.load(File.read('./config/database.yml'))
+    ActiveRecord::Base.establish_connection dbconfig['production']
+
+    @models_are_loaded = false
+    load_models
+
+    puts "Open Recipe is running."
+  end
+
 
   helpers do
   

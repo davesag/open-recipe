@@ -1,23 +1,22 @@
-# User Model
 # Populate this model with data from Facebook.
-require 'data_mapper'
 
-class User
-  include DataMapper::Resource
-  property :id, Serial
-  property :username, String, :length => 1..25, :unique => true
-  property :name, String, :length => 1..75
-  property :sex, String, :length => 1..7
-  property :first_name, String, :length => 1..25
-  property :last_name, String, :length => 1..25
-  property :email, String, :length => 1..75
-  property :remote_id, Integer, :unique => true
-  property :profile_picture_url, String, :length => 1..255
-  property :locale, String, :length => 1..6
+require 'active_record'
 
-  has n, :tags
-  has n, :favourite_tags, :model => 'Tag', :through => Resource
-#  has n, :recipes, :through => Resource, :required => false
+class User < ActiveRecord::Base
+
+  validates_uniqueness_of :username
+  # :name, String, :length => 1..75
+  # :sex, String, :length => 1..7
+  # :first_name, String, :length => 1..25
+  # :last_name, String, :length => 1..25
+  # :email, String, :length => 1..75
+  # :remote_id, Integer, :unique => true
+  # :profile_picture_url, String, :length => 1..255
+  # :locale, String, :length => 1..6
+
+  has_and_belongs_to_many :favourite_tags, :class_name => 'Tag'
+  has_many :recipes
+  has_many :favourite_recipes
   
   def update_from_facebook(me)
     n = me['name']

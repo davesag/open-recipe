@@ -1,13 +1,13 @@
-# Unit Type Model
-# Populate this model via seeding at startup, and then maintain via an admin interface.
-require 'data_mapper'
+# Populate this model via seeding at startup, and then maintain via user facing web-ui.
 
-class Meal
-  include DataMapper::Resource
-  property :id, Serial
-  property :name, String, :length => 1..75, :unique => true
-  property :description, Text
-  belongs_to :meal_type, :required => true
-#   belongs_to :recipe
-#   has n, :tags, :through => Resource
+require 'active_record'
+
+class Meal < ActiveRecord::Base
+
+  validates_uniqueness_of :name
+  # :description, Text
+  belongs_to :meal_type
+  has_many :recipes
+  has_and_belongs_to_many :tags
+
 end

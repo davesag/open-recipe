@@ -1,11 +1,9 @@
-# Unit Type Model
-# Populate this model via seeding at startup, and then maintain via an admin interface.
-require 'data_mapper'
+# Populate this model via seeding at startup.
+require 'active_record'
 
-class UnitType
-  include DataMapper::Resource
-  property :id, Serial
-  property :name, String, :length => 1..75
+class UnitType < ActiveRecord::Base
 
-  has n, :allowed_units
+  validates_uniqueness_of :name
+  has_many :allowed_units
+
 end

@@ -1,18 +1,20 @@
-# Unit Type Model
-# Populate this model via seeding at startup, and then maintain via an admin interface.
-require 'data_mapper'
+# Populate this model via user facing web-ui.
+require 'active_record'
 
-class Recipe
-  include DataMapper::Resource
-  property :id, Serial
-  property :name, String, :length => 1..255
-  property :cooking_time, Integer
-  property :description, Text
-  property :method, Text
-#   has 1, :user, :via => :owner
-#   has 1, :meal
-#   has n, :tags, :through => Resource
-#   has n, :recipes, :through => Resource
-#   has n, :requirements, :through => Resource
-#   has n, :ingredients, :through => Resource
+class Recipe < ActiveRecord::Base
+
+  validates_uniqueness_of :name
+  # :cooking_time, Integer
+  # :preparation_time, Integer
+  # :description, Text
+  # :method, Text
+  # :requirements, Text
+
+  has_and_belongs_to_many :ingredients  # recipes to make this ingredient.
+  has_and_belongs_to_many :active_ingredients  # ingredients to make this recipe with quantities
+  has_and_belongs_to_many :tags
+  belongs_to :owner, :class_name => 'User'
+  belongs_to :meal
+  has_many :favourite_recipes
+  
 end

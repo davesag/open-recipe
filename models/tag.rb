@@ -1,13 +1,13 @@
-# Tag Model
-# Populate this model via seeding at startup, and then maintain via an admin interface.
-require 'data_mapper'
+# Populate this model via seeding at startup, and then maintain via user-facing web-ui.
 
-class Tag
-  include DataMapper::Resource
-  property :id, Serial
-  property :name, String, :length => 1..75, :unique => true
-  has n,   :users, :through => Resource
-#   has n, :meals, :through => Resource
-#   has n, :ingredients, :through => Resource
-#   has n, :recipes, :through => Resource
+require 'active_record'
+
+class Tag < ActiveRecord::Base
+
+  validates_uniqueness_of :name
+
+  has_and_belongs_to_many :users #users who have this as a favourite tag.
+  has_and_belongs_to_many :meals # meals tagged with this tag.
+  has_and_belongs_to_many :ingredients # ingredients tagged with this tag.
+  has_and_belongs_to_many :recipes # recipes tagged with this tag.
 end

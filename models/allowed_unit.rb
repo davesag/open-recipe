@@ -1,10 +1,10 @@
-# Unit Type Model
-# Populate this model via seeding at startup, and then maintain via an admin interface.
-require 'data_mapper'
+# Populate this model via seeding at startup.
 
-class AllowedUnit
-  include DataMapper::Resource
-  property :id, Serial
-  property :name, String, :length => 1..75
-  belongs_to :unit_type, :required => true
+require 'active_record'
+
+class AllowedUnit < ActiveRecord::Base
+
+  validates_uniqueness_of :name
+  belongs_to :unit_type
+  has_many :quantities
 end

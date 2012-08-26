@@ -1,43 +1,25 @@
-# load defaults for
-# * meal_types
-# * meals
-# * units
-# * unit_types
-# * dependency_types
-# * dependencies
-# * tags
-# * ingredients
+# Load basic defaults for data.
+# this seeds.rb file is only run if there is no environment specific seeds file to run.
 
 puts "Seeding Unit Types, and Units."
 unit_types = YAML.load(File.read('./config/units.yml'))
 
 unit_types.each do |unit_type|
   key = unit_type.keys.first
-  ut = UnitType.first_or_create(:name => key)
+  ut = UnitType.where(:name => key).first_or_create
   
   unit_type[key].each do |unit|
-    au = AllowedUnit.first_or_create({:name => unit.to_s}, {:unit_type => ut})
+    au = AllowedUnit.where(:name => unit.to_s).first_or_create(:unit_type => ut)
   end
 end
 puts "Units, and Unit Types seeded."
-
-puts "Seeding Dependency Types."
-dependency_types = YAML.load(File.read('./config/dependency_types.yml'))
-
-dependency_types.each do |dt|
-  key = dt.keys.first
-  dtype = DependencyType.first_or_create({:name => key}, dt[key])
-end
-puts "Dependency Types seeded."
-
-Tag.raise_on_save_failure = true
 
 puts "Seeding Tags."
 tags = YAML.load(File.read('./config/tags.yml'))
 
 tags.each do |t|
   puts "Tag: #{t}"
-  tag = Tag.first_or_create({:name => t})
+  tag = Tag.where(:name => t).first_or_create
 end
 puts "Tags seeded."
 
@@ -45,7 +27,9 @@ puts "Seeding Meal Types."
 meal_types = YAML.load(File.read('./config/meal_types.yml'))
 
 meal_types.each do |mt|
-  mtype = MealType.first_or_create({:name => mt})
+  puts "Meal Type name is #{mt}"
+  mtype = MealType.where(:name => mt).first_or_create
+  puts "Database Meal Type is #{mtype.name}"
 end
 puts "Meal Types seeded."
 
@@ -56,12 +40,14 @@ meals.each do |mhash|
   puts "short_name: #{short_name}"
   m = mhash[short_name]
   puts "m: #{m.inspect}"
-  meal = Meal.first_or_create({:name => m['name']},
-                              {:meal_type => MealType.first(:name => m['meal_type'])})
+  puts "m['name'] = #{m['name']}"
+  mt = MealType.where(:name => m['meal_type']).first
+  puts "mt = #{mt}"
+  meal = Meal.where(:name => m['name']).first_or_create(:meal_type => mt)
   # read in the tags
   tags = m['tags']
   tags.each do |t|
-    tag = Tag.first_or_create({:name => t})
+    tag = Tag.where(:name => t).first_or_create
     meal.tags << tag unless meal.tags.include? tag
   end
   meal.save
