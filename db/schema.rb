@@ -31,6 +31,18 @@ ActiveRecord::Schema.define(:version => 2012082600) do
     t.integer "rating"
   end
 
+  create_table "favourite_restaurants", :force => true do |t|
+    t.integer "restaurant_id"
+    t.integer "user_id"
+    t.integer "rating"
+  end
+
+  create_table "favourite_retailers", :force => true do |t|
+    t.integer "retailer_id"
+    t.integer "user_id"
+    t.integer "rating"
+  end
+
   create_table "ingredients", :force => true do |t|
     t.string  "name",        :null => false
     t.text    "description"
@@ -39,15 +51,42 @@ ActiveRecord::Schema.define(:version => 2012082600) do
 
   add_index "ingredients", ["name"], :name => "index_ingredients_on_name", :unique => true
 
+  create_table "ingredients_photos", :id => false, :force => true do |t|
+    t.integer "ingredient_id"
+    t.integer "photo_id"
+  end
+
   create_table "ingredients_recipes", :id => false, :force => true do |t|
     t.integer "ingredient_id"
     t.integer "recipe_id"
+  end
+
+  create_table "ingredients_retailers", :id => false, :force => true do |t|
+    t.integer "ingredient_id"
+    t.integer "retailer_id"
   end
 
   create_table "ingredients_tags", :id => false, :force => true do |t|
     t.integer "ingredient_id"
     t.integer "tag_id"
   end
+
+  create_table "location_types", :force => true do |t|
+    t.string  "name",                                 :null => false
+    t.integer "effective_gps_radius", :default => 10
+  end
+
+  add_index "location_types", ["name"], :name => "index_location_types_on_name", :unique => true
+
+  create_table "locations", :force => true do |t|
+    t.string  "name",                                                              :null => false
+    t.decimal "latitude",         :precision => 15, :scale => 10, :default => 0.0
+    t.decimal "longitude",        :precision => 15, :scale => 10, :default => 0.0
+    t.integer "remote_id"
+    t.integer "location_type_id"
+  end
+
+  add_index "locations", ["name"], :name => "index_locations_on_name"
 
   create_table "meal_types", :force => true do |t|
     t.string "name", :limit => 12, :null => false
@@ -63,10 +102,48 @@ ActiveRecord::Schema.define(:version => 2012082600) do
 
   add_index "meals", ["name"], :name => "index_meals_on_name", :unique => true
 
+  create_table "meals_restaurants", :id => false, :force => true do |t|
+    t.integer "restaurant_id"
+    t.integer "meal_id"
+  end
+
   create_table "meals_tags", :id => false, :force => true do |t|
     t.integer "meal_id"
     t.integer "tag_id"
   end
+
+  create_table "photos", :force => true do |t|
+    t.string  "name",          :null => false
+    t.string  "caption"
+    t.integer "owner_id"
+    t.string  "image_url",     :null => false
+    t.string  "thumbnail_url", :null => false
+    t.text    "description"
+    t.integer "remote_id"
+  end
+
+  create_table "photos_recipes", :id => false, :force => true do |t|
+    t.integer "recipe_id"
+    t.integer "photo_id"
+  end
+
+  create_table "photos_restaurants", :id => false, :force => true do |t|
+    t.integer "restaurant_id"
+    t.integer "photo_id"
+  end
+
+  create_table "photos_retailers", :id => false, :force => true do |t|
+    t.integer "retailer_id"
+    t.integer "photo_id"
+  end
+
+  create_table "preferences", :force => true do |t|
+    t.string  "name",    :null => false
+    t.string  "value"
+    t.integer "user_id"
+  end
+
+  add_index "preferences", ["name"], :name => "index_preferences_on_name"
 
   create_table "quantities", :force => true do |t|
     t.integer "amount"
@@ -86,9 +163,42 @@ ActiveRecord::Schema.define(:version => 2012082600) do
 
   add_index "recipes", ["name"], :name => "index_recipes_on_name", :unique => true
 
+  create_table "recipes_restaurants", :id => false, :force => true do |t|
+    t.integer "restaurant_id"
+    t.integer "recipe_id"
+  end
+
   create_table "recipes_tags", :id => false, :force => true do |t|
     t.integer "tag_id"
     t.integer "recipe_id"
+  end
+
+  create_table "restaurants", :force => true do |t|
+    t.string  "name",        :null => false
+    t.text    "description"
+    t.integer "location_id"
+    t.integer "remote_id"
+  end
+
+  add_index "restaurants", ["name"], :name => "index_restaurants_on_name"
+
+  create_table "restaurants_tags", :id => false, :force => true do |t|
+    t.integer "restaurant_id"
+    t.integer "tag_id"
+  end
+
+  create_table "retailers", :force => true do |t|
+    t.string  "name",        :null => false
+    t.text    "description"
+    t.integer "location_id"
+    t.integer "remote_id"
+  end
+
+  add_index "retailers", ["name"], :name => "index_retailers_on_name"
+
+  create_table "retailers_tags", :id => false, :force => true do |t|
+    t.integer "retailer_id"
+    t.integer "tag_id"
   end
 
   create_table "tags", :force => true do |t|
