@@ -163,9 +163,19 @@ class OpenRecipeApp < Sinatra::Application
     
     @graph = Koala::Facebook::API.new(session['access_token']) if @graph == nil
     me = @graph.get_object('me')
-    @active_user = User.first_or_create(:username => me['username'], :remote_id => me['id'].to_i)
+    @active_user = User.where(:username => me['username']).first_or_create(:remote_id => me['id'].to_i)
     @active_user.update_from_facebook me
     @active_user.save
+    
+    # get current location.
+    location = me['location']
+    logger.debug "User location is #{location['name'] || 'not specified'}"
+    if location != nil
+      location = @graph.get_object(location['id'])
+      logger.debug "User location details: #{location.inspect}"
+      category_name = location['category']
+      logger.debug "#{location['name']} has category #{category_name}."
+    end
   end
 
   before do
@@ -203,7 +213,9 @@ class OpenRecipeApp < Sinatra::Application
 		logger.debug "Set session['oauth'] : #{session['oauth'].class}"
     logger.debug "Session id: #{session['session_id']}"
 		# redirect to facebook to get your code
-		redirect session['oauth'].url_for_oauth_code()
+		redirect session['oauth'].url_for_oauth_code(
+		      :permissions => ["read_friendlists", "publish_stream","email","user_location",
+		      "user_likes", "user_checkins", "user_photos"])
 	end
 
 	get '/logout' do

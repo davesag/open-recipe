@@ -17,7 +17,11 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :favourite_tags, :class_name => 'Tag'
   has_many :recipes
   has_many :favourite_recipes
-  
+  has_many :favourite_restaurants
+  has_many :favourite_retailers
+  has_many :photos, :foreign_key => :owner_id
+  has_many :preferences
+
   def update_from_facebook(me)
     n = me['name']
     if n == nil || n.empty?

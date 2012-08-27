@@ -9,5 +9,6 @@ class Meal < ActiveRecord::Base
   belongs_to :meal_type
   has_many :recipes
   has_and_belongs_to_many :tags
+  has_and_belongs_to_many :restaurants # restaurants that serve this meal
 
 end

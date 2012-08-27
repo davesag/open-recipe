@@ -10,4 +10,6 @@ class Tag < ActiveRecord::Base
   has_and_belongs_to_many :meals # meals tagged with this tag.
   has_and_belongs_to_many :ingredients # ingredients tagged with this tag.
   has_and_belongs_to_many :recipes # recipes tagged with this tag.
+  has_and_belongs_to_many :restaurants # restaurants tagged with this tag.
+  has_and_belongs_to_many :retailers # retailers tagged with this tag.
 end
