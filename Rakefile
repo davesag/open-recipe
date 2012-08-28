@@ -2,7 +2,6 @@ require 'bundler/setup'
 require 'active_record'
 require 'active_support/all'  # added for Time.zone support below
 require 'rake/testtask'
-require 'simplecov'
 
 task :default => :test
 
@@ -63,6 +62,7 @@ end
 
 desc "run the unit tests"
 task(:test => 'db:environment') do
+  require 'simplecov'
   puts "Tests running in environment '#{ENV['RACK_ENV']}'"
   SimpleCov.start
   SimpleCov.command_name 'test:units'
