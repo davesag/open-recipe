@@ -24,6 +24,7 @@ class OpenRecipeApp < Sinatra::Application
 
 	set :root, APP_ROOT
   set :name, 'Open Recipe'
+  set :tagline, 'Food with Friends'
   set :short_name, 'open-recipe'
   set :owner, 'Amy and Dave'
   set :owner_website, 'http://open-recipe.heroku.com'
@@ -146,6 +147,32 @@ class OpenRecipeApp < Sinatra::Application
       @recipes << {:title => 'Fudge Soup', :url => 'http://www.ruby-lang.org/en/documentation/quickstart/'}
     end
 
+    def menu_item(title, href)
+      menu_item = {:title => title}
+      page_name = request.path_info.downcase
+      if page_name == href
+        menu_item[:selected] = true
+      else
+        menu_item[:href] = href
+      end
+      return menu_item
+    end
+
+    # returns an array of hashes of the following
+    # {:title => 'menu title', :href => '/something'}
+    # or the default {:title => 'menu title', :selected => true} implying selected is true and no link.
+    def navigation
+      menu = []
+      menu << menu_item('Dashboard', '/')
+      menu << menu_item('About', '/about')
+      menu << menu_item('Browse', '/browse') if logged_in?
+      menu << menu_item('Settings', '/settings') if logged_in?
+      menu << menu_item('FAQs', '/faqs')
+      menu << menu_item('Privacy', '/privacy')
+      menu << menu_item('Terms', '/terms')
+      return menu
+    end
+
     def logged_in?
       return session['access_token'] != nil
     end
@@ -253,6 +280,21 @@ class OpenRecipeApp < Sinatra::Application
 
   get '/about' do
     haml :about
+  end
+
+  get '/browse' do
+    redirect '/' unless logged_in?
+    haml :browse
+  end
+
+  get '/settings' do
+    redirect '/' unless logged_in?
+    haml :settings
+  end
+
+  get '/faqs' do
+    redirect '/' unless logged_in?
+    haml :faqs
   end
 
 end

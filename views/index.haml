@@ -1,32 +1,34 @@
--if logged_in?
-  %a{:href => 'logout'}
-    %img{:src => 'images/fb_logout_button.png'}
--else
-  %a{:href=>'login'}
+-if !logged_in?
+  %a{:href=>'login'}<
     %img{:src => 'images/fb_login_button.png'}
-%h3 #{logged_in? ? 'Hello ' + active_user.first_name + ', w' : 'W'}elcome to my list of delicious recipes.
-%table
-  %tr
-    %th Recipe
-    %th Facebook
-  -if @recipes == nil || @recipes.empty?
-    No recipes. Sorry.
-  -else
-    -for recipe in @recipes.each do
-      %tr
-        %td{:class=>'recipe'}
-          %a{:href=>"#{recipe[:url]}", :target=>'_blank'}
-            #{recipe[:title]}
-        %td
-          -if logged_in?
+  %h3 Welcome to Open Recipes.
+  %p You will need to log in via facebook and authorise us to access the data we need to operate this site for you.
+  %p
+    See our
+    %a{:href => '/privacy', :title => "Privacy Policy"}Privacy Policy
+    for more details.
+-else
+  %a{:href => 'logout'}<
+    %img{:src => 'images/fb_logout_button.png'}
+  %h3 Hello #{active_user.first_name}, welcome to Open Recipe.
+  %table
+    %tr
+      %th Recipe
+      %th Facebook
+    -if @recipes == nil || @recipes.empty?
+      No recipes. Sorry.
+    -else
+      -for recipe in @recipes.each do
+        %tr
+          %td{:class=>'recipe'}
+            %a{:href=>"#{recipe[:url]}", :target=>'_blank'}
+              #{recipe[:title]}
+          %td
             %iframe{:src => "http://www.facebook.com/plugins/like.php?href=#{recipe[:url]}&amp;layout=button_count&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=21",
                     :scrolling => "no",
                     :frameborder => "0",
                     :style => "border:none; overflow:hidden; width:450px; height:21px;",
                     :allowTransparency => "true"}
-          -else
-            Not Linked
--if logged_in?
   %hr
   %p{:class=>'like_site'} Do you like this site?
   %p
