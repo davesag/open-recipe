@@ -4,14 +4,15 @@ require 'active_record'
 class Recipe < ActiveRecord::Base
 
   validates_uniqueness_of :name
-  # :cooking_time, Integer
+  # :cooking_time, Integer # minutes.
   # :preparation_time, Integer
   # :description, Text
   # :method, Text
   # :requirements, Text
 
-  has_and_belongs_to_many :ingredients  # recipes to make this ingredient.
-  has_and_belongs_to_many :active_ingredients  # ingredients to make this recipe with quantities
+  has_and_belongs_to_many :ingredients  # ingredients made according to this recipe.
+  has_many :active_ingredients, :dependent => :destroy  # ingredients used to make this recipe with, 
+                                        # in addition to their quantities.
   has_and_belongs_to_many :tags # tags for this recipe.
   has_and_belongs_to_many :restaurants # restaurants that make this recipe.
   has_and_belongs_to_many :photos # photos of this recipe.

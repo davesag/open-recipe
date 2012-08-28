@@ -15,12 +15,12 @@ class User < ActiveRecord::Base
   # :locale, String, :length => 1..6
 
   has_and_belongs_to_many :favourite_tags, :class_name => 'Tag'
-  has_many :recipes
-  has_many :favourite_recipes
-  has_many :favourite_restaurants
-  has_many :favourite_retailers
-  has_many :photos, :foreign_key => :owner_id
-  has_many :preferences
+  has_many :recipes, :foreign_key => :owner_id, :dependent => :destroy
+  has_many :favourite_recipes, :dependent => :destroy
+  has_many :favourite_restaurants, :dependent => :destroy
+  has_many :favourite_retailers, :dependent => :destroy
+  has_many :photos, :foreign_key => :owner_id, :dependent => :destroy
+  has_many :preferences, :dependent => :destroy
 
   def update_from_facebook(me)
     n = me['name']
