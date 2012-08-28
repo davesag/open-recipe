@@ -7,7 +7,7 @@ require 'logger'
 require 'active_record'
 require 'active_support/all'  # added for Time.zone support below
 
-# register your app at facebook to get those infos
+# register your app at facebook to get these codes
 APP_ID = 435425809841072 # the app's id
 APP_CODE = 'b8c359ffe13e3ed7e90670e4bb5ec5bd' # the app's secret code
 

@@ -68,12 +68,12 @@ class AllowedUnitsDependenciesAndTypes < ActiveRecord::Migration
     end
 
     create_table :users do |t|
-      t.string   :username, :null => false, :limit => 25
-      t.string   :name, :limit => 25
+      t.string   :username, :limit => 50
+      t.string   :name, :limit => 75
       t.string   :sex, :limit => 7
-      t.string   :first_name, :limit => 25
-      t.string   :last_name, :limit => 25
-      t.string   :email, :limit => 75
+      t.string   :first_name, :limit => 50
+      t.string   :last_name, :limit => 50
+      t.string   :email, :limit => 125
       t.integer  :remote_id
       t.string   :profile_picture_url, :limit => 255
       t.string   :locale, :limit => 7
@@ -85,6 +85,7 @@ class AllowedUnitsDependenciesAndTypes < ActiveRecord::Migration
                                   # user has_and_belongs_to_many :favourite_tags, :class_name => 'Tag'
     end
 
+    add_index :users, :name, :unique => false
     add_index :users, :username, :unique => true
     add_index :users, :remote_id, :unique => true
 
@@ -159,6 +160,7 @@ class AllowedUnitsDependenciesAndTypes < ActiveRecord::Migration
     end
 
     add_index :locations, :name, :unique => false
+    add_index :locations, :remote_id, :unique => true
 
     create_table :location_types do |t|
       t.string :name, :null => false
@@ -179,6 +181,7 @@ class AllowedUnitsDependenciesAndTypes < ActiveRecord::Migration
     end
 
     add_index :restaurants, :name, :unique => false
+    add_index :restaurants, :remote_id, :unique => true
 
     create_table :meals_restaurants, :id => false do |t|
       t.integer :restaurant_id
@@ -214,6 +217,7 @@ class AllowedUnitsDependenciesAndTypes < ActiveRecord::Migration
     end
 
     add_index :retailers, :name, :unique => false
+    add_index :retailers, :remote_id, :unique => true
 
     create_table :favourite_retailers do |t|
       t.integer  :retailer_id   # favourite_retailer belongs_to :retailer
@@ -233,6 +237,7 @@ class AllowedUnitsDependenciesAndTypes < ActiveRecord::Migration
       t.text     :description
       t.integer  :remote_id
     end
+    add_index :photos, :remote_id, :unique => true
 
     create_table :ingredients_photos, :id => false do |t|
       t.integer :ingredient_id
