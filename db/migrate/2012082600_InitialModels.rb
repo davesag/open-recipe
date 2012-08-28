@@ -1,6 +1,6 @@
 #!usr/bin/ruby
 
-class AllowedUnitsDependenciesAndTypes < ActiveRecord::Migration
+class InitialModels < ActiveRecord::Migration
   def self.up
     create_table :allowed_units do |t|
       t.string  :name, :null => false, :limit => 25
