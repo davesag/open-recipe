@@ -1,6 +1,5 @@
 require 'koala'
-require 'test/unit'
-require 'rack/test'
+require 'test-unit'
 require './test/handler_test_base'
 
 class UserTest < HandlerTestBase

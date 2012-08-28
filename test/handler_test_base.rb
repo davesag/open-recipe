@@ -1,7 +1,7 @@
 #!usr/bin/ruby
 
 require './open_recipe_app'
-require 'test/unit'
+require 'test-unit'
 require 'rack/test'
 require 'date'
 
