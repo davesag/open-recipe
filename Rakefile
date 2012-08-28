@@ -2,9 +2,7 @@ require 'bundler/setup'
 require 'active_record'
 require 'active_support/all'  # added for Time.zone support below
 require 'rake/testtask'
-
-raise "No models folder found." unless File.directory? './models'
-Dir.glob("./models/**.rb").sort.each { |m| require m }
+require 'simplecov'
 
 task :default => :test
 
@@ -61,9 +59,14 @@ namespace :db do
   end
 end
 
-desc "run the tests"
+desc "run the unit tests"
 task(:test => 'db:environment') do
   puts "Tests running in environment '#{ENV['RACK_ENV']}'"
+  SimpleCov.start
+  SimpleCov.command_name 'test:units'
+  # load all models to save having to do it in the tests themselves.
+  raise "No models folder found." unless File.directory? './models'
+  Dir.glob("./models/**.rb").sort.each { |m| require m }
   Rake::TestTask.new do |t|
     t.libs << "test"
     t.test_files = FileList['./test/*_test.rb']

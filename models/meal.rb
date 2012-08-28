@@ -4,6 +4,7 @@ require 'active_record'
 
 class Meal < ActiveRecord::Base
 
+  validates_presence_of :name
   validates_uniqueness_of :name
   # :description, Text
   belongs_to :meal_type

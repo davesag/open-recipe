@@ -11,12 +11,14 @@ group :development do
 	gem 'sqlite3'
   gem 'rack-test'
 	gem 'ruby-debug19'
+  gem 'simplecov'
 end
 
 group :test do
 	gem 'sqlite3'
   gem 'rack-test'
 	gem 'ruby-debug19'
+  gem 'simplecov'
 end
 
 group :production do

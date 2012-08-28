@@ -4,7 +4,7 @@ require 'active_record'
 
 class Retailer < ActiveRecord::Base
 
-  # :name, String
+  validates_presence_of :name
   # :description, Text
   # :remote_id, Integer
   belongs_to :location

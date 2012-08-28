@@ -3,6 +3,7 @@ require 'active_record'
 
 class Recipe < ActiveRecord::Base
 
+  validates_presence_of :name
   validates_uniqueness_of :name
   # :cooking_time, Integer # minutes.
   # :preparation_time, Integer

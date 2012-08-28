@@ -4,6 +4,7 @@ require 'active_record'
 
 class User < ActiveRecord::Base
 
+  validates_presence_of :username
   validates_uniqueness_of :username
   # :name, String, :length => 1..75
   # :sex, String, :length => 1..7

@@ -4,6 +4,7 @@ require 'active_record'
 
 class Tag < ActiveRecord::Base
 
+  validates_presence_of :name
   validates_uniqueness_of :name
 
   has_and_belongs_to_many :users #users who have this as a favourite tag.

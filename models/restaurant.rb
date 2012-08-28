@@ -4,7 +4,7 @@ require 'active_record'
 
 class Restaurant < ActiveRecord::Base
 
-  # :name, String
+  validates_presence_of :name
   # :description, Text
   has_and_belongs_to_many :tags
   has_and_belongs_to_many :meals

@@ -3,7 +3,7 @@ require 'active_record'
 
 class Location < ActiveRecord::Base
 
-  # :name, String 
+  validates_presence_of :name
   # :latitude, Decimal
   # :longitude, Decimal
   belongs_to :location_type
