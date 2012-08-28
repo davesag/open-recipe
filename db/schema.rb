@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(:version => 2012082600) do
   end
 
   add_index "locations", ["name"], :name => "index_locations_on_name"
+  add_index "locations", ["remote_id"], :name => "index_locations_on_remote_id", :unique => true
 
   create_table "meal_types", :force => true do |t|
     t.string "name", :limit => 12, :null => false
@@ -121,6 +122,8 @@ ActiveRecord::Schema.define(:version => 2012082600) do
     t.text    "description"
     t.integer "remote_id"
   end
+
+  add_index "photos", ["remote_id"], :name => "index_photos_on_remote_id", :unique => true
 
   create_table "photos_recipes", :id => false, :force => true do |t|
     t.integer "recipe_id"
@@ -181,6 +184,7 @@ ActiveRecord::Schema.define(:version => 2012082600) do
   end
 
   add_index "restaurants", ["name"], :name => "index_restaurants_on_name"
+  add_index "restaurants", ["remote_id"], :name => "index_restaurants_on_remote_id", :unique => true
 
   create_table "restaurants_tags", :id => false, :force => true do |t|
     t.integer "restaurant_id"
@@ -195,6 +199,7 @@ ActiveRecord::Schema.define(:version => 2012082600) do
   end
 
   add_index "retailers", ["name"], :name => "index_retailers_on_name"
+  add_index "retailers", ["remote_id"], :name => "index_retailers_on_remote_id", :unique => true
 
   create_table "retailers_tags", :id => false, :force => true do |t|
     t.integer "retailer_id"
@@ -219,17 +224,18 @@ ActiveRecord::Schema.define(:version => 2012082600) do
   add_index "unit_types", ["name"], :name => "index_unit_types_on_name", :unique => true
 
   create_table "users", :force => true do |t|
-    t.string  "username",            :limit => 25, :null => false
-    t.string  "name",                :limit => 25
+    t.string  "username",            :limit => 50
+    t.string  "name",                :limit => 75
     t.string  "sex",                 :limit => 7
-    t.string  "first_name",          :limit => 25
-    t.string  "last_name",           :limit => 25
-    t.string  "email",               :limit => 75
+    t.string  "first_name",          :limit => 50
+    t.string  "last_name",           :limit => 50
+    t.string  "email",               :limit => 125
     t.integer "remote_id"
     t.string  "profile_picture_url"
     t.string  "locale",              :limit => 7
   end
 
+  add_index "users", ["name"], :name => "index_users_on_name"
   add_index "users", ["remote_id"], :name => "index_users_on_remote_id", :unique => true
   add_index "users", ["username"], :name => "index_users_on_username", :unique => true
 

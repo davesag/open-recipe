@@ -21,6 +21,8 @@ namespace :db do
 
   desc "Migrate the database by walking through the migrations in db/migrate"
   task(:migrate => :environment) do
+    raise "No models folder found." unless File.directory? './models'
+    Dir.glob("./models/**.rb").sort.each { |m| require m }
     ActiveRecord::Base.logger = Logger.new(STDOUT)
     ActiveRecord::Migration.verbose = true
     ActiveRecord::Migrator.migrate("./db/migrate", ENV["VERSION"] ? ENV[VERSION].to_i : nil)
