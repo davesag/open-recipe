@@ -48,7 +48,8 @@ restaurants, photos, meals and meal-types, and tags.
 
 ### How to Run _Open Recipe_ on your local Mac
 
-1. Open your Terminal and enter:  
+1. Open your Terminal and enter: 
+ 
     > `gem install bundler`  
     > `bundle install`  
     > `foreman start`

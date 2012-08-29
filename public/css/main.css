@@ -1,30 +1,15 @@
 /* 
-   css Copyright © 2005-2012 Karelia Software. All rights reserved.
+   css Copyright © 2005-2012 Dave Sag. All rights reserved.
    css released under Creative Commons License  - http://creativecommons.org/licenses/by-sa/2.5/ 
-   All associated graphics belong to their respective owners and are licensed separately. 
 */
-
-/* IE7 hacks */
-
-*:first-child+html .gridItem img {
-	position:relative;
-	top:0px;
-}
-
-*:first-child+html .gridItem h3 {
-	position:relative;
-	top:0px;
-}
 
 /* Navigation arrows */
 div.text-navigation { text-align:center; margin-bottom:1em;}
 div.text-navigation div { display:inline; margin:0px 0.5em; }
 .collection-navigation .disabled-navigation { text-indent:-5000px; }
 
-/* 2.0 wrap compatibility. 2.0-compatible designs can further adjust these if they need */
 .wide { display:block; }
-
-.narrow.left {   /* Some designs won't respect without !important */
+.narrow.left {
     float:left!important;
     clear:left!important;
 }
@@ -32,7 +17,6 @@ div.text-navigation div { display:inline; margin:0px 0.5em; }
     float:right!important;
     clear:right!important;
 }
-
 .wide.left .graphic, img.wide.left { margin-left:0px; margin-right:auto; }
 .wide.center .graphic, img.wide.center { margin-left:auto; margin-right:auto; }
 .wide.right .graphic, img.wide.right { margin-left:auto; margin-right:0px; }
@@ -41,25 +25,21 @@ div.text-navigation div { display:inline; margin:0px 0.5em; }
 .ImageElement.center { text-align:center; }
 .ImageElement.right { text-align:right; }
 
-/* Captions should align themselves with the graphic */
+/* Captions should align themselves with their graphics */
 .graphic-container.left .caption { text-align:left; }
 .graphic-container.center .caption { text-align:center; }
 .graphic-container.right .caption { text-align:right; }
 
-/* Inline iframes need to display as a block to layout right */
+/* Inline iframes need to display as a block to layout correctly */
 .graphic iframe { display:block; }
 
-/* Pagelet photo grids should be generally be auto width (some 1.x designs hardcoded an exact width) */
 .pagelet .photogrid-index { width:auto; }
 
-/* For content like amazon which forces white background. Design SHOULD set color for A tag and text color. */
-.whiteBackground
-{
+.whiteBackground {
 	background-color:white;
 }
 
-.article-info
-{
+.recipe-info {
 	margin-bottom:1em;
 }
  
@@ -84,49 +64,27 @@ textarea.fullWidth, select.fullWidth {
 	margin: 4px 1px
 }
 
-form.contactElement input.submit {
+form.mainElement input.submit {
 	width:auto;
 	display:block;
 	margin-left:auto;
 	margin-right:2%;
 }
-form.contactElement th {
+form.mainElement th {
 	text-align:right;
 	font-weight:normal;
 	width:25%;
 }
 
-.contactError { color:red; font-weight:bold; }
-
-/* Contact Element For IE 7 */
-*:first-child+html form.contactElement input.submit {
-	padding:0px 10%;
-	min-width: 0px;
-}
+.mainError { color:red; font-weight:bold; }
 
 textarea {
     resize: vertical;
 }
 
-form.contactElement p {
+form.mainElement p {
 	text-align: left;
 }
-
-/* 
-   css Copyright © 2005-2012 Karelia Software. All rights reserved.
-   css released under Creative Commons License 
-        - http://creativecommons.org/licenses/by-sa/2.5/ 
-   All associated graphics belong to their respective owners 
-        and are licensed separately. 
-*/
-
-
-/*
-GLOBAL
-
-Try to define style properties as globally as possible. E.g. the basic font setting should be right there for the body element
-*/
-
 
 * { 
 	margin:0px;
@@ -155,7 +113,7 @@ img {
 	border:0px #000 none;
 }
 
-.article p, .pagelet p {
+.recipe p, .pagelet p {
 	margin-bottom: 0.8em;
 }
 
@@ -312,16 +270,12 @@ SITEMENU
 	right: -2px;
 }
 
-
-/* 
-MAIN PART 
-*/
 #main-content {
 	float: left;
 	width: 100%;
 }
 
-.article, .general-index, .no-callouts {
+.recipe, .general-index, .no-callouts {
 	margin-bottom:1em;
 	padding:10px 6px 6px;
 }
@@ -331,7 +285,7 @@ MAIN PART
 	padding: 0px 6px;
 }
 
-.general-index .article {
+.general-index .recipe {
 	margin:0px;
 	padding:0px;
 	border:0px none;
@@ -340,12 +294,11 @@ MAIN PART
 	margin-bottom: 1em;
 }
 
-.article-info {
+.recipe-info {
 	clear:left;
 }
 
-
-.article-info .timestamp {
+.recipe-info .timestamp {
 	clear:left;
 	text-align:right;
 	background: #eee url(corner-topright.png) top right no-repeat;
@@ -353,10 +306,9 @@ MAIN PART
 	margin: 3px -6px 0px -6px;
 }
 
-* html .article-info .timestamp {
+* html .recipe-info .timestamp {
 	background-image: url(corner-topright.gif);
 }
-
 
 #main h2 {
 	font-weight: bold;
@@ -364,13 +316,11 @@ MAIN PART
 	border-bottom: 1px solid #eee;
 }
 
-/*
-SIDEBAR & CALLOUTS
-*/
 body.allow-sidebar #main {
 	margin-right:245px;
 	padding-top:1px;
 }
+
 #sidebar {
 	margin-top:16px;
 	width:230px;
@@ -450,10 +400,8 @@ PHOTO GRID PAGE
 */
 
 .photogrid-index {
-    text-align: center;
-    margin: auto;
-    overflow: hidden; /* for IE 5 Mac */
-	height:1%; /* for IE 5, 6 Win */
+  text-align: center;
+  margin: auto;
 }
 
 .photogrid-index a {
@@ -465,14 +413,14 @@ PHOTO GRID PAGE
 }
 
 .gridItem {
-    float: left;
-    position:relative;
-    width:142px;
-    height:180px;	/* room for caption */
+  float: left;
+  position:relative;
+  width:142px;
+  height:180px;	/* room for caption */
 	margin:5px;
-    padding-top: 10px;
-    color:inherit;
-    overflow: hidden;
+  padding-top: 10px;
+  color:inherit;
+  overflow: hidden;
 }
 
 body.allow-sidebar .gridItem {
@@ -480,13 +428,13 @@ body.allow-sidebar .gridItem {
 }
 
 .gridItem h3 {
-    font-weight: normal;
-    font-size: 100%;
-    line-height: 130%;
-    margin: 4px 7px 0px 5px;
-	padding: 0px 2px;
-    position:absolute;
-	top: 140px; /* needs to leave 38px from the bottom of the gridItem */
+  font-weight: normal;
+  font-size: 100%;
+  line-height: 130%;
+  margin: 4px 7px 0px 5px;
+  padding: 0px 2px;
+  position:absolute;
+  top: 140px; /* needs to leave 38px from the bottom of the gridItem */
 	width: 128px;
 }
 
@@ -496,46 +444,41 @@ body.allow-sidebar .gridItem h3 {
 }
 
 .gridItem img {
-    margin: auto;
-    display:block;
-    position: absolute;
-    top: 0;
-    bottom: 40px;
-    right: 0;
-    left: 0;
+  margin: auto;
+  display:block;
+  position: absolute;
+  top: 0;
+  bottom: 40px;
+  right: 0;
+  left: 0;
 }
 
 
 .gridItem img:hover {
-	border-style: double;
+  border-style: double;
 }
 
 #sidebar .gridItem{
-	margin-left:25px;
+  margin-left:25px;
 }
 
-
-/*
-PHOTO NAVIGATION
-*/
 .text-navigation #previous-photo, .text-navigation #next-photo, .text-navigation  #photo-list, .text-navigation a, .text-navigation a:hover{
 	background:none!important;
 	font-weight:bold;
 }
 
-
 .photo-navigation {
-	position:relative;
-    height: 21px;
-    width:200px;
-    margin:8px auto 8px auto;
+  position:relative;
+  height: 21px;
+  width:200px;
+  margin:8px auto 8px auto;
 }
 
 .photo-navigation div {
 	width:34px;
 	height:21px;
 	position: absolute;
-    text-indent: -5000em;
+  text-indent: -5000em;
 }
 
 .photo-navigation a {
@@ -598,11 +541,6 @@ PHOTO NAVIGATION
 	text-decoration: none;
 }
 
-
-
-/* 
-PAGE BOTTOM
-*/
 #page-bottom {
 	margin-top:12px;
 	padding: 1px 1em;
@@ -615,102 +553,75 @@ PAGE BOTTOM
 	background-image: url(corner-topright.gif);
 }
 
-
-/*
-OTHER
-*/
-.article-thumbnail {
+.recipe-thumbnail {
 	float:left;
 	margin: 5px 10px 5px 0;
 }
-/* 
-SANDVOX INTERNALS
-	
-these should be present in every style sheet to ensure that certain classes used by Sandvox to hide and clear elements are respected.
-Don't change them unless you have very good reason to do so.
-*/
 
+/* 
+Open Recipe INTERNALS
+	
+These are present in every style sheet to ensure that certain classes
+used by Open Recipe to hide and clear elements are respected.
+Please Don't change them.
+*/
 .clear {clear: both; height: 0;}
 #main .clear {clear:left;}
 .hidden {display:none;}
 .narrow {float: right; margin:5px 0 5px 10px;}
 img.wide {display: block;}
 .ImageElement, .VideoElement { text-align:center;}
-.contactElement{ padding-top:25px;}
+.mainElement{ padding-top:25px;}
 .narrow.left{ margin: 0.3em 0.7em 0.35px 0; }
 .narrow.right {	margin: 0.3em 0 0.35em 0.7em; }
 .no-page-title .photo-navigation {margin-top:38px;}
 
 body {
-
 	background: #f7f7f7 url(../images/background_shader.png) top left repeat-x;	
-
 }
 
 a, a:active {
-
 	color:#090909;
-
 }
 
 a:hover {
-
 	color:#999999;
-
 }
 
 #sitemenu-content ul {
-
 	background: #090909;
-
 }
 
 #sitemenu-content ul li ul {
-
 	background: #090909;	
-
 }
 
 #main h2 {
-
 	color:#090909;
-
 }
 
 .pagelet h4 {
-
 	background: #090909 url(corner-topright.png) right top no-repeat;
-
 }
 
 .gridItem img {
-
     border: 1px solid #090909;
-
 }
 
 #sitemenu-content .currentPage .in, .gridItem h3 {
-
 	color:#090909 !important;
-
 }
 
 #previous-photo a {
-
     background-image: url(grey/photo-prev.gif);
-
 }
 
 #next-photo a {
-
     background-image: url(grey/photo-next.gif);
-
 }
 
 #photo-list a {
-
     background-image: url(grey/photo-list.gif);
-
 }
 
 .callout-container, .graphic-container { clear:left; }

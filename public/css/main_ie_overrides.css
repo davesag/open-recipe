@@ -1,0 +1,34 @@
+/* 
+   css Copyright © 2005-2012 Dave Sag. All rights reserved.
+   css released under Creative Commons License  - http://creativecommons.org/licenses/by-sa/2.5/ 
+*/
+
+*:first-child+html .gridItem img {
+	position:relative;
+	top:0px;
+}
+
+*:first-child+html .gridItem h3 {
+	position:relative;
+	top:0px;
+}
+
+*:first-child+html form.mainElement input.submit {
+	padding:0px 10%;
+	min-width: 0px;
+}
+
+* html .gridItem img {
+	position: relative;
+	top:0px;
+}
+
+* html .gridItem h3 {
+	position: relative;
+	top: 0px;
+}
+
+.photogrid-index {
+  overflow: hidden; /* for IE 5 Mac */
+  height:1%; /* for IE 5, 6 Win */
+}

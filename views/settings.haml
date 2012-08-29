@@ -1,1 +1,8 @@
 %h3 Settings
+%p Edit your #{settings.name} account settings.
+#mainform
+  %form.mainElement.labelsOnTop{:action => '#'}
+    %label{:for => 'preferred-name'} Preferred Name:
+    %input#preferred-name.fullWidth{:type => "text", :name => "preferred-name", :value => active_user.first_name}
+    %input#mainFormSubmit{:type => 'submit', :value => 'Save'}
+#mainForm-results.center
