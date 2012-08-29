@@ -203,7 +203,6 @@ class OpenRecipeApp < Sinatra::Application
           tags << ts unless ts == nil
         end
       end
-      logger.debug "Tag Summaries: #{tags.inspect}"
       return tags
     end
 
@@ -236,7 +235,16 @@ class OpenRecipeApp < Sinatra::Application
       logger.debug "User location details: #{location.inspect}"
       category_name = location['category']
       logger.debug "#{location['name']} has category #{category_name}."
+      # do we have this category as a location_type?
+      lt = LocationType.where(:name => category_name).first_or_create
+      # do we have this location?
+      loc = Location.where(:name => location['name']).first_or_create(:location_type => lt,
+                              :remote_id => location['id'].to_i,
+                              :latitude => location['location']['latitude'].to_f,
+                              :longitude => location['location']['longitude'].to_f)
     end
+    
+    return @active_user
   end
 
   before do

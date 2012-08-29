@@ -233,6 +233,7 @@ ActiveRecord::Schema.define(:version => 2012082600) do
     t.integer "remote_id"
     t.string  "profile_picture_url"
     t.string  "locale",              :limit => 7
+    t.integer "current_location"
   end
 
   add_index "users", ["name"], :name => "index_users_on_name"

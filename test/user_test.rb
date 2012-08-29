@@ -184,23 +184,28 @@ class UserTest < HandlerTestBase
       locations << some_damn_place = Location.create(:name => "some damn place",
                                     :latitude => 35.545426,
                                     :longitude => 22.6353363,
-                                    :location_type => outdoors)
+                                    :location_type => outdoors,
+                                    :remote_id => 3)
       locations << canberra = Location.create(:name => "Canberra",
                                     :latitude => 35.545426,
                                     :longitude => 22.6353363,
-                                    :location_type => city)
+                                    :location_type => city,
+                                    :remote_id => 5)
       locations << the_mall = Location.create(:name => "The Shops",
                                     :latitude => 35.545426,
                                     :longitude => 22.6353363,
-                                    :location_type => mall)
+                                    :location_type => mall,
+                                    :remote_id => 7)
       locations << the_shop = Location.create(:name => "Shop 3, Shopping Street.",
                                     :latitude => 35.545426,
                                     :longitude => 22.6353363,
-                                    :location_type => shop)
+                                    :location_type => shop,
+                                    :remote_id => 9)
       locations << the_restaurant = Location.create(:name => "Shop 3, Shopping Street.",
                                     :latitude => 35.545426,
                                     :longitude => 22.6353363,
-                                    :location_type => restaurant)
+                                    :location_type => restaurant,
+                                    :remote_id => 11)
 
       # restaurants
       restaurants = []
@@ -239,6 +244,10 @@ class UserTest < HandlerTestBase
       favourite_retailers << fav_chinese = FavouriteRetailer.create(:retailer => wokking_shop, :rating => 4, :user => bob)
       assert bob.favourite_retailers.first.retailer.name == wokking_shop.name, "expected bob's fave to be #{wokking_shop.name} but it was #{bob.favourite_retailers.first.retailer.name}."
       assert bob.favourite_retailers.first.rating == 4, "expetced it to have a rating of 4 but it was #{bob.favourite_retailers.first.rating}."
+
+      bob.current_location = the_restaurant
+      bob.save!
+      assert the_restaurant.users.include?(bob), "expected bob to be in the list of users for #{the_restaurant.name}"
 
       # and finally shut it all down
 

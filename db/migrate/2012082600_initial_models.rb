@@ -77,12 +77,14 @@ class InitialModels < ActiveRecord::Migration
       t.integer  :remote_id
       t.string   :profile_picture_url, :limit => 255
       t.string   :locale, :limit => 7
-                                  # user has_many :recipes
-                                  # user has_many :favourite_recipes
-                                  # user has_many :favourite_restaurants
-                                  # user has_many :favourite_retailers
-                                  # user has_many :photos.
-                                  # user has_and_belongs_to_many :favourite_tags, :class_name => 'Tag'
+      t.integer  :current_location_id # user belongs_to :location
+                                      # location has_many: users
+                                      # user has_many :recipes
+                                      # user has_many :favourite_recipes
+                                      # user has_many :favourite_restaurants
+                                      # user has_many :favourite_retailers
+                                      # user has_many :photos.
+                                      # user has_and_belongs_to_many :favourite_tags, :class_name => 'Tag'
     end
 
     add_index :users, :name, :unique => false
@@ -157,6 +159,7 @@ class InitialModels < ActiveRecord::Migration
                                    # location_type has_many locations
                                    # location has_many retailers
                                    # location has_many restaurants
+                                   # location has_many: users
     end
 
     add_index :locations, :name, :unique => false

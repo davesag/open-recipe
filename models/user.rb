@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
   # :profile_picture_url, String, :length => 1..255
   # :locale, String, :length => 1..6
 
+  belongs_to :current_location, :class_name => 'Location'
   has_and_belongs_to_many :favourite_tags, :class_name => 'Tag'
   has_many :recipes, :foreign_key => :owner_id, :dependent => :destroy
   has_many :favourite_recipes, :dependent => :destroy
