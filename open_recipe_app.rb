@@ -173,6 +173,40 @@ class OpenRecipeApp < Sinatra::Application
       return menu
     end
 
+    def summarise_tag (t, zero_okay = true)
+      rc = t.recipes.count
+      sc = t.retailers.count
+      mc = t.meals.count
+      rec = t.restaurants.count
+      tot = rc + sc + mc + rec
+      
+      if (tot > 0) || zero_okay
+        return {:name => t.name, :count => tot,
+                     :counts => {:recipes => rc,
+                               :restaurants => rec,
+                               :meals => mc,
+                               :retailers => sc}}
+      end
+      return nil
+    end
+
+    def popular_tags
+      tags = []
+      if logged_in? && !active_user.favourite_tags.empty?
+        active_user.favourite_tags.each do |t|
+          ts = summarise_tag(t)
+          tags << ts unless ts == nil
+        end
+      else
+        Tag.all.each do |t|
+          ts = summarise_tag(t, false)
+          tags << ts unless ts == nil
+        end
+      end
+      logger.debug "Tag Summaries: #{tags.inspect}"
+      return tags
+    end
+
     def logged_in?
       return session['access_token'] != nil
     end

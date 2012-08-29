@@ -63,6 +63,26 @@
             #main-content
               = yield
             #main-bottom
+              #tag-cloud
+                - tags = popular_tags
+                %h2 Tags
+                %ul.tags
+                  - for t in tags
+                    %li.tag
+                      - tcs = t[:counts]
+                      - c_recipe = tcs[:recipes]
+                      - c_meal = tcs[:meals]
+                      - c_restaurant = tcs[:restaurants]
+                      - c_retailer = tcs[:retailers]
+                      
+                      - hover_text = "#{c_recipe == 0 ? 'No' : c_recipe} recipe#{c_recipe == 1 ? '' : 's'}, "
+                      - hover_text << "#{c_restaurant == 0 ? 'No' : c_restaurant} restaurant#{c_restaurant == 1 ? '' : 's'}, "
+                      - hover_text << "#{c_meal == 0 ? 'No' : c_meal} meal#{c_meal == 1 ? '' : 's'}, "
+                      - hover_text << "#{c_retailer == 0 ? 'No' : c_retailer} retailer#{c_retailer == 1 ? '' : 's'}, "
+                      %a.tag{:href => "#", :title => hover_text}
+                        %span.tag
+                          #{t[:name]}
+                          %span.tag-count #{t[:count]}
         #spacer-bottom.clear.below-content
         #page-bottom
           #page-bottom-contents
