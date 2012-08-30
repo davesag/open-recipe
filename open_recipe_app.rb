@@ -225,7 +225,6 @@ class OpenRecipeApp < Sinatra::Application
     me = @graph.get_object('me')
     @active_user = User.where(:username => me['username']).first_or_create(:remote_id => me['id'].to_i)
     @active_user.update_from_facebook me
-    @active_user.save
     
     # get current location.
     location = me['location']
@@ -242,8 +241,10 @@ class OpenRecipeApp < Sinatra::Application
                               :remote_id => location['id'].to_i,
                               :latitude => location['location']['latitude'].to_f,
                               :longitude => location['location']['longitude'].to_f)
+      @active_user.current_location = loc
     end
     
+    @active_user.save
     return @active_user
   end
 

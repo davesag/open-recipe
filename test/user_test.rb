@@ -251,8 +251,11 @@ class UserTest < HandlerTestBase
 
       # and finally shut it all down
 
+      location_types.each {|t| t.destroy}
+      locations.each {|t| t.destroy}
       restaurants.each {|t| t.destroy}
       recipes.each {|t| t.destroy}
+      retailers.each {|t| t.destroy}
       tags.each {|t| t.destroy}
       active_ingredients.each {|t| t.destroy}
       ingredients.each {|t| t.destroy}
@@ -261,6 +264,9 @@ class UserTest < HandlerTestBase
       assert FavouriteRestaurant.count == 0, "Expected the favourite restaurants to be gone but there #{FavouriteRestaurant.count == 1 ? 'was' : 'were'} #{FavouriteRestaurant.count} left."
       assert Photo.count == 0, "Expected the photos to be gone."
       assert Preference.count == 0, "Expected the preferences to be gone."
+      assert Location.count == 0, "There #{Location.count == 1 ? 'are' : 's'} #{Location.count} location#{Location.count == 1 ? '' : 's'} left over."
+      assert User.count == 0, "There #{User.count == 1 ? 'is' : 'are'} #{User.count} user#{User.count == 1 ? '' : 's'} left over."
+      assert LocationType.count == 0, "There #{LocationType.count == 1 ? 'is' : 'are'} #{LocationType.count} location type#{LocationType.count == 1 ? '' : 's'} left over."
     end
   end
 
@@ -270,26 +276,71 @@ class UserTest < HandlerTestBase
     users = []
     tu_extra = {}
     tu_extra['verified'] = true
+    tu_extra['location'] = {:name => "Canberra, Australian Capital Territory", :id => 106270089409734}
     
-    tu = test_users.create(true,
-          :permissions => [ "read_friendlists", "publish_stream","email","user_location",
-                            "user_likes", "user_checkins", "user_photos"])
-    
-    bob = test_users.api.get_object(tu['id'])
-    a_user = User.where(:remote_id => bob['id'].to_i).first_or_create
-    assert !a_user.update_from_facebook(bob), "The test use is unvalidated by FB and so ought not be updated."
-    
-    users << bob = test_users.api.get_object(tu['id']).merge(tu_extra)
-    assert a_user.update_from_facebook(bob), "Could not update the user with validated data from Facebook's test user."
-
-    # now remove the 'name' field. It should fail.
-    bob['name'] = nil
-    assert !a_user.update_from_facebook(bob), "Should not be able to update the user without name data from Facebook's test user."
-    
-    # teardown
-    a_user.destroy
-    assert User.count == 0, "There are #{User.count} user#{User.count == 1 ? '' : 's'} left over."
+    old_user_data = test_users.list.first
+    if old_user_data == nil
+      tu = user_from_facebook test_users
+    else
+      tu = user_from_facebook test_users,
+                {"uid" => old_user_data['id'], "access_token" => old_user_data['token']}
+    end
+    bob = test_users.api.get_object(tu['id'].to_i)
+    puts "loaded bob #{bob.inspect}"
+    ActiveRecord::Base.transaction do |t|
+      a_user = User.where(:remote_id => bob['id'].to_i).first_or_create
+      assert !a_user.update_from_facebook(bob), "The test use is unvalidated by FB and so ought not be updated."
+      
+      users << bob = bob.merge(tu_extra)
+      assert a_user.update_from_facebook(bob), "Could not update the user with validated data from Facebook's test user."
+      a_user.save!
+      
+      # now remove the 'name' field. It should fail.
+      bob['name'] = nil
+      assert !a_user.update_from_facebook(bob), "Should not be able to update the user without name data from Facebook's test user."
+      
+      bob_loc = bob['location']
+      assert bob_loc != nil, "There should be a location but bob was #{bob.inspect}"
+      loc = Location.where(:name => bob_loc[:name]).first_or_create
+      puts "bob_loc = #{bob_loc.inspect}"
+# facebook's test api doesn't allow for such tests. see github at 
+#       bob_loc_detail = test_users.api.get_object(bob_loc['id'])
+#       assert bob_loc_detail != nil, "There should be more location details but bob's location id #{bob_loc['id']} didn't return anything."
+#       assert loc.update_from_facebook(bob_loc_detail), "Could not update location details from facebook."
+      loc.users << a_user
+      loc.save!
+      assert a_user.current_location == loc, "expected #{a_user.first_name}'s current location to be #{loc} but it was #{a_user.current_location}"
+      # teardown
+      LocationType.all.each {|t| t.destroy}
+      loc.destroy
+      a_user.destroy
+      assert Location.count == 0, "There #{Location.count == 1 ? 'is' : 'are'} #{Location.count} location#{Location.count == 1 ? '' : 's'} left over."
+      assert LocationType.count == 0, "There #{LocationType.count == 1 ? 'is' : 'are'} #{LocationType.count} location type#{LocationType.count == 1 ? '' : 's'} left over."
+      assert User.count == 0, "There #{User.count == 1 ? 'is' : 'are'} #{User.count} user#{User.count == 1 ? '' : 's'} left over."
+    end
   end
 
-end
+  def user_from_facebook(test_users, token = nil)
+    result = nil
+    if token == nil
+      result = test_users.create(true,
+                    [ "read_friendlists", "publish_stream","email","user_location",
+                      "user_likes", "user_checkins", "user_photos"])
+    else
+      begin
+        result = test_users.create(true,
+                      [ "read_friendlists", "publish_stream","email","user_location",
+                        "user_likes", "user_checkins", "user_photos"], token)
 
+      rescue Exception => detail
+        puts "Invalid token #{token}."
+        puts detail.inspect
+        test_users.delete_all
+        result = test_users.create(true,
+                      [ "read_friendlists", "publish_stream","email","user_location",
+                        "user_likes", "user_checkins", "user_photos"])
+      end
+    end
+    return result
+  end
+end
