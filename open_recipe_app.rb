@@ -341,9 +341,15 @@ class OpenRecipeApp < Sinatra::Application
 
   # request coming in from jQuery UI component.
   get '/search' do
-    return [{:label => 'test', :value => 1},
-            {:label => 'termite', :value => 2},
-            {:label => 'terminator', :value => 3}].to_json
+    term = params[:term]
+    logger.debug "Got search request #{params[:term]}."
+    
+    # find tags, ingredients, recipes, meals, restaurants, retailers.
+    result = []
+    Tag.name_starts_with(term).each do |tag|
+      result << {:value => tag.id, :label => "Tag: #{tag.name}"}
+    end
+    return result.to_json
   end
 
 end

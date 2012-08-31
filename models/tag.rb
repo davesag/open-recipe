@@ -13,4 +13,8 @@ class Tag < ActiveRecord::Base
   has_and_belongs_to_many :recipes # recipes tagged with this tag.
   has_and_belongs_to_many :restaurants # restaurants tagged with this tag.
   has_and_belongs_to_many :retailers # retailers tagged with this tag.
+
+  scope :name_starts_with, lambda { |str|
+    {:conditions => ["name like ?", "#{str.downcase}%"]}
+  }
 end
