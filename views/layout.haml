@@ -26,21 +26,64 @@
       %link{ :rel =>"stylesheet", :type => "text/css",
              :href => "/css/main_ie_overrides.css",
              :title => "Overrides for Internet Explorer."}
-    %script{ :src => "../scripts/jquery-1.8.0.min.js" }
+    %link{ :rel =>"stylesheet", :type => "text/css",
+           :href => "/css/themes/pepper-grinder/jquery-ui-1.8.23.custom.css",
+           :title => "JQuery UI custom theme. It's nice and brown."}
+    %script{ :src => "/scripts/jquery-1.8.0.min.js" }
+    %script{ :src => "/scripts/jquery-ui-1.8.23.custom.min.js" }
+    :javascript
+      $(function () {
+        var cache = {}, lastXhr;
+        $("#search-field").autocomplete({
+          minLength: 2,
+          source: function( request, response ) {
+            var term = request.term;
+            if ( term in cache ) {
+              response( cache[ term ] );
+              return;
+            }
+        
+            lastXhr = $.getJSON( "/search", request, function( data, status, xhr ) {
+              console.log("received data ", data)
+              cache[ term ] = data;
+              if ( xhr === lastXhr ) {
+                response( data );
+              }
+            });
+          },
+          select: function (event, ui) {
+            console.log (ui.item ?
+            "Selected: " + ui.item.value + " aka " + ui.item.id :
+            "Nothing selected, input was " + this.value, event)
+          }
+        });
+      });
     %title #{settings.name}
   %body
     #page-container
       #page
         #page-top.has-logo.has-tagline
           #title
+            -if logged_in?
+              #header-information
+                %p<
+                  You are logged in as #{active_user.name}
+                  #{active_user.current_location == nil ? ' at no location.' : ' near ' << active_user.current_location.name}
+              #search-box.ui-widget
+                %form#search-form
+                  %span.nowrap.in
+                    %label{:for => 'search-field'} Search
+                    %input#search-field{:type => 'text', :name => 'search', :placeholder => 'search text'}
+            -else
+              #header-information
+                %h1.title<
+                  %span.in #{settings.name}
+                %p.tagline<
+                  %span.in #{settings.tagline}
             %span#logo-container<
               %img#logo{:width => 128, :height => 128,
                         :src => "images/openrecipe_logo.png",
                         :alt => "Open Recipe draft Logo."}
-            %h1.title<
-              %span.in #{settings.name}
-            %p#tagline<
-              %span.in #{settings.tagline}
           #sitemenu-container
             #sitemenu
               #sitemenu-content
@@ -79,11 +122,20 @@
                       - hover_text << "#{c_restaurant == 0 ? 'No' : c_restaurant} restaurant#{c_restaurant == 1 ? '' : 's'}, "
                       - hover_text << "#{c_meal == 0 ? 'No' : c_meal} meal#{c_meal == 1 ? '' : 's'}, "
                       - hover_text << "#{c_retailer == 0 ? 'No' : c_retailer} retailer#{c_retailer == 1 ? '' : 's'}, "
-                      %a.tag{:href => "#", :title => hover_text}
-                        %span.tag
+                      %a.tag{:href => "#", :title => hover_text}<
+                        %span.tag<
                           #{t[:name]}
                           %span.tag-count #{t[:count]}
         #spacer-bottom.clear.below-content
         #page-bottom
           #page-bottom-contents
             #copyright< ©2012 #{settings.owner}
+            - if logged_in?
+              %hr
+              %p{:class=>'like_site'} Do you like this site?
+              %p
+                %iframe{:src => "http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fopen-recipe.herokuapp.com%2F&amp;layout=standard&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=80",
+                        :scrolling => "no",
+                        :frameborder => "0",
+                        :style => "border:none; overflow:hidden; width:450px; height:80px;",
+                        :allowTransparency => "true"}

@@ -340,4 +340,9 @@ class OpenRecipeApp < Sinatra::Application
     haml :faqs
   end
 
+  # request coming in from jQuery UI component.
+  get '/search' do
+    return {:item => {:id => 'test', :value => 'test value'}}.to_json
+  end
+
 end
