@@ -37,7 +37,6 @@ class OpenRecipeApp < Sinatra::Application
   set :keywords, 'recipe, food, eating, drinking, cocktails, meals, restuarants'
   set :root, File.dirname(__FILE__)
   set :models, Proc.new { root && File.join(root, 'models') }
-  set :haml, { :format => :html5 }
 
 	enable :sessions, :logging, :show_exceptions
 
@@ -342,7 +341,9 @@ class OpenRecipeApp < Sinatra::Application
 
   # request coming in from jQuery UI component.
   get '/search' do
-    return {:item => {:id => 'test', :value => 'test value'}}.to_json
+    return [{:label => 'test', :value => 1},
+            {:label => 'termite', :value => 2},
+            {:label => 'terminator', :value => 3}].to_json
   end
 
 end

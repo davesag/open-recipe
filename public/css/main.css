@@ -134,15 +134,14 @@ img {
 }
 
 #page-top {
-	background: url(Sky.jpeg) center top no-repeat;
+  background-image: url("../images/banner.png");
 }
 
 #title {
-	background: transparent url(../images/corner-topright.png) top right no-repeat;
 	overflow: hidden;
 	position: relative;
 	height:160px;
-	text-align:center;
+	text-align:left;
 	color: #fff;
 }
 
@@ -150,11 +149,6 @@ img {
 	margin-right:210px;
 	width:525px;
 }
-
-* html #title {
-	background-image: url(../images/corner-topright.gif);
-}
-
 
 #title h1 {
 	position: absolute;
@@ -293,7 +287,6 @@ SITEMENU
 	margin:0px;
 	padding:0px;
 	border:0px none;
-	background:transparent;
 	clear:left;
 	margin-bottom: 1em;
 }
@@ -305,7 +298,7 @@ SITEMENU
 .recipe-info .timestamp {
 	clear:left;
 	text-align:right;
-	background: #eee url(../images/corner-topright.png) top right no-repeat;
+	background: #eee;
 	padding: 1px 0.7em;
 	margin: 3px -6px 0px -6px;
 }
@@ -337,10 +330,6 @@ body.allow-sidebar #main {
 	margin:0px 0px 2px 0px;
 	color:#fff;
 	padding:1px 6px;
-}
-
-* html .pagelet h4 {
-	background-image: url(../images/corner-topright.gif);
 }
 
 .pagelet.bordered {
@@ -384,7 +373,7 @@ body.allow-sidebar #main {
 	right: 0px;
 	content: "";
 	background: transparent 45px 27px no-repeat;
-	background-image: url(QuotationMarks-EarthAndSky.png);
+	background-image: url(../images/quotation_marks.png);
 } 
 
 .blockquote-container blockquote {
@@ -395,143 +384,11 @@ body.allow-sidebar #main {
 	font-style: italic;
 }
 
-/* 
-PHOTO GRID PAGE
-*/
-
-.photogrid-index {
-  text-align: center;
-  margin: auto;
-}
-
-.photogrid-index a {
-	text-decoration: none;
-	padding: 1px 3px;
-}
-.photogrid-index h3 a:hover {
-	text-decoration:underline;
-}
-
-.gridItem {
-  float: left;
-  position:relative;
-  width:142px;
-  height:180px;	/* room for caption */
-	margin:5px;
-  padding-top: 10px;
-  color:inherit;
-  overflow: hidden;
-}
-
-body.allow-sidebar .gridItem {
-	width: 160px;
-}
-
-.gridItem h3 {
-  font-weight: normal;
-  font-size: 100%;
-  line-height: 130%;
-  margin: 4px 7px 0px 5px;
-  padding: 0px 2px;
-  position:absolute;
-  top: 140px; /* needs to leave 38px from the bottom of the gridItem */
-	width: 128px;
-}
-
-body.allow-sidebar .gridItem h3 {
-	width:136px;
-	margin: 4px 11px 0px 11px; 
-}
-
-.gridItem img {
-  margin: auto;
-  display:block;
-  position: absolute;
-  top: 0;
-  bottom: 40px;
-  right: 0;
-  left: 0;
-}
-
-
-.gridItem img:hover {
-  border-style: double;
-}
-
-#sidebar .gridItem{
-  margin-left:25px;
-}
-
-.text-navigation #previous-photo, .text-navigation #next-photo, .text-navigation  #photo-list, .text-navigation a, .text-navigation a:hover{
-	background:none!important;
-	font-weight:bold;
-}
-
-.photo-navigation {
-  position:relative;
-  height: 21px;
-  width:200px;
-  margin:8px auto 8px auto;
-}
-
-.photo-navigation div {
-	width:34px;
-	height:21px;
-	position: absolute;
-  text-indent: -5000em;
-}
-
-.photo-navigation a {
-	border-bottom:none;
-	display:block;
-	width:100%;
-	height:100%;
-}
-
-#previous-photo{
-    background: url(photo-prev-off.gif) no-repeat;
-    left: 42px;
-}
-#previous-photo a:hover{
-    background: url(photo-prev-o.gif) no-repeat;
-    left: 42px;
-}
-
-#next-photo{
-    background: url(photo-next-off.gif) no-repeat 0 0;
-    left: 124px; 
-}
-#next-photo a:hover{
-    background: url(photo-next-o.gif) no-repeat 0 0;
-    left: 124px; 
-}
-
-#photo-list{
-    background: url(photo-list-off.gif) no-repeat;
-    left: 83px;
-}
-#photo-list a:hover{
-    background: url(photo-list-o.gif) no-repeat;
-    left: 83px;
-}
-
-.image-controls a {
-	border-bottom:none !important;
-}
-
-.collection-navigation {
-	font-weight: bold;
-}
-
-.collection-navigation a {
-	text-decoration: none;
-}
-
 #page-bottom {
 	margin-top:12px;
 	padding: 1px 1em;
 	line-height:1.4em;
-	background: #eee url(../images/corner-topright.png) top right no-repeat;
+	background: #eee;
 	text-align: left;	
 }
 
@@ -583,7 +440,7 @@ a:hover {
 }
 
 .pagelet h4 {
-	background: #090909 url(../images/corner-topright.png) right top no-repeat;
+	background: #090909;
 }
 
 .gridItem img {
@@ -594,21 +451,7 @@ a:hover {
 	color:#090909 !important;
 }
 
-#previous-photo a {
-    background-image: url(grey/photo-prev.gif);
-}
-
-#next-photo a {
-    background-image: url(grey/photo-next.gif);
-}
-
-#photo-list a {
-    background-image: url(grey/photo-list.gif);
-}
-
 .callout-container, .graphic-container { clear:left; }
-
-#page-top { background-image: url("../images/banner.png"); }
 
 .logout a { color: #2554C7; font-size: 15px; }
 .recipe { font-size: 0.9em; }
@@ -661,19 +504,24 @@ a:hover {
 }
 
 #search-box {
-  float: left;
-  color: #000
-  background-color: #fff
+	position: absolute;
+  color: #000 !important;
+  background-color: #fff !important;
+	top: 6px;
+	left: 20px;
 }
 
 #search-form {
-  font-size: 0.8em;
+  font-size: 0.9em;
 }
 
 #search-field {
-  width: 75%;
+	font-size: small;
+	color: #2D4486;         # facebook blue
+	font-weight: lighter;
 }
 
 .ui-autocomplete-loading {
-  background: white url('themes/images/ui-anim_basic_16x16.gif') right center no-repeat;
+  background: white url('../images/ui-anim_basic_16x16.gif') right center no-repeat;
 }
+
