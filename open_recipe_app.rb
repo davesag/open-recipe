@@ -54,7 +54,7 @@ class OpenRecipeApp < Sinatra::Application
   end
 
   # TIMEZONES
-  # @todo: On Heroku you need to set the TZ environment variable. You won't want to keep using the Rails time zones
+  # @todo: On Heroku you need to set the TZ environment variable. You won't want to keep using the default time zones
   # but instead use the official abbreviations http://www.timeanddate.com/library/abbreviations/timezones
 
   configure :test do
