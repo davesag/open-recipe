@@ -19,8 +19,5 @@ class Tag < ActiveRecord::Base
   }
   
   # it's in_use if users.count >0 || meals.count > 0 || … etc
-  scope :in_use, lambda { |str|
-    {:conditions => ["users.count > 0 OR meals.count > 0 OR ingredients.count > 0 OR recipes.count > 0 OR restaurants.count > 0 OR retailers.count > 0"]}
-  }
-
+  # scope :in_use, joins(:users).where('users.count > 0').merge(joins(:meals).where("meals.count > 0"))
 end
