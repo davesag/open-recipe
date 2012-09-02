@@ -74,8 +74,9 @@ class UserTest < HandlerTestBase
       ingredients << wine = Ingredient.create(:name => "White Wine")
       ingredients << chinesespice = Ingredient.create(:name => "Star Anise")
       
-      metric = UnitType.create(:name => 'metric')
-      cooking = UnitType.create(:name => 'cooking')
+      unit_types = []
+      unit_types << metric = UnitType.create(:name => 'metric')
+      unit_types << cooking = UnitType.create(:name => 'cooking')
       
       allowed_units =[]
       allowed_units << none_unit = AllowedUnit.create(:name => 'none', :unit_type => nil)
@@ -248,6 +249,7 @@ class UserTest < HandlerTestBase
 
       # and finally shut it all down
 
+      allowed_units.each {|t| t.destroy}
       location_types.each {|t| t.destroy}
       locations.each {|t| t.destroy}
       restaurants.each {|t| t.destroy}
@@ -256,15 +258,26 @@ class UserTest < HandlerTestBase
       tags.each {|t| t.destroy}
       active_ingredients.each {|t| t.destroy}
       ingredients.each {|t| t.destroy}
+      meals.each {|t| t.destroy}
+      meal_types.each {|t| t.destroy}
+      unit_types.each {|t| t.destroy}
       user.destroy
+      assert ActiveIngredient.count == 0, "There #{ActiveIngredient.count == 1 ? 'are' : 's'} #{ActiveIngredient.count} ActiveIngredient#{ActiveIngredient.count == 1 ? '' : 's'} left over."
+      assert AllowedUnit.count == 0, "There #{AllowedUnit.count == 1 ? 'are' : 's'} #{AllowedUnit.count} AllowedUnit#{AllowedUnit.count == 1 ? '' : 's'} left over."
       assert FavouriteRecipe.count == 0, "Expected the favourite recipes to be gone but there #{FavouriteRecipe.count == 1 ? 'was' : 'were'} #{FavouriteRecipe.count} left."
       assert FavouriteRestaurant.count == 0, "Expected the favourite restaurants to be gone but there #{FavouriteRestaurant.count == 1 ? 'was' : 'were'} #{FavouriteRestaurant.count} left."
+      assert Ingredient.count == 0, "There #{Ingredient.count == 1 ? 'are' : 's'} #{Ingredient.count} Ingredient#{Ingredient.count == 1 ? '' : 's'} left over."
+      assert Location.count == 0, "There #{Location.count == 1 ? 'are' : 's'} #{Location.count} location#{Location.count == 1 ? '' : 's'} left over."
+      assert LocationType.count == 0, "There #{LocationType.count == 1 ? 'is' : 'are'} #{LocationType.count} location type#{LocationType.count == 1 ? '' : 's'} left over."
+      assert Meal.count == 0, "There #{Meal.count == 1 ? 'are' : 's'} #{Meal.count} Meal#{Meal.count == 1 ? '' : 's'} left over."
+      assert MealType.count == 0, "There #{MealType.count == 1 ? 'are' : 's'} #{MealType.count} MealType#{MealType.count == 1 ? '' : 's'} left over."
       assert Photo.count == 0, "Expected the photos to be gone."
       assert Preference.count == 0, "Expected the preferences to be gone."
-      assert Location.count == 0, "There #{Location.count == 1 ? 'are' : 's'} #{Location.count} location#{Location.count == 1 ? '' : 's'} left over."
-      assert User.count == 0, "There #{User.count == 1 ? 'is' : 'are'} #{User.count} user#{User.count == 1 ? '' : 's'} left over."
-      assert LocationType.count == 0, "There #{LocationType.count == 1 ? 'is' : 'are'} #{LocationType.count} location type#{LocationType.count == 1 ? '' : 's'} left over."
+      assert Restaurant.count == 0, "There #{Restaurant.count == 1 ? 'are' : 's'} #{Restaurant.count} Restaurant#{Restaurant.count == 1 ? '' : 's'} left over."
+      assert Retailer.count == 0, "There #{Retailer.count == 1 ? 'are' : 's'} #{Retailer.count} Retailer#{Retailer.count == 1 ? '' : 's'} left over."
       assert Tag.count == 0, "There #{Tag.count == 1 ? 'is' : 'are'} #{Tag.count} tag type#{Tag.count == 1 ? '' : 's'} left over."
+      assert UnitType.count == 0, "There #{UnitType.count == 1 ? 'are' : 's'} #{UnitType.count} UnitType#{UnitType.count == 1 ? '' : 's'} left over."
+      assert User.count == 0, "There #{User.count == 1 ? 'is' : 'are'} #{User.count} user#{User.count == 1 ? '' : 's'} left over."
     end
   end
 end

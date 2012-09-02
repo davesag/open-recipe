@@ -19,5 +19,29 @@ class Tag < ActiveRecord::Base
   }
   
   # it's in_use if users.count >0 || meals.count > 0 || … etc
-  # scope :in_use, joins(:users).where('users.count > 0').merge(joins(:meals).where("meals.count > 0"))
+  def self.in_use
+    return Tag.find_by_sql('select tags.* from tags
+      inner join tags_users on tags.id = tags_users.tag_id
+      inner join users on tags_users.user_id = users.id
+      union
+      select tags.* from tags
+      inner join meals_tags on tags.id = meals_tags.tag_id
+      inner join meals on meals_tags.meal_id = meals.id
+      union
+      select tags.* from tags
+      inner join ingredients_tags on tags.id = ingredients_tags.tag_id
+      inner join ingredients on ingredients_tags.ingredient_id = ingredients.id
+      union
+      select tags.* from tags
+      inner join recipes_tags on tags.id = recipes_tags.tag_id
+      inner join recipes on recipes_tags.recipe_id = recipes.id
+      union
+      select tags.* from tags
+      inner join restaurants_tags on tags.id = restaurants_tags.tag_id
+      inner join restaurants on restaurants_tags.restaurant_id = restaurants.id
+      union
+      select tags.* from tags
+      inner join retailers_tags on tags.id = retailers_tags.tag_id
+      inner join retailers on retailers_tags.retailer_id = retailers.id')
+  end
 end
