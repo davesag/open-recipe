@@ -21,6 +21,19 @@
    
 */
 
+* { 
+	margin:0px;
+	padding:0px;
+}
+
+body {
+	font-family: Georgia, Palatino, Times, "Times New Roman", serif;
+	font-size: 76%; /* as recommended in CSS guide */
+	color:#111;
+	word-wrap:break-word;
+	line-height:1.6;
+}
+
 /* these are HTML 5 equivs for webkit and mozilla. */
 ::-webkit-input-placeholder  { color:#646463; }
 ::-webkit-input-placeholder  { color:#646463; }
@@ -33,6 +46,7 @@ div.text-navigation div { display:inline; margin:0px 0.5em; }
 .collection-navigation .disabled-navigation { text-indent:-5000px; }
 
 .wide { display:block; }
+
 .narrow.left {
     float:left!important;
     clear:left!important;
@@ -57,12 +71,6 @@ div.text-navigation div { display:inline; margin:0px 0.5em; }
 /* Inline iframes need to display as a block to layout correctly */
 .graphic iframe { display:block; }
 
-.pagelet .photogrid-index { width:auto; }
-
-.whiteBackground {
-	background-color:white;
-}
-
 .nowrap {
 	white-space: nowrap;
 }
@@ -71,61 +79,16 @@ div.text-navigation div { display:inline; margin:0px 0.5em; }
 	margin-bottom:1em;
 }
  
-/* Firefox reduce dotted lines on links */
-.photo-navigation a:focus, .replaced a:focus {overflow:hidden;}
-
 /* Site menus. Don't wrap the top level items, and wrap sub-menu items normaly. */
 #sitemenu-content ul li {white-space: nowrap}
-#sitemenu-content ul ul li {white-space: normal}
+#sitemenu-content ul li {white-space: normal}
 #sitemenu-content span.in { position: relative; }
 
 /* Keep tables with long content from pushing too far over */
 table { word-break: break-all; }
 
-textarea.fullWidth, input.fullWidth, select.fullWidth {
-	width:96%;
-	margin:4px 0;
-}
-textarea.fullWidth, select.fullWidth {
-	margin: 4px 1px
-}
-
-form.mainElement input.submit {
-	width:auto;
-	display:block;
-	margin-left:auto;
-	margin-right:2%;
-}
-form.mainElement th {
-	text-align:right;
-	font-weight:normal;
-	width:25%;
-}
-
-.mainError {
-	color: #B31528;
-	font-weight: bold;
-}
-
 textarea {
     resize: vertical;
-}
-
-form.mainElement p {
-	text-align: left;
-}
-
-* { 
-	margin:0px;
-	padding:0px;
-}
-
-body {
-	font-family: Georgia, Palatino, Times, "Times New Roman", serif;
-	font-size: 76%; /* as recommended in CSS guide */
-	color:#111;
-	word-wrap:break-word;
-	line-height:1.6;
 }
 
 /* sans-serif font for headings & sitemenu */
@@ -142,15 +105,15 @@ img {
 	border:0px #000 none;
 }
 
-.recipe p, .pagelet p {
+.recipe p {
 	margin-bottom: 0.8em;
 }
 
 
 #page {
-	width:770px;
-	margin:18px auto;
-	padding:15px;
+	width: 99%;
+	margin: 0px auto 0px auto;
+	padding: 5px;
 	background: #fff;
 }
 
@@ -164,16 +127,6 @@ img {
 	height: 160px;
 	text-align: left;
 	color: #646463;
-}
-
-#title h1 {
-	position: absolute;
-	bottom: 50px;
-	left: 20px;
-	right: 20px;
-	font-size: 240%;
-	text-shadow: #000 2px 1px 2px;
-	line-height:27px;
 }
 
 #title img.logo {
@@ -195,7 +148,6 @@ SITEMENU
 */
 
 #sitemenu li{  	
-	max-width:770px;
 	word-wrap: break-word;
 }
 #sitemenu-content ul {
@@ -252,29 +204,12 @@ SITEMENU
 	width: 100%;
 }
 
-.recipe, .general-index, .no-callouts {
+.recipe {
 	margin-bottom:1em;
 	padding:10px 6px 6px;
 }
 
-.listing-index {
-	margin-bottom: 1em;
-	padding: 0px 6px;
-}
-
-.general-index .recipe {
-	margin:0px;
-	padding:0px;
-	border:0px none;
-	clear:left;
-	margin-bottom: 1em;
-}
-
 .recipe-info {
-	clear:left;
-}
-
-.recipe-info .timestamp {
 	clear:left;
 	text-align:right;
 	background: #eee;
@@ -288,86 +223,12 @@ SITEMENU
 	border-bottom: 1px solid #eee;
 }
 
-body.allow-sidebar #main {
-	margin-right:245px;
-	padding-top:1px;
-}
-
-#sidebar {
-	margin-top:16px;
-	width:230px;
-	float:right;
-}
-
-.pagelet {
-	margin-bottom:15px;
-	padding:0px 0px 2px 0px;
-	overflow:hidden;
-}
-
-.pagelet h4 {
-	margin:0px 0px 2px 0px;
-	color:#fff;
-	padding:1px 6px;
-}
-
-.pagelet.bordered {
-	border-style: solid;
-	border-color: #eee;
-	border-width: 0px 0px 1px 1px;
-}
-
-.pagelet.bordered h4 {
-	border-width: 0px 0px 1px 0px;
-}
-
-.pagelet-body {
-	margin:0px 6px;
-}
-
-
-.callout {
-	width:230px;
-	float:left;
-	margin: 0px 10px 0px 0px ;
-}
-
-.callout .pagelet.bordered {
-	margin-left:-1px;
-}
-
-.blockquote-container>.pagelet-body, .blockquote-container>.graphic {
-	position: relative;
-	padding: 10px;
-	background: -32px 2px no-repeat;
-	background-image: url(QuotationMarks-EarthAndSky.png);
-}
-
-.blockquote-container .pagelet-body:after, .blockquote-container .graphic:after {
-	display: block;
-	position: absolute;
-	height: 70px;
-	width: 70px;
-	bottom: 0px;
-	right: 0px;
-	content: "";
-	background: transparent 45px 27px no-repeat;
-	background-image: url(../images/quotation_marks.png);
-} 
-
-.blockquote-container blockquote {
-	margin: 0px;
-	padding: 0px 15px 0px 10px;
-	z-index: 100;
-	position: relative;
-	font-style: italic;
-}
-
 #page-bottom {
 	margin-top:12px;
 	padding: 1px 1em;
 	line-height:1.4em;
-	background: #eee;
+	background: #646463;
+	color: #ffffff;
 	text-align: left;	
 }
 
@@ -392,7 +253,6 @@ img.wide {display: block;}
 .mainElement{ padding-top:25px;}
 .narrow.left{ margin: 0.3em 0.7em 0.35px 0; }
 .narrow.right {	margin: 0.3em 0 0.35em 0.7em; }
-.no-page-title .photo-navigation {margin-top:38px;}
 
 body {
 	background: #f7f7f7 url(../images/background_shader.png) top left repeat-x;	
@@ -418,19 +278,9 @@ a:hover {
 	color:#646463;
 }
 
-.pagelet h4 {
-	background: #646463;
-}
-
-.gridItem img {
-    border: 1px solid #646463;
-}
-
-#sitemenu-content .currentPage .in, .gridItem h3 {
+#sitemenu-content .currentPage .in {
 	color:#646463 !important;
 }
-
-.callout-container, .graphic-container { clear:left; }
 
 .logout a { color: #2554C7; font-size: 15px; }
 .recipe { font-size: 0.9em; }
@@ -482,21 +332,11 @@ a:hover {
   width: 50%;
 }
 
-#search-box {
-	position: absolute;
-  color: #000 !important;
-  background-color: #fff !important;
-	top: 6px;
-	left: 20px;
-}
-
 #search-form {
   font-size: 0.9em;
 }
 
 #search-field {
-	font-size: small;
-	color: #2D4486;         # facebook blue
 	font-weight: lighter;
 }
 

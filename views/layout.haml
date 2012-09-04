@@ -55,75 +55,74 @@
       });
     %title #{settings.name}
   %body
-    #page-container
-      #page
-        #page-top
-          #title
-            -if logged_in?
-              #header-information
-                %p< You are logged in as #{active_user.name}
-                %form#search-form
-                  %span.nowrap.in
-                    %label{:for => 'search-field'} Search
-                    %input#search-field{:type => 'text', :name => 'search', :placeholder => 'search text'}
-            -else
-              #header-information
-                %a{:href => "/login"}<
-                  %img.fb-login{:src => '/images/fb_login_button.png'}
-            %span#logo-container<
-              %img.logo{:width => 128, :height => 157,
-                        :src => "/images/Open_Recipe_Logo_128x157.png",
-                        :alt => "Open Recipe Logo."}
-          #sitemenu-container
-            #sitemenu
-              #sitemenu-content
-                %ul
-                  - count = 1
-                  - for item in navigation
-                    - selected = item[:selected]
-                    - mods = "i#{count} #{count.odd? ? 'o' : 'e'}#{selected ? ' currentPage' : ''}"
-                    - count = count + 1
-                    %li{:class => mods}<
-                      -if !selected
-                        %a{:href => item[:href]}
-                          %span.in= item[:title]
-                      -else
+    #page
+      #page-top
+        #title
+          -if logged_in?
+            #header-information
+              %p< You are logged in as #{active_user.name}
+              %form#search-form
+                %span.nowrap.in
+                  %label{:for => 'search-field'} Search
+                  %input#search-field{:type => 'text', :name => 'search', :placeholder => 'search text'}
+          -else
+            #header-information
+              %a{:href => "/login"}<
+                %img.fb-login{:src => '/images/fb_login_button.png'}
+          %span#logo-container<
+            %img.logo{:width => 128, :height => 157,
+                      :src => "/images/Open_Recipe_Logo_128x157.png",
+                      :alt => "Open Recipe Logo."}
+        #sitemenu-container
+          #sitemenu
+            #sitemenu-content
+              %ul
+                - count = 1
+                - for item in navigation
+                  - selected = item[:selected]
+                  - mods = "i#{count} #{count.odd? ? 'o' : 'e'}#{selected ? ' currentPage' : ''}"
+                  - count = count + 1
+                  %li{:class => mods}<
+                    -if !selected
+                      %a{:href => item[:href]}
                         %span.in= item[:title]
-        #spacer-top.clear.below-page-top
-        #page-content
-          #main
-            #main-top
-            #main-content
-              = yield
-            #main-bottom
-              #tag-cloud
-                - tags = popular_tags
-                %h2 Tags
-                %ul.tags
-                  - for t in tags
-                    %li.tag
-                      - tcs = t[:counts]
-                      - c_recipe = tcs[:recipes]
-                      - c_meal = tcs[:meals]
-                      - c_ingredient = tcs[:ingredients]
-                      
-                      - hover_text = "#{c_recipe == 0 ? 'No' : c_recipe} recipe#{c_recipe == 1 ? '' : 's'}, "
-                      - hover_text << "#{c_meal == 0 ? 'No' : c_meal} meal#{c_meal == 1 ? '' : 's'}, "
-                      - hover_text << "#{c_ingredient == 0 ? 'No' : c_ingredient} ingredient#{c_ingredient == 1 ? '' : 's'}, "
-                      %a.tag{:href => "#", :title => hover_text}<
-                        %span.tag<
-                          #{t[:name]}
-                          %span.tag-count #{t[:count]}
-        #spacer-bottom.clear.below-content
-        #page-bottom
-          #page-bottom-contents
-            #copyright< ©2012 #{settings.owner}
-            - if logged_in?
-              %hr
-              %p{:class=>'like_site'} Do you like this site?
-              %p
-                %iframe{:src => "http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fopen-recipe.herokuapp.com%2F&amp;layout=standard&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=80",
-                        :scrolling => "no",
-                        :frameborder => "0",
-                        :style => "border:none; overflow:hidden; width:450px; height:30px;",
-                        :allowTransparency => "true"}
+                    -else
+                      %span.in= item[:title]
+      #spacer-top.clear.below-page-top
+      #page-content
+        #main
+          #main-top
+          #main-content
+            = yield
+          #main-bottom
+            #tag-cloud
+              - tags = popular_tags
+              %h2 Tags
+              %ul.tags
+                - for t in tags
+                  %li.tag
+                    - tcs = t[:counts]
+                    - c_recipe = tcs[:recipes]
+                    - c_meal = tcs[:meals]
+                    - c_ingredient = tcs[:ingredients]
+                    
+                    - hover_text = "#{c_recipe == 0 ? 'No' : c_recipe} recipe#{c_recipe == 1 ? '' : 's'}, "
+                    - hover_text << "#{c_meal == 0 ? 'No' : c_meal} meal#{c_meal == 1 ? '' : 's'}, "
+                    - hover_text << "#{c_ingredient == 0 ? 'No' : c_ingredient} ingredient#{c_ingredient == 1 ? '' : 's'}, "
+                    %a.tag{:href => "#", :title => hover_text}<
+                      %span.tag<
+                        #{t[:name]}
+                        %span.tag-count #{t[:count]}
+      #spacer-bottom.clear.below-content
+      #page-bottom
+        #page-bottom-contents
+          #copyright< ©2012 #{settings.owner}
+          - if logged_in?
+            %hr
+            %p{:class=>'like_site'} Do you like this site?
+            %p
+              %iframe{:src => "http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fopen-recipe.herokuapp.com%2F&amp;layout=standard&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=80",
+                      :scrolling => "no",
+                      :frameborder => "0",
+                      :style => "border:none; overflow:hidden; width:450px; height:30px;",
+                      :allowTransparency => "true"}

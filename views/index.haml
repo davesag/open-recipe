@@ -1,12 +1,12 @@
 -if !logged_in?
-  %h3 Welcome to Open Recipe.
+  %h2 Welcome to Open Recipe.
   %p You will need to log in via facebook and authorise us to access the data we need to operate this site for you.
   %p
     See our
     %a{:href => '/privacy', :title => "Privacy Policy"}Privacy Policy
     for more details.
 -else
-  %h3 Hello #{active_user.first_name}, welcome to Open Recipe.
+  %h2 Hello #{active_user.first_name}, welcome to Open Recipe.
   %table
     %tr
       %th Recipe
