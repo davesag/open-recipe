@@ -6,33 +6,13 @@ _Open Recipe_
 
 ---
 
-## Features
+## Phase 1 Features
 
-### _Guests_ have access to the following features
-
-* browse public recipes and photos, and user profiles.
-* log in using their Facebook id.
-
-### _Free Members_; Those who don't pay but who do log in via Facebook have access to the following additional features
-
-* upload of recipes and photos for use by anyone under the following
-creative commons license 'Attribution-Noncommercial-Share Alike' -
-http://creativecommons.org/licenses/by-nc-sa/3.0/au/
-* Posting a link to any recipe you can access to your Facebook
-timeline, or sharing it with selected friends.
-* 'Like' a recipe
-* uploading photos linked to a recipe, restaurant, or retailer.
-* check in to a location on Facebook, based on photo or recipe upload.
-
-### _Paying Members_; Those who do pay and who log in via Facebook can
-
-* upload recipes under creative commons licence, but whose audience is
-restricted to friends only.
-* earn reputation credit to allow wider permissions such as
- * editing retailer and restaurant meta-data
- * moderating recipe placement within appropriate meals and meal
-types, moderating tags, creation of and merging of retailers,
-restaurants, photos, meals and meal-types, and tags.
+1. Upload Recipes, detailing their ingredients, and tags, and associated with a 'meal type', and photo, (either as public (under creative commons license), friends only, or private)
+2. List and display own, friends and public recipes
+3. Search by tag, ingredient, name, or free text
+4. Favourite / like other people's recipes
+5. Share a recipe either to a friend or friends, or to general public (via FB post, twitter post, or emailing a link)
 
 ---
 
