@@ -19,6 +19,8 @@
    highlight border = #fcd3a1
    error text = #2e2e2e
    
+   headers: font-family: HelveticaNeue, Helvetica, Arial, sans-serif;
+   
 */
 
 * { 
@@ -79,26 +81,11 @@ div.text-navigation div { display:inline; margin:0px 0.5em; }
 	margin-bottom:1em;
 }
  
-/* Site menus. Don't wrap the top level items, and wrap sub-menu items normaly. */
-#sitemenu-content ul li {white-space: nowrap}
-#sitemenu-content ul li {white-space: normal}
-#sitemenu-content span.in { position: relative; }
-
 /* Keep tables with long content from pushing too far over */
 table { word-break: break-all; }
 
 textarea {
     resize: vertical;
-}
-
-/* sans-serif font for headings & sitemenu */
-#sitemenu, h2, h3, h4, h5, h6, #title p, .collection-navigation {
-	font-family: HelveticaNeue, Helvetica, Arial, sans-serif;
-}
-
-h5, h6 {
-	font-size: 100%;
-	margin-bottom: 0.8em;
 }
 
 img {
@@ -140,63 +127,6 @@ ul, ol, dd {
 
 dt {
 	font-style: italic;
-}
-
-
-/*
-SITEMENU
-*/
-
-#sitemenu li{  	
-	word-wrap: break-word;
-}
-#sitemenu-content ul {
-	margin:0px 0px 0 0px;
-	list-style:none;
-	min-height: 2.6em;
-	line-height: 2.6em;
-	padding: 0px;
-}
-
-#sitemenu-content ul li {
-	float: left;
-}
-
-#sitemenu-content ul a, 
-#sitemenu-content ul .currentPage .in {
-	text-transform: uppercase;
-	text-decoration: none;
-	color: #fff;
-	border-right: 1px solid #fff;
-	display: block;
-	padding: 0px 8px;
-}
-
-#sitemenu-content ul li ul {
-	line-height: 1.6em;
-	border-color: #fff;
-	-webkit-border-top-right-radius: 10px;
-	-moz-border-radius-topright: 10px;
-	border-top-right-radius: 10px;
-}
-
-#sitemenu-content a, 
-#sitemenu-content .currentPage .in {
-	border: 0px none;
-	white-space: normal;
-	padding: 0px;
-}
-
-#sitemenu-content ul ul .currentPage .in {
-	padding: 5px;
-}
-
-#sitemenu-content .currentPage .in {
-	background: #fff;
-}
-
-#sitemenu-content a:hover {
-	color: #111111 !important;
 }
 
 #main-content {
@@ -266,20 +196,8 @@ a:hover {
 	color:#999999;
 }
 
-#sitemenu-content ul {
-	background: #646463;
-}
-
-#sitemenu-content ul li ul {
-	background: #646463;	
-}
-
 #main h2 {
 	color:#646463;
-}
-
-#sitemenu-content .currentPage .in {
-	color:#646463 !important;
 }
 
 .logout a { color: #2554C7; font-size: 15px; }
@@ -340,7 +258,9 @@ a:hover {
 	font-weight: lighter;
 }
 
+/* jQuery UI overrides */
 .ui-autocomplete-loading {
   background: white url('../images/ui-anim_basic_16x16.gif') right center no-repeat;
 }
 
+#nav-bar.ui-tabs .ui-tabs-nav li.ui-tabs-selected { padding: .5em 1em !important;}

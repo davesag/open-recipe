@@ -23,8 +23,6 @@
            :href => "/css/main.css"}
     %link{ :rel =>"stylesheet", :type => "text/css",
            :href => "/css/themes/open-recipe-theme/jquery-ui-1.8.23.custom.css"}
-    /[if IE]
-      %link{ :rel =>"stylesheet", :type => "text/css", :href => "/css/main_ie_overrides.css"}
     %script{ :src => "/scripts/jquery-1.8.0.min.js" }
     %script{ :src => "/scripts/jquery-ui-1.8.23.custom.min.js" }
     :javascript
@@ -73,21 +71,16 @@
             %img.logo{:width => 128, :height => 157,
                       :src => "/images/Open_Recipe_Logo_128x157.png",
                       :alt => "Open Recipe Logo."}
-        #sitemenu-container
-          #sitemenu
-            #sitemenu-content
-              %ul
-                - count = 1
-                - for item in navigation
-                  - selected = item[:selected]
-                  - mods = "i#{count} #{count.odd? ? 'o' : 'e'}#{selected ? ' currentPage' : ''}"
-                  - count = count + 1
-                  %li{:class => mods}<
-                    -if !selected
-                      %a{:href => item[:href]}
-                        %span.in= item[:title]
-                    -else
-                      %span.in= item[:title]
+        #nav-bar.ui-tabs.ui-widget.ui-widget-content.ui-corner-all
+          %ul.ui-tabs-nav.ui-helper-reset.ui-helper-clearfix.ui-widget-header.ui-corner-all
+            - for item in navigation
+              - selected = item[:selected]
+              - mods = "ui-state-default ui-corner-top#{selected ? ' ui-tabs-selected ui-state-active' : ''}"
+              %li{:class => mods}<
+                -if !selected
+                  %a{:href => item[:href]}= item[:title]
+                -else
+                  = item[:title]
       #spacer-top.clear.below-page-top
       #page-content
         #main
@@ -114,7 +107,7 @@
                         #{t[:name]}
                         %span.tag-count #{t[:count]}
       #spacer-bottom.clear.below-content
-      #page-bottom
+      #page-bottom.ui-widget.ui-widget-content.ui-corner-all
         #page-bottom-contents
           #copyright< ©2012 #{settings.owner}
           - if logged_in?
