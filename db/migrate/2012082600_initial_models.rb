@@ -39,7 +39,6 @@ class InitialModels < ActiveRecord::Migration
                                     # recipe belongs_to :owner, :class_name => 'User'
                                     # recipe has_many :active_ingredients
                                     # recipe has_and_belongs_to_many :tags
-                                    # recipe has_and_belongs_to_many :restaurants
       t.integer :meal_id            # recipe belongs_to :meal
                                     # meal has_many :recipes
     end
@@ -77,12 +76,8 @@ class InitialModels < ActiveRecord::Migration
       t.integer  :remote_id
       t.string   :profile_picture_url, :limit => 255
       t.string   :locale, :limit => 7
-      t.integer  :current_location_id # user belongs_to :location
-                                      # location has_many: users
                                       # user has_many :recipes
                                       # user has_many :favourite_recipes
-                                      # user has_many :favourite_restaurants
-                                      # user has_many :favourite_retailers
                                       # user has_many :photos.
                                       # user has_and_belongs_to_many :favourite_tags, :class_name => 'Tag'
     end
@@ -150,86 +145,6 @@ class InitialModels < ActiveRecord::Migration
       t.integer :unit_id        # quantity belongs_to :unit
     end
 
-    create_table :locations do |t|
-      t.string   :name, :null => false
-      t.decimal  :latitude, :precision => 15, :scale => 10, :default => 0.0
-      t.decimal  :longitude, :precision => 15, :scale => 10, :default => 0.0
-      t.integer  :remote_id
-      t.integer  :location_type_id # location belongs_to location_type
-                                   # location_type has_many locations
-                                   # location has_many retailers
-                                   # location has_many restaurants
-                                   # location has_many: users
-    end
-
-    add_index :locations, :name, :unique => false
-    add_index :locations, :remote_id, :unique => true
-
-    create_table :location_types do |t|
-      t.string :name, :null => false
-      t.integer :effective_gps_radius, :default => 10 # metres.
-    end
-
-    add_index :location_types, :name, :unique => true
-
-    create_table :restaurants do |t|
-      t.string   :name, :null => false
-      t.text     :description
-      t.integer  :location_id     # restaurant belongs_to :location
-                                  # location has_many :restaurants
-                                  # restaurant has_and_belongs_to_many :recipes
-                                  # restaurant has_and_belongs_to_many :photos
-      t.integer :remote_id
-      
-    end
-
-    add_index :restaurants, :name, :unique => false
-    add_index :restaurants, :remote_id, :unique => true
-
-    create_table :meals_restaurants, :id => false do |t|
-      t.integer :restaurant_id
-      t.integer :meal_id
-    end
-
-    create_table :recipes_restaurants, :id => false do |t|
-      t.integer :restaurant_id
-      t.integer :recipe_id
-    end
-
-    create_table :restaurants_tags, :id => false do |t|
-      t.integer :restaurant_id
-      t.integer :tag_id
-    end
-
-    create_table :favourite_restaurants do |t|
-      t.integer :restaurant_id  # favourite_restaurant belongs_to :restaurant
-                                # restaurant has_many :favourite_restaurant
-      t.integer :user_id        # favourite_restaurant belongs_to :user
-                                # user has_many :favourite_restaurants
-      t.integer :rating         # the rating the user gives the restaurant. (aggregated to compute restaurant's average rating.)
-    end
-
-    create_table :retailers do |t|
-      t.string   :name, :null => false
-      t.text     :description
-      t.integer  :location_id    # retailer belongs_to :location
-                                 # location has_many :retailers
-                                 # restaurant has_and_belongs_to_many :recipes
-      t.integer :remote_id
-
-    end
-
-    add_index :retailers, :name, :unique => false
-    add_index :retailers, :remote_id, :unique => true
-
-    create_table :favourite_retailers do |t|
-      t.integer  :retailer_id   # favourite_retailer belongs_to :retailer
-                                # retailer has_many :favourite_retailer
-      t.integer  :user_id       # favourite_retailer belongs_to :user
-                                # user has_many :favourite_retailers
-      t.integer  :rating        # the rating the user gives the retailer. (aggregated to compute retailer's average rating.)
-    end
-
     create_table :photos do |t|
       t.string   :name, :null => false
       t.string   :caption
@@ -247,29 +162,9 @@ class InitialModels < ActiveRecord::Migration
       t.integer :photo_id
     end
     
-    create_table :ingredients_retailers, :id => false do |t|
-      t.integer :ingredient_id
-      t.integer :retailer_id
-    end
-    
-    create_table :photos_restaurants, :id => false do |t|
-      t.integer :restaurant_id
-      t.integer :photo_id
-    end
-
     create_table :photos_recipes, :id => false do |t|
       t.integer :recipe_id
       t.integer :photo_id
-    end
-
-    create_table :photos_retailers, :id => false do |t|
-      t.integer :retailer_id
-      t.integer :photo_id
-    end
-
-    create_table :retailers_tags, :id => false do |t|
-      t.integer :retailer_id
-      t.integer :tag_id
     end
 
     create_table :preferences do |t|
@@ -284,24 +179,11 @@ class InitialModels < ActiveRecord::Migration
   end
 
   def self.down
-  	drop_table :retailers_tags
+    drop_table :preferences
   	drop_table :quantities
-  	drop_table :locations
-  	drop_table :restaurants
-  	drop_table :recipes_restaurants
-  	drop_table :restaurants_meals
-  	drop_table :recipes_restaurants
-  	drop_table :restaurants_tags
-  	drop_table :favourite_restaurants
-  	drop_table :retailers
-  	drop_table :retailers_tags
-  	drop_table :favourite_retailers
   	drop_table :ingredients_photos
-  	drop_table :ingredients_retailers
   	drop_table :photos
-  	drop_table :photos_restaurants
   	drop_table :photos_recipes
-  	drop_table :photos_retailers
   	drop_table :users
   	drop_table :recipes_tags
   	drop_table :meals_tags

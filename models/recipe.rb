@@ -15,7 +15,6 @@ class Recipe < ActiveRecord::Base
   has_many :active_ingredients, :dependent => :destroy  # ingredients used to make this recipe with, 
                                         # in addition to their quantities.
   has_and_belongs_to_many :tags # tags for this recipe.
-  has_and_belongs_to_many :restaurants # restaurants that make this recipe.
   has_and_belongs_to_many :photos # photos of this recipe.
   
   belongs_to :owner, :class_name => 'User'

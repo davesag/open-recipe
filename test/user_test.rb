@@ -63,7 +63,6 @@ class UserTest < HandlerTestBase
       
       assert pref.user == bob, "expected the pref's user to be bob."
 
-
       # Create some units and ingredients
       ingredients = []
       ingredients << frog = Ingredient.create(:name => "Frog (live)")
@@ -169,92 +168,10 @@ class UserTest < HandlerTestBase
       assert bob.favourite_recipes.first.recipe.name == frog_and_duck_soup.name, "expected bob's fave to be frog and duck soup but it was #{bob.favourite_recipes.first.recipe.name}."
       assert bob.favourite_recipes.first.rating == 7, "expetced it to have a rating of 7 but it was #{bob.favourite_recipes.first.rating}."
 
-      #location_types
-      location_types = []
-      location_types << city = LocationType.create(:name => 'City', :effective_gps_radius => 1000)
-      location_types << outdoors = LocationType.create(:name => 'Outdoors', :effective_gps_radius => 1000)
-      location_types << restaurant = LocationType.create(:name => 'Restaurant', :effective_gps_radius => 50)
-      location_types << shop = LocationType.create(:name => 'Shop', :effective_gps_radius => 50)
-      location_types << mall = LocationType.create(:name => 'Shopping Mall', :effective_gps_radius => 500)
-
-      # locations
-      locations = []
-      locations << some_damn_place = Location.create(:name => "some damn place",
-                                    :latitude => 35.545426,
-                                    :longitude => 22.6353363,
-                                    :location_type => outdoors,
-                                    :remote_id => 3)
-      locations << canberra = Location.create(:name => "Canberra",
-                                    :latitude => 35.545426,
-                                    :longitude => 22.6353363,
-                                    :location_type => city,
-                                    :remote_id => 5)
-      locations << the_mall = Location.create(:name => "The Shops",
-                                    :latitude => 35.545426,
-                                    :longitude => 22.6353363,
-                                    :location_type => mall,
-                                    :remote_id => 7)
-      locations << the_shop = Location.create(:name => "Shop 3, Shopping Street.",
-                                    :latitude => 35.545426,
-                                    :longitude => 22.6353363,
-                                    :location_type => shop,
-                                    :remote_id => 9)
-      locations << the_restaurant = Location.create(:name => "Shop 3, Shopping Street.",
-                                    :latitude => 35.545426,
-                                    :longitude => 22.6353363,
-                                    :location_type => restaurant,
-                                    :remote_id => 11)
-
-      # restaurants
-      restaurants = []
-      restaurants << wok_on_buy = Restaurant.create(:name => 'Wok On Buy', :description => 'A lovely little place to buy chinese.',
-                                                    :meals => [duck_soup],
-                                                    :photos => [photo],
-                                                    :tags => [chinese, dinner],
-                                                    :recipes => [duck_and_frog_soup],
-                                                    :location => the_restaurant)
-
-      # favourite_restaurants
-      favourite_restaurants = []
-      favourite_restaurants << fav_chinese = FavouriteRestaurant.create(:restaurant => wok_on_buy, :rating => 8, :user => bob)
-      assert bob.favourite_restaurants.first.restaurant.name == wok_on_buy.name, "expected bob's fave to be #{wok_on_buy.name} but it was #{bob.favourite_restaurants.first.restaurant.name}."
-      assert bob.favourite_restaurants.first.rating == 8, "expetced it to have a rating of 8 but it was #{bob.favourite_restaurants.first.rating}."
-
-      # with photos
-      assert photo.restaurants.first == wok_on_buy, "expected the photo to be linked to Wok On Buy."
-      
-      # with recipes
-      assert duck_and_frog_soup.restaurants.first == wok_on_buy, "expected recipe #{duck_and_frog_soup.name}to be linked to #{wok_on_buy.name}"
-      
-      # with tags
-      assert chinese.restaurants.first == wok_on_buy, "expected tag #{chinese.name}to be linked to #{wok_on_buy.name}"
-      # with meals
-      
-      # retailers
-      retailers = []
-      retailers << wokking_shop = Retailer.create(:name => 'Wokking Shop', :description => 'A lovely little place to buy wholesale chinese.',
-                                                    :tags => [chinese],
-                                                    :ingredients => [duck, chinesespice, salt, pepper],
-                                                    :location => the_shop)
-
-      # favourte_retailers
-      favourite_retailers = []
-      favourite_retailers << fav_chinese = FavouriteRetailer.create(:retailer => wokking_shop, :rating => 4, :user => bob)
-      assert bob.favourite_retailers.first.retailer.name == wokking_shop.name, "expected bob's fave to be #{wokking_shop.name} but it was #{bob.favourite_retailers.first.retailer.name}."
-      assert bob.favourite_retailers.first.rating == 4, "expetced it to have a rating of 4 but it was #{bob.favourite_retailers.first.rating}."
-
-      bob.current_location = the_restaurant
-      bob.save!
-      assert the_restaurant.users.include?(bob), "expected bob to be in the list of users for #{the_restaurant.name}"
-
       # and finally shut it all down
 
       allowed_units.each {|t| t.destroy}
-      location_types.each {|t| t.destroy}
-      locations.each {|t| t.destroy}
-      restaurants.each {|t| t.destroy}
       recipes.each {|t| t.destroy}
-      retailers.each {|t| t.destroy}
       tags.each {|t| t.destroy}
       active_ingredients.each {|t| t.destroy}
       ingredients.each {|t| t.destroy}
@@ -265,16 +182,11 @@ class UserTest < HandlerTestBase
       assert ActiveIngredient.count == 0, "There #{ActiveIngredient.count == 1 ? 'are' : 's'} #{ActiveIngredient.count} ActiveIngredient#{ActiveIngredient.count == 1 ? '' : 's'} left over."
       assert AllowedUnit.count == 0, "There #{AllowedUnit.count == 1 ? 'are' : 's'} #{AllowedUnit.count} AllowedUnit#{AllowedUnit.count == 1 ? '' : 's'} left over."
       assert FavouriteRecipe.count == 0, "Expected the favourite recipes to be gone but there #{FavouriteRecipe.count == 1 ? 'was' : 'were'} #{FavouriteRecipe.count} left."
-      assert FavouriteRestaurant.count == 0, "Expected the favourite restaurants to be gone but there #{FavouriteRestaurant.count == 1 ? 'was' : 'were'} #{FavouriteRestaurant.count} left."
       assert Ingredient.count == 0, "There #{Ingredient.count == 1 ? 'are' : 's'} #{Ingredient.count} Ingredient#{Ingredient.count == 1 ? '' : 's'} left over."
-      assert Location.count == 0, "There #{Location.count == 1 ? 'are' : 's'} #{Location.count} location#{Location.count == 1 ? '' : 's'} left over."
-      assert LocationType.count == 0, "There #{LocationType.count == 1 ? 'is' : 'are'} #{LocationType.count} location type#{LocationType.count == 1 ? '' : 's'} left over."
       assert Meal.count == 0, "There #{Meal.count == 1 ? 'are' : 's'} #{Meal.count} Meal#{Meal.count == 1 ? '' : 's'} left over."
       assert MealType.count == 0, "There #{MealType.count == 1 ? 'are' : 's'} #{MealType.count} MealType#{MealType.count == 1 ? '' : 's'} left over."
       assert Photo.count == 0, "Expected the photos to be gone."
       assert Preference.count == 0, "Expected the preferences to be gone."
-      assert Restaurant.count == 0, "There #{Restaurant.count == 1 ? 'are' : 's'} #{Restaurant.count} Restaurant#{Restaurant.count == 1 ? '' : 's'} left over."
-      assert Retailer.count == 0, "There #{Retailer.count == 1 ? 'are' : 's'} #{Retailer.count} Retailer#{Retailer.count == 1 ? '' : 's'} left over."
       assert Tag.count == 0, "There #{Tag.count == 1 ? 'is' : 'are'} #{Tag.count} tag type#{Tag.count == 1 ? '' : 's'} left over."
       assert UnitType.count == 0, "There #{UnitType.count == 1 ? 'are' : 's'} #{UnitType.count} UnitType#{UnitType.count == 1 ? '' : 's'} left over."
       assert User.count == 0, "There #{User.count == 1 ? 'is' : 'are'} #{User.count} user#{User.count == 1 ? '' : 's'} left over."

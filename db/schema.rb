@@ -31,18 +31,6 @@ ActiveRecord::Schema.define(:version => 2012082600) do
     t.integer "rating"
   end
 
-  create_table "favourite_restaurants", :force => true do |t|
-    t.integer "restaurant_id"
-    t.integer "user_id"
-    t.integer "rating"
-  end
-
-  create_table "favourite_retailers", :force => true do |t|
-    t.integer "retailer_id"
-    t.integer "user_id"
-    t.integer "rating"
-  end
-
   create_table "ingredients", :force => true do |t|
     t.string  "name",        :null => false
     t.text    "description"
@@ -61,33 +49,10 @@ ActiveRecord::Schema.define(:version => 2012082600) do
     t.integer "recipe_id"
   end
 
-  create_table "ingredients_retailers", :id => false, :force => true do |t|
-    t.integer "ingredient_id"
-    t.integer "retailer_id"
-  end
-
   create_table "ingredients_tags", :id => false, :force => true do |t|
     t.integer "ingredient_id"
     t.integer "tag_id"
   end
-
-  create_table "location_types", :force => true do |t|
-    t.string  "name",                                 :null => false
-    t.integer "effective_gps_radius", :default => 10
-  end
-
-  add_index "location_types", ["name"], :name => "index_location_types_on_name", :unique => true
-
-  create_table "locations", :force => true do |t|
-    t.string  "name",                                                              :null => false
-    t.decimal "latitude",         :precision => 15, :scale => 10, :default => 0.0
-    t.decimal "longitude",        :precision => 15, :scale => 10, :default => 0.0
-    t.integer "remote_id"
-    t.integer "location_type_id"
-  end
-
-  add_index "locations", ["name"], :name => "index_locations_on_name"
-  add_index "locations", ["remote_id"], :name => "index_locations_on_remote_id", :unique => true
 
   create_table "meal_types", :force => true do |t|
     t.string "name", :limit => 12, :null => false
@@ -102,11 +67,6 @@ ActiveRecord::Schema.define(:version => 2012082600) do
   end
 
   add_index "meals", ["name"], :name => "index_meals_on_name", :unique => true
-
-  create_table "meals_restaurants", :id => false, :force => true do |t|
-    t.integer "restaurant_id"
-    t.integer "meal_id"
-  end
 
   create_table "meals_tags", :id => false, :force => true do |t|
     t.integer "meal_id"
@@ -127,16 +87,6 @@ ActiveRecord::Schema.define(:version => 2012082600) do
 
   create_table "photos_recipes", :id => false, :force => true do |t|
     t.integer "recipe_id"
-    t.integer "photo_id"
-  end
-
-  create_table "photos_restaurants", :id => false, :force => true do |t|
-    t.integer "restaurant_id"
-    t.integer "photo_id"
-  end
-
-  create_table "photos_retailers", :id => false, :force => true do |t|
-    t.integer "retailer_id"
     t.integer "photo_id"
   end
 
@@ -166,44 +116,9 @@ ActiveRecord::Schema.define(:version => 2012082600) do
 
   add_index "recipes", ["name"], :name => "index_recipes_on_name", :unique => true
 
-  create_table "recipes_restaurants", :id => false, :force => true do |t|
-    t.integer "restaurant_id"
-    t.integer "recipe_id"
-  end
-
   create_table "recipes_tags", :id => false, :force => true do |t|
     t.integer "tag_id"
     t.integer "recipe_id"
-  end
-
-  create_table "restaurants", :force => true do |t|
-    t.string  "name",        :null => false
-    t.text    "description"
-    t.integer "location_id"
-    t.integer "remote_id"
-  end
-
-  add_index "restaurants", ["name"], :name => "index_restaurants_on_name"
-  add_index "restaurants", ["remote_id"], :name => "index_restaurants_on_remote_id", :unique => true
-
-  create_table "restaurants_tags", :id => false, :force => true do |t|
-    t.integer "restaurant_id"
-    t.integer "tag_id"
-  end
-
-  create_table "retailers", :force => true do |t|
-    t.string  "name",        :null => false
-    t.text    "description"
-    t.integer "location_id"
-    t.integer "remote_id"
-  end
-
-  add_index "retailers", ["name"], :name => "index_retailers_on_name"
-  add_index "retailers", ["remote_id"], :name => "index_retailers_on_remote_id", :unique => true
-
-  create_table "retailers_tags", :id => false, :force => true do |t|
-    t.integer "retailer_id"
-    t.integer "tag_id"
   end
 
   create_table "tags", :force => true do |t|
@@ -233,7 +148,6 @@ ActiveRecord::Schema.define(:version => 2012082600) do
     t.integer "remote_id"
     t.string  "profile_picture_url"
     t.string  "locale",              :limit => 7
-    t.integer "current_location_id"
   end
 
   add_index "users", ["name"], :name => "index_users_on_name"

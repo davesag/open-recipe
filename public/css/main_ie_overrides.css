@@ -28,18 +28,6 @@
 	top: 0px;
 }
 
-* html #page-bottom {
-	background-image: url(../images/corner-topright.gif);
-}
-
-* html #sitemenu-content a:hover {
-	background-image: url(../images/corner-topright.gif);
-}
-
-* html .recipe-info .timestamp {
-	background-image: url(../images/corner-topright.gif);
-}
-
 * html #sitemenu-content ul li {
   white-space: normal
 }
@@ -47,9 +35,3 @@
 *:first-child+html #sitemenu-content ul li {
   white-space: normal
 }
-
-.photogrid-index {
-  overflow: hidden; /* for IE 5 Mac */
-  height:1%; /* for IE 5, 6 Win */
-}
-

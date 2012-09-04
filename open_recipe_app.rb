@@ -37,6 +37,7 @@ class OpenRecipeApp < Sinatra::Application
   set :keywords, 'recipe, food, eating, drinking, cocktails, meals, restuarants'
   set :root, File.dirname(__FILE__)
   set :models, Proc.new { root && File.join(root, 'models') }
+  set :facebook_permissions, ["read_friendlists", "publish_stream","email", "user_likes", "user_photos"]
 
 	enable :sessions, :logging, :show_exceptions
 
@@ -174,17 +175,15 @@ class OpenRecipeApp < Sinatra::Application
 
     def summarise_tag (t, zero_okay = true)
       rc = t.recipes.count
-      sc = t.retailers.count
       mc = t.meals.count
-      rec = t.restaurants.count
-      tot = rc + sc + mc + rec
+      ic = t.ingredients.count
+      tot = rc + mc + ic
       
       if (tot > 0) || zero_okay
         return {:name => t.name, :count => tot,
                      :counts => {:recipes => rc,
-                               :restaurants => rec,
                                :meals => mc,
-                               :retailers => sc}}
+                               :ingredients => ic}}
       end
       return nil
     end
@@ -226,25 +225,6 @@ class OpenRecipeApp < Sinatra::Application
     me = @graph.get_object('me')
     @active_user = User.where(:username => me['username']).first_or_create(:remote_id => me['id'].to_i)
     @active_user.update_from_facebook me
-    
-    # get current location.
-    location = me['location']
-    logger.debug "User location is #{location['name'] || 'not specified'}"
-    if location != nil
-      location = @graph.get_object(location['id'])
-      logger.debug "User location details: #{location.inspect}"
-      category_name = location['category']
-      logger.debug "#{location['name']} has category #{category_name}."
-      # do we have this category as a location_type?
-      lt = LocationType.where(:name => category_name).first_or_create
-      # do we have this location?
-      loc = Location.where(:name => location['name']).first_or_create(:location_type => lt,
-                              :remote_id => location['id'].to_i,
-                              :latitude => location['location']['latitude'].to_f,
-                              :longitude => location['location']['longitude'].to_f)
-      @active_user.current_location = loc
-    end
-    
     @active_user.save
     return @active_user
   end
@@ -284,9 +264,7 @@ class OpenRecipeApp < Sinatra::Application
 		logger.debug "Set session['oauth'] : #{session['oauth'].class}"
     logger.debug "Session id: #{session['session_id']}"
 		# redirect to facebook to get your code
-		redirect session['oauth'].url_for_oauth_code(
-		      :permissions => ["read_friendlists", "publish_stream","email","user_location",
-		      "user_likes", "user_checkins", "user_photos"])
+		redirect session['oauth'].url_for_oauth_code(:permissions => settings.facebook_permissions)
 	end
 
 	get '/logout' do
@@ -337,16 +315,17 @@ class OpenRecipeApp < Sinatra::Application
   end
 
   get '/faqs' do
-    redirect '/' unless logged_in?
     haml :faqs
   end
 
-  # request coming in from jQuery UI component.
+  # search request comes from jQuery UI component.
+  # user must be logged in for this to return a sensible result.
   get '/search' do
+    return [].to_json unless logged_in?
     term = params[:term]
     logger.debug "Got search request #{params[:term]}."
     
-    # find tags, ingredients, recipes, meals, restaurants, retailers.
+    # find tags, ingredients, recipes, meals.
     result = []
     Tag.name_starts_with(term).each do |tag|
       result << {:value => tag.id, :label => "Tag: #{tag.name}"}

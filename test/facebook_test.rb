@@ -14,7 +14,6 @@ class FacebookTest < HandlerTestBase
     users = []
     tu_extra = {}
     tu_extra['verified'] = true
-    tu_extra['location'] = {:name => "Canberra, Australian Capital Territory", :id => 106270089409734}
     
     old_user_data = test_users.list.first
     if old_user_data == nil
@@ -37,23 +36,7 @@ class FacebookTest < HandlerTestBase
       bob['name'] = nil
       assert !a_user.update_from_facebook(bob), "Should not be able to update the user without name data from Facebook's test user."
       
-      bob_loc = bob['location']
-      assert bob_loc != nil, "There should be a location but bob was #{bob.inspect}"
-      loc = Location.where(:name => bob_loc[:name]).first_or_create
-      puts "bob_loc = #{bob_loc.inspect}"
-# facebook's test api doesn't allow for such tests. see github at 
-#       bob_loc_detail = test_users.api.get_object(bob_loc['id'])
-#       assert bob_loc_detail != nil, "There should be more location details but bob's location id #{bob_loc['id']} didn't return anything."
-#       assert loc.update_from_facebook(bob_loc_detail), "Could not update location details from facebook."
-      loc.users << a_user
-      loc.save!
-      assert a_user.current_location == loc, "expected #{a_user.first_name}'s current location to be #{loc} but it was #{a_user.current_location}"
-      # teardown
-      LocationType.all.each {|t| t.destroy}
-      loc.destroy
       a_user.destroy
-      assert Location.count == 0, "There #{Location.count == 1 ? 'is' : 'are'} #{Location.count} location#{Location.count == 1 ? '' : 's'} left over."
-      assert LocationType.count == 0, "There #{LocationType.count == 1 ? 'is' : 'are'} #{LocationType.count} location type#{LocationType.count == 1 ? '' : 's'} left over."
       assert User.count == 0, "There #{User.count == 1 ? 'is' : 'are'} #{User.count} user#{User.count == 1 ? '' : 's'} left over."
       assert Tag.count == 0, "There #{Tag.count == 1 ? 'is' : 'are'} #{Tag.count} tag type#{Tag.count == 1 ? '' : 's'} left over."
     end
@@ -63,12 +46,12 @@ class FacebookTest < HandlerTestBase
     result = nil
     if token == nil
       result = test_users.create(true,
-                    [ "read_friendlists", "publish_stream","email","user_location",
+                    [ "read_friendlists", "publish_stream","email",
                       "user_likes", "user_checkins", "user_photos"])
     else
       begin
         result = test_users.create(true,
-                      [ "read_friendlists", "publish_stream","email","user_location",
+                      [ "read_friendlists", "publish_stream","email",
                         "user_likes", "user_checkins", "user_photos"], token)
 
       rescue Exception => detail
@@ -76,7 +59,7 @@ class FacebookTest < HandlerTestBase
         puts detail.inspect
         test_users.delete_all
         result = test_users.create(true,
-                      [ "read_friendlists", "publish_stream","email","user_location",
+                      [ "read_friendlists", "publish_stream","email",
                         "user_likes", "user_checkins", "user_photos"])
       end
     end

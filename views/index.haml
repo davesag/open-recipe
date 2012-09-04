@@ -1,15 +1,11 @@
 -if !logged_in?
-  %a{:href=>'login'}<
-    %img{:src => 'images/fb_login_button.png'}
-  %h3 Welcome to Open Recipes.
+  %h3 Welcome to Open Recipe.
   %p You will need to log in via facebook and authorise us to access the data we need to operate this site for you.
   %p
     See our
     %a{:href => '/privacy', :title => "Privacy Policy"}Privacy Policy
     for more details.
 -else
-  %a{:href => 'logout'}<
-    %img{:src => 'images/fb_logout_button.png'}
   %h3 Hello #{active_user.first_name}, welcome to Open Recipe.
   %table
     %tr

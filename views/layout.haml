@@ -22,7 +22,7 @@
     %link{ :rel =>"stylesheet", :type => "text/css",
            :href => "/css/main.css"}
     %link{ :rel =>"stylesheet", :type => "text/css",
-           :href => "/css/themes/pepper-grinder/jquery-ui-1.8.23.custom.css"}
+           :href => "/css/themes/open-recipe-theme/jquery-ui-1.8.23.custom.css"}
     /[if IE]
       %link{ :rel =>"stylesheet", :type => "text/css", :href => "/css/main_ie_overrides.css"}
     %script{ :src => "/scripts/jquery-1.8.0.min.js" }
@@ -57,28 +57,23 @@
   %body
     #page-container
       #page
-        #page-top.has-logo
+        #page-top
           #title
             -if logged_in?
               #header-information
-                %p<
-                  You are logged in as #{active_user.name}
-                  #{active_user.current_location == nil ? ' at no location.' : ' near ' << active_user.current_location.name}
-              #search-box.ui-widget
+                %p< You are logged in as #{active_user.name}
                 %form#search-form
                   %span.nowrap.in
                     %label{:for => 'search-field'} Search
                     %input#search-field{:type => 'text', :name => 'search', :placeholder => 'search text'}
             -else
               #header-information
-                %h1.title<
-                  %span.in #{settings.name}
-                %p.tagline<
-                  %span.in #{settings.tagline}
+                %a{:href => "/login"}<
+                  %img.fb-login{:src => '/images/fb_login_button.png'}
             %span#logo-container<
-              %img#logo{:width => 128, :height => 128,
-                        :src => "/images/openrecipe_logo.png",
-                        :alt => "Open Recipe draft Logo."}
+              %img.logo{:width => 128, :height => 157,
+                        :src => "/images/Open_Recipe_Logo_128x157.png",
+                        :alt => "Open Recipe Logo."}
           #sitemenu-container
             #sitemenu
               #sitemenu-content
@@ -110,13 +105,11 @@
                       - tcs = t[:counts]
                       - c_recipe = tcs[:recipes]
                       - c_meal = tcs[:meals]
-                      - c_restaurant = tcs[:restaurants]
-                      - c_retailer = tcs[:retailers]
+                      - c_ingredient = tcs[:ingredients]
                       
                       - hover_text = "#{c_recipe == 0 ? 'No' : c_recipe} recipe#{c_recipe == 1 ? '' : 's'}, "
-                      - hover_text << "#{c_restaurant == 0 ? 'No' : c_restaurant} restaurant#{c_restaurant == 1 ? '' : 's'}, "
                       - hover_text << "#{c_meal == 0 ? 'No' : c_meal} meal#{c_meal == 1 ? '' : 's'}, "
-                      - hover_text << "#{c_retailer == 0 ? 'No' : c_retailer} retailer#{c_retailer == 1 ? '' : 's'}, "
+                      - hover_text << "#{c_ingredient == 0 ? 'No' : c_ingredient} ingredient#{c_ingredient == 1 ? '' : 's'}, "
                       %a.tag{:href => "#", :title => hover_text}<
                         %span.tag<
                           #{t[:name]}

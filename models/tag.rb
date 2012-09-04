@@ -11,8 +11,6 @@ class Tag < ActiveRecord::Base
   has_and_belongs_to_many :meals # meals tagged with this tag.
   has_and_belongs_to_many :ingredients # ingredients tagged with this tag.
   has_and_belongs_to_many :recipes # recipes tagged with this tag.
-  has_and_belongs_to_many :restaurants # restaurants tagged with this tag.
-  has_and_belongs_to_many :retailers # retailers tagged with this tag.
 
   scope :name_starts_with, lambda { |str|
     {:conditions => ["name like ?", "#{str.downcase}%"]}
@@ -34,14 +32,6 @@ class Tag < ActiveRecord::Base
       union
       select tags.* from tags
       inner join recipes_tags on tags.id = recipes_tags.tag_id
-      inner join recipes on recipes_tags.recipe_id = recipes.id
-      union
-      select tags.* from tags
-      inner join restaurants_tags on tags.id = restaurants_tags.tag_id
-      inner join restaurants on restaurants_tags.restaurant_id = restaurants.id
-      union
-      select tags.* from tags
-      inner join retailers_tags on tags.id = retailers_tags.tag_id
-      inner join retailers on retailers_tags.retailer_id = retailers.id')
+      inner join recipes on recipes_tags.recipe_id = recipes.id')
   end
 end
