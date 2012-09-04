@@ -197,7 +197,9 @@ class OpenRecipeApp < Sinatra::Application
           tags << ts unless ts == nil
         end
       else
-        Tag.all.each do |t|
+        used_tags = Tag.in_use
+        used_tags = Tag.all if tags.empty?
+        used_tags.each do |t|
           ts = summarise_tag(t, false)
           tags << ts unless ts == nil
         end
