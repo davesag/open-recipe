@@ -16,6 +16,10 @@ class Tag < ActiveRecord::Base
     {:conditions => ["name like ?", "#{str.downcase}%"]}
   }
   
+  scope :name_contains, lambda { |str|
+    {:conditions => ["name like ?", "%#{str.downcase}%"]}
+  }
+
   # it's in_use if users.count >0 || meals.count > 0 || … etc
   def self.in_use
     return Tag.find_by_sql('select tags.* from tags
@@ -32,6 +36,7 @@ class Tag < ActiveRecord::Base
       union
       select tags.* from tags
       inner join recipes_tags on tags.id = recipes_tags.tag_id
-      inner join recipes on recipes_tags.recipe_id = recipes.id')
+      inner join recipes on recipes_tags.recipe_id = recipes.id
+      order by name collate nocase ASC')
   end
 end

@@ -179,27 +179,23 @@ class OpenRecipeApp < Sinatra::Application
       ic = t.ingredients.count
       tot = rc + mc + ic
       
-      if (tot > 0) || zero_okay
-        return {:name => t.name, :count => tot,
-                     :counts => {:recipes => rc,
-                               :meals => mc,
-                               :ingredients => ic}}
-      end
-      return nil
+      return {:name => t.name, :count => tot, :counts => {:recipes => rc,
+                                                          :meals => mc,
+                                                          :ingredients => ic}}
     end
 
     def popular_tags
       tags = []
       if logged_in? && !active_user.favourite_tags.empty?
-        active_user.favourite_tags.each do |t|
+        active_user.favourite_tags.sort_by(&:name).each do |t|
           ts = summarise_tag(t)
           tags << ts unless ts == nil
         end
       else
-        used_tags = Tag.in_use
-        used_tags = Tag.all if tags.empty?
+        used_tags = Tag.in_use  # returns sorted list by default.
+        used_tags = Tag.find(:all, :order => 'name collate nocase ASC') if used_tags.empty?
         used_tags.each do |t|
-          ts = summarise_tag(t, false)
+          ts = summarise_tag(t)
           tags << ts unless ts == nil
         end
       end
@@ -327,7 +323,7 @@ class OpenRecipeApp < Sinatra::Application
     
     # find tags, ingredients, recipes, meals.
     result = []
-    Tag.name_starts_with(term).each do |tag|
+    Tag.name_contains(term).each do |tag|
       result << {:value => tag.id, :label => "Tag: #{tag.name}"}
     end
     return result.to_json

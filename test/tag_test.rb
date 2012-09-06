@@ -4,36 +4,41 @@ require './test/handler_test_base'
 
 class TagTest < HandlerTestBase
 
-#   def test_tag_starts_with
-#     ActiveRecord::Base.transaction do |t|
-#       tt = Tag.create(:name => "this is a test")
-#       tr = Tag.name_starts_with('this').first
-#       assert tr != nil, "expected search result to be non-nil"
-#       assert tt == tr, "expected the tag '#{tt.name}' to start with 'this', but got #{tr.name}"
-#       tr = Tag.name_starts_with('This').first
-#       assert tr != nil, "expected search result to be non-nil"
-#       assert tt == tr, "expected the tag '#{tt.name}' to start with 'This' after lowercase conversion, but got #{tr.name}"
-#       tt..name = "This is a test"
-#       tt.save!
-#       
-#       tr = Tag.name_starts_with('this').first
-#       assert tr != nil, "expected search result to be non-nil"
-#       assert tt == tr, "expected the tag '#{tt.name}' to start with 'this', but got #{tr.name}"
-#       tr = Tag.name_starts_with('This').first
-#       assert tr != nil, "expected search result to be non-nil"
-#       assert tt == tr, "expected the tag '#{tt.name}' to start with 'This' after lowercase conversion, but got #{tr.name}"
-# 
-#       tr = Tag.name_starts_with("bingo").first
-#       assert tr == nil, "Expected no results."
-# 
-#       tt.destroy
-#     end
-#     assert Tag.count == 0, "There #{Tag.count == 1 ? 'is' : 'are'} #{Tag.count} tag type#{Tag.count == 1 ? '' : 's'} left over."
-#   end
+  def test_tag_starts_with_and_name_contains
+    ActiveRecord::Base.transaction do |t|
+      tt = Tag.create(:name => "this is a test")
+      tr = Tag.name_starts_with('this').first
+      assert tr != nil, "expected search result to be non-nil"
+      assert tt == tr, "expected the tag '#{tt.name}' to start with 'this', but got #{tr.name}"
+      tr = Tag.name_starts_with('This').first
+      assert tr != nil, "expected search result to be non-nil"
+      assert tt == tr, "expected the tag '#{tt.name}' to start with 'This' after lowercase conversion, but got #{tr.name}"
+      tt.name = "This is a test"
+      tt.save!
+      
+      tr = Tag.name_starts_with('this').first
+      assert tr != nil, "expected search result to be non-nil"
+      assert tt == tr, "expected the tag '#{tt.name}' to start with 'this', but got #{tr.name}"
+      tr = Tag.name_starts_with('This').first
+      assert tr != nil, "expected search result to be non-nil"
+      assert tt == tr, "expected the tag '#{tt.name}' to start with 'This' after lowercase conversion, but got #{tr.name}"
+
+      tr = Tag.name_starts_with("bingo").first
+      assert tr == nil, "Expected no results."
+
+      tr = Tag.name_contains("is a").first
+      assert tr != nil, "expected search result to be non-nil"
+      assert tt == tr, "expected the tag '#{tt.name}' to contain 'is a', but got #{tr.name}"
+
+      tt.destroy
+    end
+    assert Tag.count == 0, "There #{Tag.count == 1 ? 'is' : 'are'} #{Tag.count} tag type#{Tag.count == 1 ? '' : 's'} left over."
+  end
 
   def test_tag_in_use
     ActiveRecord::Base.transaction do |t|
-      tt = Tag.create(:name => "test tag 1")
+      test_tags = []
+      test_tags << tt = Tag.create(:name => "test")
       assert Tag.in_use.empty?, "Expected no tags to be in use."
       
       user = User.create(:username => 'bob',
@@ -74,7 +79,21 @@ class TagTest < HandlerTestBase
       # recipes
       recipe.tags << tt
       assert !Tag.in_use.empty?, "Expected the tag '#{tt.name}' to be in use."
+
+      test_tags << tv = Tag.create(:name => "veracity")
+      test_tags << tc = Tag.create(:name => "chumps")
+      
+      recipe.tags << tv
+      recipe.tags << tc
+      
+      tiu = Tag.in_use
+      assert tiu.count == 3, "Expected three tags to be in use but only #{tiu.count == 1 ? 'one was' : tiu.count.to_s << ' were'}."
+      assert tiu.first == tc, "Expected the tags to be sorted alphabetically but the first tag was #{tiu.first.name}"
+      assert tiu.last == tv, "Expected the tags to be sorted alphabetically but the last tag was #{tiu.last.name}"
+
       recipe.tags.delete tt
+      recipe.tags.delete tv
+      recipe.tags.delete tc
 
       recipe.destroy
       meal.destroy
@@ -84,7 +103,7 @@ class TagTest < HandlerTestBase
       metric.destroy
       ingredient.destroy
       user.destroy
-      tt.destroy
+      test_tags.each {|t| t.destroy }
     end
     assert ActiveIngredient.count == 0, "There #{ActiveIngredient.count == 1 ? 'are' : 's'} #{ActiveIngredient.count} ActiveIngredient#{ActiveIngredient.count == 1 ? '' : 's'} left over."
     assert AllowedUnit.count == 0, "There #{AllowedUnit.count == 1 ? 'are' : 's'} #{AllowedUnit.count} AllowedUnit#{AllowedUnit.count == 1 ? '' : 's'} left over."

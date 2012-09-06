@@ -31,44 +31,26 @@
 body {
 	font-family: Georgia, Palatino, Times, "Times New Roman", serif;
 	font-size: 76%; /* as recommended in CSS guide */
-	color:#111;
+	color:#333333;
 	word-wrap:break-word;
 	line-height:1.6;
+	background: #f7f7f7 url(../images/background_shader.png) top left repeat-x;	
 }
+
+a, a:active {
+	color:##646463;
+}
+
+a:hover {
+	color:#999999;
+}
+
 
 /* these are HTML 5 equivs for webkit and mozilla. */
 ::-webkit-input-placeholder  { color:#646463; }
 ::-webkit-input-placeholder  { color:#646463; }
 input:-moz-placeholder { color:#646463; }
 textarea:focus:-moz-placeholder { color:#646463; }
-
-/* Navigation arrows */
-div.text-navigation { text-align:center; margin-bottom:1em;}
-div.text-navigation div { display:inline; margin:0px 0.5em; }
-.collection-navigation .disabled-navigation { text-indent:-5000px; }
-
-.wide { display:block; }
-
-.narrow.left {
-    float:left!important;
-    clear:left!important;
-}
-.narrow.right {
-    float:right!important;
-    clear:right!important;
-}
-.wide.left .graphic, img.wide.left { margin-left:0px; margin-right:auto; }
-.wide.center .graphic, img.wide.center { margin-left:auto; margin-right:auto; }
-.wide.right .graphic, img.wide.right { margin-left:auto; margin-right:0px; }
-
-.ImageElement.left { text-align:left; }
-.ImageElement.center { text-align:center; }
-.ImageElement.right { text-align:right; }
-
-/* Captions should align themselves with their graphics */
-.graphic-container.left .caption { text-align:left; }
-.graphic-container.center .caption { text-align:center; }
-.graphic-container.right .caption { text-align:right; }
 
 /* Inline iframes need to display as a block to layout correctly */
 .graphic iframe { display:block; }
@@ -96,22 +78,10 @@ img {
 	margin-bottom: 0.8em;
 }
 
-
-#page {
-	width: 99%;
-	margin: 0px auto 0px auto;
-	padding: 5px;
-	background: #fff;
-}
-
-#page-top {
-  background-color #fff;
-}
-
 #title {
 	overflow: hidden;
 	position: relative;
-	height: 160px;
+	height: 157px;  /* matches logo size */
 	text-align: left;
 	color: #646463;
 }
@@ -121,83 +91,21 @@ img {
 	margin: 0px 0px 0px 0px;
 }
 
-ul, ol, dd {
-	padding-left:20px;
-}
-
-dt {
-	font-style: italic;
-}
-
-#main-content {
-	float: left;
-	width: 100%;
-}
-
-.recipe {
-	margin-bottom:1em;
-	padding:10px 6px 6px;
-}
-
-.recipe-info {
-	clear:left;
-	text-align:right;
-	background: #eee;
-	padding: 1px 0.7em;
-	margin: 3px -6px 0px -6px;
-}
-
-#main h2 {
-	font-weight: bold;
-	padding:0px 6px;
-	border-bottom: 1px solid #eee;
+#page {
+	width: 99%;
+	margin: 0px auto 0px auto;
+	padding: 5px;
+	background: #fff;
 }
 
 #page-bottom {
+	clear: both;
 	margin-top:12px;
 	padding: 1px 1em;
 	line-height:1.4em;
 	background: #646463;
 	color: #ffffff;
 	text-align: left;	
-}
-
-.recipe-thumbnail {
-	float:left;
-	margin: 5px 10px 5px 0;
-}
-
-/* 
-Open Recipe INTERNALS
-	
-These are present in every style sheet to ensure that certain classes
-used by Open Recipe to hide and clear elements are respected.
-Please Don't change them.
-*/
-.clear {clear: both; height: 0;}
-#main .clear {clear:left;}
-.hidden {display:none;}
-.narrow {float: right; margin:5px 0 5px 10px;}
-img.wide {display: block;}
-.ImageElement, .VideoElement { text-align:center;}
-.mainElement{ padding-top:25px;}
-.narrow.left{ margin: 0.3em 0.7em 0.35px 0; }
-.narrow.right {	margin: 0.3em 0 0.35em 0.7em; }
-
-body {
-	background: #f7f7f7 url(../images/background_shader.png) top left repeat-x;	
-}
-
-a, a:active {
-	color:##646463;
-}
-
-a:hover {
-	color:#999999;
-}
-
-#main h2 {
-	color:#646463;
 }
 
 .logout a { color: #2554C7; font-size: 15px; }
@@ -210,44 +118,43 @@ a:hover {
 
 #tag-cloud ul {
 	margin: 0px;
+	display: inline;
 	list-style: none;
 }
 
 #tag-cloud ul li {
-	float: left;
-	max-width: 200px;
-	white-space: nowrap;
-	padding-right:10px;
+	padding-right:5px;
+	display: inline;
+}
+
+#tag-cloud a.tag {
+	text-decoration: none;
+	line-height: 1.6em;
+	color: #fff;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	background-color: #004276;
 }
 
 #tag-cloud a.tag:hover {
 	text-decoration: none;
-	background: #21612E;
-}
-
-#tag-cloud span.tag {
-	line-height: 1.7em;
-	color: #fff;
-	-webkit-border-top-right-radius: 5px;
-	-moz-border-radius-topright: 5px;
-	border-top-right-radius: 5px;
-	background-color: #512B3A;
+	background: #f6f6f6;
+	color: #111111;
 }
 
 #tag-cloud span.tag-count {
-	line-height: 1.4em;
-	font-size: 0.9em;
-	-webkit-border-top-right-radius: 5px;
-	-moz-border-radius-topright: 5px;
-	border-top-right-radius: 5px;
+	line-height: 1em;
+	font-size: 0.8em;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
 	background-color: #7A7A7A;
 }
 
 #header-information {
   float: left;
   text-align: left;
-  padding-right: 20px;
-  width: 50%;
 }
 
 #search-form {
@@ -261,6 +168,12 @@ a:hover {
 /* jQuery UI overrides */
 .ui-autocomplete-loading {
   background: white url('../images/ui-anim_basic_16x16.gif') right center no-repeat;
+}
+
+#nav-bar {
+  position: absolute;
+  left:0;
+  bottom: 0;
 }
 
 #nav-bar.ui-tabs .ui-tabs-nav li.ui-tabs-selected { padding: .5em 1em !important;}

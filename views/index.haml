@@ -1,27 +1,35 @@
 -if !logged_in?
-  %h2 Welcome to Open Recipe.
-  %p You will need to log in via facebook and authorise us to access the data we need to operate this site for you.
-  %p
-    See our
-    %a{:href => '/privacy', :title => "Privacy Policy"}Privacy Policy
-    for more details.
+  %div.ui-widget{:style => 'width:75%;margin-top:1.5em; margin-left:auto; margin-right:auto;'}
+    %div.ui-state-error.ui-corner-all{:style => 'padding: .7em; font-size:1.2em;'}
+      %p<
+        %span.ui-icon.ui-icon-alert{:style => 'float: left; margin-right: .3em'}
+        %strong< Alert. You are not logged in.
+      %p<
+        You will need to <a href="/login">log in via facebook</a> and authorise us so we may
+        access the data we need to operate this site for you.
+      %p<
+        Please see our
+        %a{:href => '/privacy', :title => "Privacy Policy"}Privacy Policy
+        for more details concerning the information we pull from Facebook and how we use it.
 -else
   %h2 Hello #{active_user.first_name}, welcome to Open Recipe.
-  %table
-    %tr
-      %th Recipe
-      %th Facebook
-    -if @recipes == nil || @recipes.empty?
-      No recipes. Sorry.
-    -else
-      -for recipe in @recipes.each do
-        %tr
-          %td{:class=>'recipe'}
-            %a{:href=>"#{recipe[:url]}", :target=>'_blank'}
-              #{recipe[:title]}
-          %td
-            %iframe{:src => "http://www.facebook.com/plugins/like.php?href=#{recipe[:url]}&amp;layout=button_count&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=21",
-                    :scrolling => "no",
-                    :frameborder => "0",
-                    :style => "border:none; overflow:hidden; width:450px; height:21px;",
-                    :allowTransparency => "true"}
+  #recipes
+    %ul
+      %li<
+        %a{:href => '#my-recipes'}< My Recipes
+      %li<
+        %a{:href => '#my-favourite-recipes'}< Favourites
+    #my-recipes
+      - if active_user.recipes.empty?
+        %p< You have not added any recipes yet.
+      - else
+        %p< Here's where we list all your personal recipes.
+    #my-favourite-recipes
+      - if active_user.favourite_recipes.empty?
+        %p< You have not favourited any recipes yet.
+      - else
+        %p< Here's where we list all your favourite recipes.
+  :javascript
+    $(function() {
+      $('#recipes').tabs();
+    });

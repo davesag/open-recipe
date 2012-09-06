@@ -24,7 +24,7 @@
       - English
       - pan fry
       - potatoes
-      - sausages
+      - sausage
       - traditional
 
 - blackforestcake:
@@ -129,12 +129,13 @@
     tags:
       - chicken
       - complex
-      - contains alcohol
+      - alcoholic
       - dinner
       - French
       - lunch
       - oven
       - rooster
+      - wine
 
 - legoflamb:
     name: Roast Leg of Lamb
@@ -159,7 +160,6 @@
       - lunch
       - mashed potato
       - oven
-      - oven
       - potato
       - red meat
 
@@ -173,7 +173,6 @@
       - dinner
       - easy
       - lunch
-      - pasta
       - pasta
       - red meat
       - saucepan

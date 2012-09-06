@@ -56,66 +56,65 @@
     #page
       #page-top
         #title
-          -if logged_in?
-            #header-information
-              %p< You are logged in as #{active_user.name}
-              %form#search-form
-                %span.nowrap.in
-                  %label{:for => 'search-field'} Search
-                  %input#search-field{:type => 'text', :name => 'search', :placeholder => 'search text'}
-          -else
-            #header-information
+          #header-information
+            -if logged_in?
+              %div.ui-widget
+                %div.ui-state-highlight.ui-corner-all{:style => 'padding:0 .7em'}
+                  %p<
+                    %span.ui-icon.ui-icon-info{:style => 'float: left; margin-right: .3em'}<
+                    You are logged in as #{active_user.name}
+              %div.ui-widget{:style => 'margin-top: 1em'}
+                %div.ui-state-highlight.ui-corner-all{:style => 'padding:0 .7em'}
+                  %p<
+                    %span.ui-icon.ui-icon-search{:style => 'float: left; margin-right: .3em'}<
+                      %form#search-form
+                        %input#search-field{:type => 'text', :name => 'search', :placeholder => 'search text', :style => 'width:80%;'}
+            -else
               %a{:href => "/login"}<
                 %img.fb-login{:src => '/images/fb_login_button.png'}
+            #nav-bar.ui-tabs.ui-widget.ui-widget-content.ui-corner-all
+              %ul.ui-tabs-nav.ui-helper-reset.ui-helper-clearfix.ui-widget-header.ui-corner-all
+                - for item in navigation
+                  - selected = item[:selected]
+                  - mods = "ui-state-default ui-corner-top#{selected ? ' ui-tabs-selected ui-state-active' : ''}"
+                  %li{:class => mods}<
+                    -if !selected
+                      %a{:href => item[:href]}= item[:title]
+                    -else
+                      = item[:title]
           %span#logo-container<
             %img.logo{:width => 128, :height => 157,
                       :src => "/images/Open_Recipe_Logo_128x157.png",
                       :alt => "Open Recipe Logo."}
-        #nav-bar.ui-tabs.ui-widget.ui-widget-content.ui-corner-all
-          %ul.ui-tabs-nav.ui-helper-reset.ui-helper-clearfix.ui-widget-header.ui-corner-all
-            - for item in navigation
-              - selected = item[:selected]
-              - mods = "ui-state-default ui-corner-top#{selected ? ' ui-tabs-selected ui-state-active' : ''}"
-              %li{:class => mods}<
-                -if !selected
-                  %a{:href => item[:href]}= item[:title]
-                -else
-                  = item[:title]
-      #spacer-top.clear.below-page-top
-      #page-content
-        #main
-          #main-top
-          #main-content
-            = yield
-          #main-bottom
-            #tag-cloud
-              - tags = popular_tags
-              %h2 Tags
-              %ul.tags
-                - for t in tags
-                  %li.tag
-                    - tcs = t[:counts]
-                    - c_recipe = tcs[:recipes]
-                    - c_meal = tcs[:meals]
-                    - c_ingredient = tcs[:ingredients]
-                    
-                    - hover_text = "#{c_recipe == 0 ? 'No' : c_recipe} recipe#{c_recipe == 1 ? '' : 's'}, "
-                    - hover_text << "#{c_meal == 0 ? 'No' : c_meal} meal#{c_meal == 1 ? '' : 's'}, "
-                    - hover_text << "#{c_ingredient == 0 ? 'No' : c_ingredient} ingredient#{c_ingredient == 1 ? '' : 's'}, "
-                    %a.tag{:href => "#", :title => hover_text}<
-                      %span.tag<
-                        #{t[:name]}
-                        %span.tag-count #{t[:count]}
-      #spacer-bottom.clear.below-content
-      #page-bottom.ui-widget.ui-widget-content.ui-corner-all
-        #page-bottom-contents
-          #copyright< ©2012 #{settings.owner}
-          - if logged_in?
-            %hr
-            %p{:class=>'like_site'} Do you like this site?
-            %p
-              %iframe{:src => "http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fopen-recipe.herokuapp.com%2F&amp;layout=standard&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=80",
-                      :scrolling => "no",
-                      :frameborder => "0",
-                      :style => "border:none; overflow:hidden; width:450px; height:30px;",
-                      :allowTransparency => "true"}
+      #page-content.ui-helper-reset.ui-widget.ui-widget-content.ui-corner-all
+        = yield
+      - if logged_in?
+        - tags = popular_tags
+        - if tags.count > 0
+          #tag-cloud.ui-helper-reset.ui-widget.ui-widget-content.ui-corner-all
+            %h2 Tags
+            %ul
+              - for t in tags
+                %li
+                  - tcs = t[:counts]
+                  - c_recipe = tcs[:recipes]
+                  - c_meal = tcs[:meals]
+                  - c_ingredient = tcs[:ingredients]
+                  
+                  - hover_text = "#{c_recipe == 0 ? 'No' : c_recipe} recipe#{c_recipe == 1 ? '' : 's'}, "
+                  - hover_text << "#{c_meal == 0 ? 'No' : c_meal} meal#{c_meal == 1 ? '' : 's'}, "
+                  - hover_text << "#{c_ingredient == 0 ? 'No' : c_ingredient} ingredient#{c_ingredient == 1 ? '' : 's'}."
+                  %a.tag{:href => "#", :title => hover_text}<
+                    #{t[:name]}
+                    %span.tag-count #{t[:count]}
+      #page-bottom.ui-helper-reset.ui-widget.ui-widget-content.ui-corner-all
+        #copyright< ©2012 #{settings.owner}
+        - if logged_in?
+          %hr
+          %p{:class=>'like_site'} Do you like this site?
+          %p
+            %iframe{:src => "http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fopen-recipe.herokuapp.com%2F&amp;layout=standard&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=80",
+                    :scrolling => "no",
+                    :frameborder => "0",
+                    :style => "border:none; overflow:hidden; width:450px; height:30px;",
+                    :allowTransparency => "true"}
