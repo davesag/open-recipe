@@ -22,6 +22,7 @@
     #my-recipes
       - if active_user.recipes.empty?
         %p< You have not added any recipes yet.
+        %button#add-recipe< Add a recipe.
       - else
         %p< Here's where we list all your personal recipes.
     #my-favourite-recipes
@@ -29,7 +30,107 @@
         %p< You have not favourited any recipes yet.
       - else
         %p< Here's where we list all your favourite recipes.
+  #new-recipe
+    %form
+      %label(for = 'name')< Recipe Name:
+      %input#name.ui-corner-all
+      %label(for = "meal")< Meal Name:
+      %select#meal
+        %option(value='')< Choose Meal...
+      %label(for='description')< Description:
+      %textarea#description.ui-corner-all
+      %label(for='cooking-time')< Cooking Time:
+      %input#cooking-time.ui-corner-all(style='width:6em;')
+      %label(for='prep-time')< Preparation Time:
+      %input#prep-time.ui-corner-all(style='width:6em;')
+      %label(for='requirements')< Requirements
+      %textarea#requirements.ui-corner-all
+      %label(for='ingredients')< Ingredients
+      %table#ingredients.ui-corner-all
+        %tr
+          %th< Name
+          %th< Amount
+          %th< Unit
+        %tr
+          %td
+            %input#ingredient-1.ui-corner-all
+          %td
+            %input#amount-1.ui-corner-all
+          %td
+            %select#unit-1
+              %option(value='cups')< Cups
+        %tr
+          %td
+            %input#ingredient-2.ui-corner-all
+          %td
+            %input#amount-2.ui-corner-all
+          %td
+            %select#unit-2
+              %option(value='cups')< Cups
+        %tr
+          %td
+            %input#ingredient-3.ui-corner-all
+          %td
+            %input#amount-3.ui-corner-all
+          %td
+            %select#unit-3
+              %option(value='cups')< Cups
+      %label(for='method')< Method
+      %textarea#method.ui-corner-all
   :javascript
     $(function() {
       $('#recipes').tabs();
+      $('#new-recipe').dialog({
+        autoOpen: false,
+        height: 450,
+        width: 750,
+        modal: true,
+        buttons: {
+          "Choose a Photo" : function () {
+            console.log('choose a recipe photo from your facebook photos.');  // enhance this later
+            // see example at http://code.google.com/p/facebook-photo-picker/
+            // and a jQuery one at https://github.com/seanhellwig/jQuery-Facebook-Multi-Photo-Selector
+          },
+          "Preview" : function () {
+            console.log('preview recipe');  // enhance this later
+          },
+          "Create Recipe" : function () {
+            console.log("saving recipe."); // enhance this later
+            
+            $(this).dialog("close");            
+          },
+          "Cancel" : function () {
+            $(this).dialog("close");
+          }
+        },
+        close: function () {
+          // do something on close if needs be.
+          // ie choose friends to share this recipe with
+          // or post to your timeline.
+        }
+      });
+      $('#add-recipe').button({icons: {primary:'ui-icon-circle-plus'}}).click(function() {
+        $("#new-recipe").dialog("open");
+      });
     });
+  :css
+    #new-recipe label {
+      clear: left;
+      float: left;
+      width: 120px;
+      font-weight: bold;
+    }
+    #new-recipe input, textarea {
+      width: 550px;
+      margin-bottom: .5em;
+    }
+    #new-recipe textarea {
+      height: 200px;
+    }
+    #new-recipe table {
+      width: 550px;
+    }
+    #new-recipe td input {
+      width:auto;
+    }
+    
