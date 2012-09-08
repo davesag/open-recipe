@@ -49,6 +49,11 @@ ActiveRecord::Schema.define(:version => 2012082600) do
     t.integer "recipe_id"
   end
 
+  create_table "ingredients_seasons", :id => false, :force => true do |t|
+    t.integer "ingredient_id"
+    t.integer "season_id"
+  end
+
   create_table "ingredients_tags", :id => false, :force => true do |t|
     t.integer "ingredient_id"
     t.integer "tag_id"
@@ -120,6 +125,12 @@ ActiveRecord::Schema.define(:version => 2012082600) do
     t.integer "tag_id"
     t.integer "recipe_id"
   end
+
+  create_table "seasons", :force => true do |t|
+    t.string "name", :limit => 7, :null => false
+  end
+
+  add_index "seasons", ["name"], :name => "index_seasons_on_name", :unique => true
 
   create_table "tags", :force => true do |t|
     t.string "name", :limit => 25, :null => false

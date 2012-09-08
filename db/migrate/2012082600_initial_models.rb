@@ -21,12 +21,24 @@ class InitialModels < ActiveRecord::Migration
       t.text     :description
       t.integer  :energy            # joules per 100g consumed
                                     # ingredient has_and_belongs_to_many :recipes (These are the recipes to make this ingredient.)
+                                    # ingredient has_and_belongs_to_many :seasons
                                     # recipe has_and_belongs_to_many :tags
                                     # has_many :active_ingredients
 
     end
 
     add_index :ingredients, :name, :unique => true
+
+    create_table :seasons do |t|
+      t.string   :name, :null => false, :limit => 7
+    end
+    
+    add_index :seasons, :name, :unique => true
+
+    create_table :ingredients_seasons, :id => false do |t|
+      t.integer  :ingredient_id
+      t.integer  :season_id
+    end
 
     create_table :recipes do |t|
       t.string  :name, :null => false, :limit => 255

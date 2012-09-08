@@ -1,0 +1,274 @@
+# tags you specify here will be added to the startup collection of tags.
+- bacon:
+    description: Smoked, thinly sliced pork belly
+    season: all
+    tags:
+      - meat
+
+- asparagus:
+    description: a spring vegetable, native to most of Europe, northern Africa and western Asia
+    season: spring
+    tags: 
+      - vegetable
+
+- flour:
+    description: a powder made by grinding cereal grains, other seeds or roots
+    season: all
+    tags:
+      - gluten
+
+- plain flour:
+    description: flour that does not have a leavening agent. Aka all-purpose flour
+    season: all
+    tags:
+      - gluten
+
+- refined flour:
+    description: flour that has had the germ and bran removed. Typically referred to as "white flour"
+    season: all
+    tags:
+      - gluten
+
+- bleached flour:
+    description: any refined flour with a whitening agent added
+    season: all
+    tags:
+      - gluten
+
+- unbleached flour:
+    description: flour that has not undergone bleaching and therefore does not have the color of "white" flour
+    season: all
+    tags:
+      - gluten
+
+- self raising flour:
+    description: flour sold premixed with chemical leavening agents
+    season: all
+    tags:
+      - gluten
+
+- beer:
+    description: the world's most loved alcoholic beverage
+    season: all
+    tags:
+      - alcohol
+
+- bamboo: 
+    description: the largest members of the grass family, and some of the fastest growing plants in the world
+    season: all
+    tags:
+      - Asian
+      - vegetable
+
+- beans:
+    description: large plant seeds of several genera of the family Leguminosae
+    season: summer
+    tags:
+      - pulse
+
+- broad beans:
+    description: an edible pulse
+    season: summer
+    tags:
+      - pulse
+
+- mung beans:
+    description: an edible pulse
+    season: summer
+    tags:
+      - pulse
+
+- baked beans:
+    description: an edible pulse
+    season: all
+    tags:
+      - pulse
+
+- lentils:
+    description: an edible pulse
+    season: summer
+    tags:
+      - pulse
+    
+- red lentils:
+    description: an edible pulse
+    season: summer
+    tags:
+      - pulse
+
+- puy lentils:
+    description: an edible pulse
+    season: summer
+    tags:
+      - pulse
+
+- runner beans:
+    description: an edible pulse
+    season: summer
+    tags:
+      - pulse
+
+- peas:
+    description: an edible pulse
+    season: summer
+    tags:
+      - pulse
+
+- black eyed peas:
+    description: an edible pulse
+    season: summer
+    tags:
+      - pulse
+
+- lima beans:
+    description: an edible pulse
+    season: summer
+    tags:
+      - pulse
+
+- kidney beans:
+    description: an edible pulse
+    season: summer
+    tags:
+      - pulse
+
+- soy beans:
+    description: an edible pulse
+    season: summer
+    tags:
+      - pulse
+
+- beef:
+    description: meat from domestic cattle
+    season: all
+    tags:
+      - meat
+      - red meat
+
+- veal:
+    description: meat from infant domestic cattle
+    season: all
+    tags:
+      - meat
+      - red meat
+
+- pork:
+    description: meat from domestic pigs
+    season: all
+    tags:
+      - meat
+      - white meat
+
+- mushrooms:
+    description: the fleshy body of a fungus
+    season: all
+    tags:
+      - fungus
+      - vegetarian
+
+- cod:
+    description: salt water fish with a mild flavour and a dense, flaky white flesh
+    season: all
+    tags:
+      - fish
+
+- vinegar:
+    description: acetic acid diluted in water
+    season: all
+    tags:
+      - acid
+      - slow cooking
+
+- apple cider vinegar:
+    description: acetic acid diluted in water
+    season: all
+    tags:
+      - acid
+      - slow cooking
+
+- balsamic vinegar:
+    description: dark brown, aromatic, aged type of vinegar
+    season: all
+    tags:
+      - acid
+      - slow cooking
+      - Italian
+      - traditional
+
+- white vinegar:
+    description: a colorless solution of acetic acid diluted in water
+    season: all
+    tags:
+      - acid
+      - slow cooking
+
+- bok choy:
+    description: Chinese cabbage
+    season: all
+    tags:
+      - green
+      - Chinese
+      - vegetable
+
+- garlic:
+    description: pungent flavored bulb related to onions
+    season: all
+    tags:
+      - vegetable
+      - smelly
+
+- onions:
+    description: the most widely cultivated species of the genus Allium
+    season: all
+    tags:
+      - vegetable
+
+- red onions:
+    description: medium to large sized onions with a mild to sweet flavor
+    season: all
+    tags:
+      - vegetable
+
+- chicken:
+    description:  the most common type of poultry in the world
+    energy: 916000
+    season: all
+    tags:
+      - poultry
+      - meat
+      - white meat
+
+- chicken thighs:
+    description:  the most common type of poultry in the world
+    season: all
+    tags:
+      - poultry
+      - meat
+      - white meat
+
+- chicken wings:
+    description:  the wings of a chicken
+    season: all
+    tags:
+      - poultry
+      - meat
+      - white meat
+      - snack
+
+- drumsticks:
+    description:  the legs of a chicken
+    season: all
+    tags:
+      - poultry
+      - meat
+      - white meat
+
+- chicken livers:
+    description:  the livers of a chicken
+    season: all
+    tags:
+      - poultry
+      - meat
+      - white meat
+      - offal
+

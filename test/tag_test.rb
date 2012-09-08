@@ -32,7 +32,7 @@ class TagTest < HandlerTestBase
 
       tt.destroy
     end
-    assert Tag.count == 0, "There #{Tag.count == 1 ? 'is' : 'are'} #{Tag.count} tag type#{Tag.count == 1 ? '' : 's'} left over."
+    assert Tag.count == 0, "There #{Tag.count == 1 ? 'is' : 'are'} #{Tag.count} tag#{Tag.count == 1 ? '' : 's'} left over."
   end
 
   def test_tag_in_use
@@ -111,7 +111,7 @@ class TagTest < HandlerTestBase
     assert Meal.count == 0, "There #{Meal.count == 1 ? 'are' : 's'} #{Meal.count} Meal#{Meal.count == 1 ? '' : 's'} left over."
     assert MealType.count == 0, "There #{MealType.count == 1 ? 'are' : 's'} #{MealType.count} MealType#{MealType.count == 1 ? '' : 's'} left over."
     assert Recipe.count == 0, "There #{Recipe.count == 1 ? 'are' : 's'} #{Recipe.count} Recipe#{Recipe.count == 1 ? '' : 's'} left over."
-    assert Tag.count == 0, "There #{Tag.count == 1 ? 'is' : 'are'} #{Tag.count} tag type#{Tag.count == 1 ? '' : 's'} left over."
+    assert Tag.count == 0, "There #{Tag.count == 1 ? 'is' : 'are'} #{Tag.count} tag#{Tag.count == 1 ? '' : 's'} left over."
     assert UnitType.count == 0, "There #{UnitType.count == 1 ? 'are' : 's'} #{UnitType.count} UnitType#{UnitType.count == 1 ? '' : 's'} left over."
     assert User.count == 0, "There #{User.count == 1 ? 'is' : 'are'} #{User.count} user#{User.count == 1 ? '' : 's'} left over."
   end
