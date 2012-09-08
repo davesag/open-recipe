@@ -38,6 +38,6 @@ _Open Recipe_
 
 ### Heroku
 
-* A production copy of the app is running at http://open-recipe.herokuapp.com for the moment.
+* The app is running (on and off) at http://apps.facebook.com/open-recipe
 
 ---
