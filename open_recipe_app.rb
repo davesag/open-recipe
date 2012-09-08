@@ -329,4 +329,19 @@ class OpenRecipeApp < Sinatra::Application
     return result.to_json
   end
 
+  # when a user starts typing in the name of a recipe, we look for matching meals
+  # user must be logged in for this to return a sensible result.
+  get '/meals' do
+    return [].to_json unless logged_in?
+    term = params[:term]
+    logger.debug "Got meal search request #{params[:term]}."
+    
+    # find tags, ingredients, recipes, meals.
+    result = []
+    Meal.name_contains(term).each do |meal|
+      result << {:value => meal.id, :label => meal.name}
+    end
+    return result.to_json
+  end
+
 end

@@ -11,4 +11,12 @@ class Meal < ActiveRecord::Base
   has_many :recipes
   has_and_belongs_to_many :tags
 
+  scope :name_starts_with, lambda { |str|
+    {:conditions => ["name like ?", "#{str.downcase}%"]}
+  }
+  
+  scope :name_contains, lambda { |str|
+    {:conditions => ["name like ?", "%#{str.downcase}%"]}
+  }
+
 end

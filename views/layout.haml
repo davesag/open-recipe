@@ -47,8 +47,15 @@
           select: function (event, ui) {
             console.log (ui.item ?
             "Selected: " + ui.item.value + " aka " + ui.item.label :
-            "Nothing selected, input was " + this.value, event)
+            "Nothing selected, input was " + this.value, event);
+            return false; // don't update the search field.
+          },
+          response: function (event, ui) {
+            console.log ('do we ever get here?', event);
           }
+          // note the spinner sometimes doesn't stop spinning
+          // see http://stackoverflow.com/questions/2519513/spinner-with-jquery-ui-1-8-autocomplete
+          // and http://stackoverflow.com/questions/4316071/remove-spinner-from-jquery-ui-autocomplete-if-nothing-found
         });
       });
     %title #{settings.name}

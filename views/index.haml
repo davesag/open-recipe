@@ -32,17 +32,20 @@
         %p< Here's where we list all your favourite recipes.
   #new-recipe
     %form
-      %label(for = 'name')< Recipe Name:
-      %input#name.ui-corner-all
-      %label(for = "meal")< Meal Name:
-      %select#meal
-        %option(value='')< Choose Meal...
+      %label(for = 'recipe-name')< Recipe Name:
+      %input#recipe-name.ui-corner-all(placeholder = 'What do you call your recipe?')
+      %label.ui-state-disabled(for = "meal")< Meal Name:
+      %input#meal.ui-corner-all.ui-state-disabled{:disabled => 'disabled', :placeholder => 'not set'}
       %label(for='description')< Description:
       %textarea#description.ui-corner-all
       %label(for='cooking-time')< Cooking Time:
-      %input#cooking-time.ui-corner-all(style='width:6em;')
+      %input#cooking-time-days.ui-corner-all{:style=>'width:2em;', :placeholder => 'dd'}
+      %input#cooking-time-hours.ui-corner-all{:style=>'width:2em;', :placeholder => 'hh'}
+      %input#cooking-time-minutes.ui-corner-all{:style=>'width:2em;', :placeholder => 'mm'}
       %label(for='prep-time')< Preparation Time:
-      %input#prep-time.ui-corner-all(style='width:6em;')
+      %input#prep-time-days.ui-corner-all{:style=>'width:2em;', :placeholder => 'dd'}
+      %input#prep-time-hours.ui-corner-all{:style=>'width:2em;', :placeholder => 'hh'}
+      %input#prep-time-minutes.ui-corner-all{:style=>'width:2em;', :placeholder => 'mm'}
       %label(for='requirements')< Requirements
       %textarea#requirements.ui-corner-all
       %label(for='ingredients')< Ingredients
