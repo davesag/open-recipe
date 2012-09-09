@@ -4,6 +4,6 @@ require 'active_record'
 
 class Quantity < ActiveRecord::Base
 
-  # Integer :amount
+  # Decimal :amount
   belongs_to :unit, :class_name => "AllowedUnit" # the unit of this quantity.
 end

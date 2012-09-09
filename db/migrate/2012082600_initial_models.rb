@@ -153,7 +153,7 @@ class InitialModels < ActiveRecord::Migration
     end
 
     create_table :quantities do |t|
-      t.integer :amount
+      t.decimal :amount
       t.integer :unit_id        # quantity belongs_to :unit
     end
 

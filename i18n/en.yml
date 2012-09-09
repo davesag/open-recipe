@@ -1,7 +1,13 @@
 # only very limited i18n support so far.
-# to handle units and their plurals
+
+ui:
+  choose: choose...
+  save: save
+  cancel: cancel
+  preview: preview
 
 unit:
+  none: none
   ml: millilitre
   dl: decilitre
   l: litre
@@ -16,6 +22,7 @@ unit:
   cu: cup
   
 units:
+  none: none
   ml: millilitres
   dl: decilitres
   l: litres
@@ -28,6 +35,12 @@ units:
   tbs: tablespoons
   tsp: teaspoons
   cu: cups
+
+season:
+  summer: summer
+  autumn: autumn
+  winter: winter
+  spring: spring
 
 #phrase:
 #  ml: !!pl

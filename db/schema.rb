@@ -104,7 +104,7 @@ ActiveRecord::Schema.define(:version => 2012082600) do
   add_index "preferences", ["name"], :name => "index_preferences_on_name"
 
   create_table "quantities", :force => true do |t|
-    t.integer "amount"
+    t.decimal "amount"
     t.integer "unit_id"
   end
 

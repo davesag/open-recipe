@@ -209,13 +209,13 @@ class OpenRecipeApp < Sinatra::Application
 
     # returns an HTML menu with the various allowed units, grouped by unit type.
     def html_allowed_units_menu_options
-      result = ''
+      result = "<option value=''>#{Unicode::capitalize(t.units.none)}</option>"
       UnitType.all.each do |ut|
         result << "<optgroup label = '#{Unicode::capitalize(ut.name)}'>"
-          ut.allowed_units.order(:name).each do |u|
-            n = Unicode::capitalize(t.units[Unit(u.name).unit_name])
-            result << "<option value = '#{u.id}'>#{n}</option>"
-          end
+        ut.allowed_units.order(:name).each do |u|
+          n = Unicode::capitalize(t.units[Unit(u.name).unit_name])
+          result << "<option value = '#{u.id}'>#{n}</option>"
+        end
         result << '</optgroup>'
       end
       return result;
