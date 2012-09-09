@@ -1,19 +1,20 @@
+# these units will be interpreted by the ruby-units package
+# and should be expressed in SI Unit form where possible.
+
 - metric:
-  - :milliliters
-  - :deciliters
-  - :liters
-  - :cubic_centimeters
-  - :cubic_milimeters
-  - :grams
+  - :milliliter
+  - :deciliter
+  - :liter
+  - :gram
+  - :kilogram
 
 - imperial:
-  - :ounces
-  - :fluid_ounces
-  - :pints
-  - :quarts
-  - :fluid_drams
+  - :ounce
+  - :fluid-ounce
+  - :pint
+  - :quart
 
 - cooking:
-  - :tablespoons
-  - :teaspoons
-  - :cups
+  - :tablespoon
+  - :teaspoon
+  - :cup

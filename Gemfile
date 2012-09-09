@@ -2,10 +2,13 @@
 source "https://rubygems.org"
 
 gem 'sinatra'
+gem 'sinatra-r18n'
 gem 'haml'
 gem 'koala'
 gem 'activerecord'
 gem "rake"
+gem 'unicode'
+gem 'ruby-units'
 
 group :development do
 	gem 'sqlite3'

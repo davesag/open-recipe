@@ -1,11 +1,17 @@
+#!/user/bin/env ruby
+#coding: utf-8
+
 APP_ROOT = File.dirname(__FILE__)
 
 require 'sinatra/base'
+require 'sinatra/r18n'
 require 'haml'
 require 'koala'
 require 'logger'
 require 'active_record'
 require 'active_support/all'  # added for Time.zone support below
+require 'unicode'
+require 'ruby-units'
 
 # register your app at facebook to get these codes
 APP_ID = 435425809841072 # the app's id
@@ -19,7 +25,7 @@ SITE_URL = 'http://ppp167-251-9.static.internode.on.net:5000/' # your app site u
 CALLBACK_URL = SITE_URL + 'callback'
 
 class OpenRecipeApp < Sinatra::Application
-
+  register Sinatra::R18n
 	include Koala
 
 	set :root, APP_ROOT
@@ -130,7 +136,6 @@ class OpenRecipeApp < Sinatra::Application
     puts "Open Recipe is running."
   end
 
-
   helpers do
   
     # this is where the magic happens. Prepare local page data for the Open Recipe's homepage.
@@ -173,13 +178,13 @@ class OpenRecipeApp < Sinatra::Application
       return menu
     end
 
-    def summarise_tag (t, zero_okay = true)
-      rc = t.recipes.count
-      mc = t.meals.count
-      ic = t.ingredients.count
+    def summarise_tag (tag, zero_okay = true)
+      rc = tag.recipes.count
+      mc = tag.meals.count
+      ic = tag.ingredients.count
       tot = rc + mc + ic
       
-      return {:name => t.name, :count => tot, :counts => {:recipes => rc,
+      return {:name => tag.name, :count => tot, :counts => {:recipes => rc,
                                                           :meals => mc,
                                                           :ingredients => ic}}
     end
@@ -187,19 +192,33 @@ class OpenRecipeApp < Sinatra::Application
     def popular_tags
       tags = []
       if logged_in? && !active_user.favourite_tags.empty?
-        active_user.favourite_tags.sort_by(&:name).each do |t|
-          ts = summarise_tag(t)
+        active_user.favourite_tags.sort_by(&:name).each do |tag|
+          ts = summarise_tag(tag)
           tags << ts unless ts == nil
         end
       else
         used_tags = Tag.in_use  # returns sorted list by default.
         used_tags = Tag.find(:all, :order => 'name collate nocase ASC') if used_tags.empty?
-        used_tags.each do |t|
-          ts = summarise_tag(t)
+        used_tags.each do |tag|
+          ts = summarise_tag(tag)
           tags << ts unless ts == nil
         end
       end
       return tags
+    end
+
+    # returns an HTML menu with the various allowed units, grouped by unit type.
+    def html_allowed_units_menu_options
+      result = ''
+      UnitType.all.each do |ut|
+        result << "<optgroup label = '#{Unicode::capitalize(ut.name)}'>"
+          ut.allowed_units.order(:name).each do |u|
+            n = Unicode::capitalize(t.units[Unit(u.name).unit_name])
+            result << "<option value = '#{u.id}'>#{n}</option>"
+          end
+        result << '</optgroup>'
+      end
+      return result;
     end
 
     def logged_in?
@@ -233,6 +252,7 @@ class OpenRecipeApp < Sinatra::Application
     logger.debug "Session ID: #{session['session_id']}"
     logger.debug "---------------------------------------------------------"
 
+    session[:locale] = params[:locale] if params[:locale] #the r18n system will load it automatically
     load_active_user
   end
 
