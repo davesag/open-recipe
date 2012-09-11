@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(:version => 2012082600) do
     t.integer "recipe_id"
     t.integer "ingredient_id"
     t.integer "quantity_id"
+    t.integer "preparation_id"
   end
 
   create_table "allowed_units", :force => true do |t|
@@ -102,6 +103,10 @@ ActiveRecord::Schema.define(:version => 2012082600) do
   end
 
   add_index "preferences", ["name"], :name => "index_preferences_on_name"
+
+  create_table "preparations", :force => true do |t|
+    t.string "name", :limit => 25
+  end
 
   create_table "quantities", :force => true do |t|
     t.decimal "amount"

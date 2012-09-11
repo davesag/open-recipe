@@ -27,6 +27,17 @@ ActiveRecord::Base.transaction do |tran|
 end
 
 ActiveRecord::Base.transaction do |tran|
+  puts "Seeding Preparations."
+  seasons = YAML.load(File.read('./config/preparations.yml'))
+  
+  seasons.each do |t|
+    puts "Preparation: #{t}"
+    preparation = Preparation.where(:name => t).first_or_create
+  end
+  puts "Preparations seeded."
+end
+
+ActiveRecord::Base.transaction do |tran|
   puts "Seeding Tags."
   tags = YAML.load(File.read('./config/tags.yml'))
   

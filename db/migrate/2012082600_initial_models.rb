@@ -71,6 +71,7 @@ class InitialModels < ActiveRecord::Migration
                                   # the ingredient to use
       t.integer  :quantity_id     # belongs_to :quantity
                                   # the amount and units used
+      t.integer  :preparation_id  # belongs_to :preparation
     end
 
     create_table :ingredients_tags, :id => false do |t|
@@ -155,6 +156,11 @@ class InitialModels < ActiveRecord::Migration
     create_table :quantities do |t|
       t.decimal :amount
       t.integer :unit_id        # quantity belongs_to :unit
+    end
+
+    create_table :preparations do |t|
+      t.string :name, :limit => 25
+                                # preparation has_many :active_ingredients
     end
 
     create_table :photos do |t|

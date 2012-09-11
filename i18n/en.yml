@@ -42,6 +42,18 @@ season:
   winter: winter
   spring: spring
 
+preparation:
+  chopped: chopped
+  crushed: crushed
+  cubed: cubed
+  diced: diced
+  finely-chopped: finely chopped
+  finely-sliced: finely sliced
+  julienned: julienned
+  rinsed: rinsed
+  sliced: sliced
+  soaked: soaked
+
 #phrase:
 #  ml: !!pl
 #    1: 1 ml
