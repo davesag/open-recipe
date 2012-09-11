@@ -207,18 +207,25 @@ class OpenRecipeApp < Sinatra::Application
       return tags
     end
 
-    # returns an HTML menu with the various allowed units, grouped by unit type.
-    def html_allowed_units_menu_options
-      result = "<option value=''>#{Unicode::capitalize(t.units.none)}</option>"
+    def allowed_units
+      result = [{:kind => 'option', :value => '', :label => Unicode::capitalize(t.units.none)}]
       UnitType.all.each do |ut|
-        result << "<optgroup label = '#{Unicode::capitalize(ut.name)}'>"
+        result << {:kind => 'optgroup', :label => Unicode::capitalize(ut.name)}
         ut.allowed_units.order(:name).each do |u|
-          n = Unicode::capitalize(t.units[Unit(u.name).unit_name])
-          result << "<option value = '#{u.id}'>#{n}</option>"
+          result << {:kind => 'option', :value => u.id,
+                     :label => Unicode::capitalize(t.units[Unit(u.name).unit_name])}
         end
-        result << '</optgroup>'
       end
-      return result;
+      return result.to_json
+    end
+
+    def preparations
+      result = [{:kind => 'option', :value => '', :label => Unicode::capitalize(t.units.none)}]
+      Preparation.all.each do |p|
+        result << {:kind => 'option', :value => p.id,
+                   :label => Unicode::capitalize(t.preparation[p.name])}
+      end
+      return result.to_json
     end
 
     def logged_in?

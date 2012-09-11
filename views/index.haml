@@ -52,39 +52,72 @@
       %table#ingredients
         %thead
           %tr
-            %th< Ingredient Name
+            %th(colspan=2)< Ingredient Name
             %th< Amount
             %th< Unit
         %tbody
-        %tr
-          %td
-            %input#ingredient-1.ingredient.ui-corner-all
-          %td
-            %input#amount-1.amount.ui-corner-all
-          %td
-            %select#unit-1
-              =html_allowed_units_menu_options
+          %tr
+            %td
+              %input#ingredient-1.ingredient.ui-corner-all
+            %td
+              %select#prep-1.prep-menu
+            %td
+              %input#amount-1.amount.ui-corner-all
+            %td
+              %select#unit-1.unit-menu
           %tr
             %td
               %input#ingredient-2.ingredient.ui-corner-all
             %td
+              %select#prep-2.prep-menu
+            %td
               %input#amount-2.amount.ui-corner-all
             %td
-              %select#unit-2
-                =html_allowed_units_menu_options
+              %select#unit-2.unit-menu
           %tr
             %td
               %input#ingredient-3.ingredient.ui-corner-all
             %td
+              %select#prep-3.prep-menu
+            %td
               %input#amount-3.amount.ui-corner-all
             %td
-              %select#unit-3
-                =html_allowed_units_menu_options
+              %select#unit-3.unit-menu
       %label(for='method')< Method
       %textarea#method.ui-corner-all
   :javascript
+    // move this to an external file when happy with it.
+    function convert_to_options_html(a_map_of_options) {
+      result = '';
+      group_count = 0;
+      for (i in a_map_of_options) {
+        io = a_map_of_options[i];
+        if (io['kind'] == 'option') {
+          result += '<option value = "' + io['value'] + '">' + io['label'] + '</option>';
+        } else {
+          if (group_count > 0) {
+            result += '</optgroup>';
+            group_count--;
+          }
+          result += '<optgroup label = "' + io['label'] + '">';
+          group_count++;
+        }
+      };
+      if (group_count > 0) {
+        result += '</optgroup>';
+        group_count--;
+      }
+      return result;
+    };
+  
     $(function() {
       $('#recipes').tabs();
+      var preparation_options = #{preparations};
+      var allowed_unit_options = #{allowed_units};
+      var default_preparation_options = convert_to_options_html(preparation_options);
+      var default_allowed_unit_options = convert_to_options_html(allowed_unit_options);
+      $(default_preparation_options).appendTo('#ingredients .prep-menu');
+      $(default_allowed_unit_options).appendTo('#ingredients .unit-menu');
       $('#new-recipe').dialog({
         title: 'Add a new Recipe',
         autoOpen: false,
@@ -141,7 +174,7 @@
       vertical-align:top;
     }
     #new-recipe td input.ingredient {
-      width:26em;
+      width:20em;
     }
     #new-recipe td input.amount {
       width:4em;
