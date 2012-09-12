@@ -228,6 +228,15 @@ class OpenRecipeApp < Sinatra::Application
       return result.to_json
     end
 
+    def ingredient_names
+      # return Ingredient.find(:all, :select => 'name', :order => 'name collate nocase ASC').to_json
+      # note the above returns a hash of objects, not an array of ingredient names.
+      # I could have just walked through that result and populated an array, but that seemed slow.
+      # see http://patshaughnessy.net/2010/9/4/activerecord-with-large-result-sets-part-1-select_all-vs-find
+      # for the following solution.
+      return ActiveRecord::Base.connection.select_values('SELECT name FROM ingredients ORDER BY name COLLATE NOCASE ASC').to_json;
+    end
+
     def logged_in?
       return session['access_token'] != nil
     end
