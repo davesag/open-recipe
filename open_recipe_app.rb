@@ -365,4 +365,14 @@ class OpenRecipeApp < Sinatra::Application
     return result.to_json
   end
 
+  post "/recipe-request" do
+  	content_type :json
+  	logger.debug 'Login Request Received.'
+    req = JSON.parse request.body.read
+
+    logger.debug "Recieved Recipe Request: #{req.inspect}"
+
+    return {:success => true, :message => 'Recipe Saved.'}.to_json
+  end
+
 end

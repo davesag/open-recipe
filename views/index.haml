@@ -34,8 +34,8 @@
     %form
       %label(for = 'recipe-name')< Recipe Name:
       %input#recipe-name.ui-corner-all(placeholder = 'What do you call your recipe?')
-      %label.ui-state-disabled(for = "meal")< Meal Name:
-      %input#meal.ui-corner-all.ui-state-disabled{:disabled => 'disabled', :placeholder => 'not set'}
+      / %label.ui-state-disabled(for = "meal")< Meal Name:
+      / %input#meal.ui-corner-all.ui-state-disabled{:disabled => 'disabled', :placeholder => 'not set'}
       %label(for='description')< Description:
       %textarea#description.ui-corner-all
       %label(for='cooking-time')< Cooking Time:
@@ -84,10 +84,10 @@
     };
     
     function create_blank_ingredients_row(a_row_number) {
-      return "<tr><td><input class='ingredient ui-corner-all' id='ingredient[" + a_row_number + "]'></td>" +
-               "<td><select class='prep-menu' id='prep[" + a_row_number + "]'></select></td>" +
-               "<td><input class='amount ui-corner-all' id='amount[" + a_row_number + "]'></td>" +
-               "<td><select class='unit-menu' id='unit[" + a_row_number + "]'></select></td></tr>";
+      return "<tr><td><input class='ingredient ui-corner-all' id='ingredient" + a_row_number + "'></td>" +
+               "<td><select class='prep-menu' id='prep" + a_row_number + "'></select></td>" +
+               "<td><input class='amount ui-corner-all' id='amount" + a_row_number + "'></td>" +
+               "<td><select class='unit-menu' id='unit" + a_row_number + "'></select></td></tr>";
     };
 
     $(function() {
@@ -141,9 +141,47 @@
             console.log('preview recipe');  // enhance this later
           },
           "Create Recipe" : function () {
-            console.log("saving recipe."); // enhance this later
+            console.log("saving recipe.");
+            // go through the form and collect all the fields into a
+            // recipe object.
+            var ingredients = new Array();
+            var number_of_ingredients = $('#ingredients .ingredient').length
+            for (i = 0; i < number_of_ingredients ; i++ ) {
+              var n = $('#ingredient'+i).val();
+              var p = $('#prep'+i).val();
+              var a = $('#amount'+i).val();
+              var u = $('#unit'+i).val();
+              if (n != '') {
+                q = new Quantity(a, u);
+                ingredients.push(new ActiveIngredient(n,p,q));
+              }
+            }
+            // merge cooking and prep time fields into a nice time string
+            // in dd:hh:mm format
+            ct = $('#cooking-time-days').val() + ':' + $('#cooking-time-hours').val() + ':' + $('#cooking-time-minutes').val();
+            pt = $('#prep-time-days').val() + ':' + $('#prep-time-hours').val() + ':' + $('#prep-time-minutes').val();
+            r = new Recipe(0, $('#recipe-name').val(), ct, pt, $('#description').val(),
+                $('#method').val(), $('#requirements').val(), ingredients, null, null); // ignore tags and meal for now.
+            req = new Recipe_Request(r);
+            console.log('created recipe request object', req);
             
-            $(this).dialog("close");            
+            // now fire off an AJAX post to the server.
+            $.post(req.post_path(), req.post_data(), function(data){
+              console.log('debug', data)
+              if (!data['success']) {
+                // there was an error.
+                console.log('error', data['error']);
+                // do something to tell the user about this error.
+              } else {
+                // there is a message
+                console.log('message', data['message']);
+                // perhaps do something with this message.
+              }
+            }).error(function() {
+                alert('Request failed due to a server error.');
+            });
+            // then close the dialog.
+            $(this).dialog("close");
           },
           "Cancel" : function () {
             $(this).dialog("close");
