@@ -66,6 +66,7 @@ class TagTest < HandlerTestBase
       food = MealType.create(:name => 'food')
       meal = Meal.create(:name => "road kill stew", :description => "whatever you can scrape up", :meal_type => food)
       recipe = Recipe.create(:name => "road kill stew", :owner => user, :cooking_time => 130, :preparation_time => 90,
+                            :serves => 4,
                             :description => "whatever you scrape together",
                             :requirements => "road kill and a pot",
                             :method => "chop up squirrel and cook in pot.",

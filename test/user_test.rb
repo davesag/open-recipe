@@ -121,6 +121,7 @@ class UserTest < HandlerTestBase
       recipes = []
       recipes << frog_and_duck_soup = Recipe.create(:name => 'Frog and Duck Soup - Dave\'s Style',
                              :owner => bob,
+                             :serves => 8,
                              :cooking_time => 90, :preparation_time => 20,
                              :description => "A deliciously tangy soup made from chinese roasted duck and boiled frogs.",
                              :requirements => "A frog caught from a creek or stream, and a BBQ Peking Duck, are the main things you'll need.",
@@ -147,6 +148,7 @@ class UserTest < HandlerTestBase
 
       recipes << duck_and_frog_soup = Recipe.create(:name => 'Duck and Frog Soup',
                        :owner => bob,
+                       :serves => 8,
                        :cooking_time => 90, :preparation_time => 20,
                        :description => "A delightfully flavoursome soup made from chinese roasted duck and a frogs.",
                        :requirements => "A frog caught from a garden or drain, and a BBQ Peking Duck, are the main things you'll need.",

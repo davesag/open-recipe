@@ -42,6 +42,7 @@ class InitialModels < ActiveRecord::Migration
 
     create_table :recipes do |t|
       t.string  :name, :null => false, :limit => 255
+      t.integer :serves, :null => false
       t.integer :cooking_time         # seconds
       t.integer :preparation_time     # seconds
       t.text    :requirements, :null => false

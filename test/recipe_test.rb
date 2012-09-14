@@ -7,6 +7,7 @@ class RecipeTest < HandlerTestBase
   def test_parse_recipe_from_json
   
     ne = 'test name'
+    se = '6'
     cte =  "1:2:3"
     pte = "4:5:6"
     de = "test description"
@@ -23,12 +24,13 @@ class RecipeTest < HandlerTestBase
     q_ae = '5'
     q_ue = '4'
   
-    rjr = {"recipe"=>{"id"=>0, "name"=>ne, "cooking_time"=>cte, "prep_time"=>pte, "description"=>de, "method"=>me, "requirements"=>re,
+    rjr = {"recipe"=>{"id"=>0, "name"=>ne, "serves" => se, "cooking_time"=>cte, "prep_time"=>pte, "description"=>de, "method"=>me, "requirements"=>re,
             "active_ingredients"=>[{"ingredient"=>ie, "preparation_id"=>p_ide, "quantity"=>{"amount"=>q_ae, "unit_id"=>q_ue}}],
             "tags"=>tagse, "meal"=>meale}, "path"=>"/recipe-request"}
     rj = check_param_not_nil rjr, 'recipe'
 
     n = check_param rj, 'name', ne
+    s = check_param rj, 'serves', se
     ct = check_param rj, 'cooking_time', cte
     pt = check_param rj, 'prep_time', pte
     d = check_param rj, 'description', de
@@ -70,7 +72,7 @@ class RecipeTest < HandlerTestBase
       ct_parsed = parse_time(ct)
       pt_parsed = parse_time(pt)
       recipe = Recipe.create(:owner => user, :name => n, :cooking_time => ct_parsed, :preparation_time => pt_parsed,
-                              :description => d, :method => m, :active_ingredients => [active_ingredient],
+                              :serves => s.to_i, :description => d, :method => m, :active_ingredients => [active_ingredient],
                               :requirements => r)
 
       user.destroy
