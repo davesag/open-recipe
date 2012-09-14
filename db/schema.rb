@@ -124,7 +124,7 @@ ActiveRecord::Schema.define(:version => 2012082600) do
     t.integer "meal_id"
   end
 
-  add_index "recipes", ["name"], :name => "index_recipes_on_name", :unique => true
+  add_index "recipes", ["name"], :name => "index_recipes_on_name"
 
   create_table "recipes_tags", :id => false, :force => true do |t|
     t.integer "tag_id"

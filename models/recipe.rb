@@ -4,9 +4,8 @@ require 'active_record'
 class Recipe < ActiveRecord::Base
 
   validates_presence_of :name
-  validates_uniqueness_of :name
-  # :cooking_time, Integer # minutes.
-  # :preparation_time, Integer
+  # :cooking_time, Integer # seconds.
+  # :preparation_time, Integer # seconds.
   # :description, Text
   # :method, Text
   # :requirements, Text
