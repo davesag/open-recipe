@@ -34,6 +34,8 @@
     %form
       %label(for = 'recipe-name')< Recipe Name:
       %input#recipe-name.ui-corner-all(placeholder = 'What do you call your recipe?')
+      %label(for = "serves")< Serves:
+      %input#serves.ui-corner-all(style='width:3em;')
       / %label.ui-state-disabled(for = "meal")< Meal Name:
       / %input#meal.ui-corner-all.ui-state-disabled{:disabled => 'disabled', :placeholder => 'not set'}
       %label(for='description')< Description:
@@ -160,7 +162,7 @@
             // in dd:hh:mm format
             ct = $('#cooking-time-days').val() + ':' + $('#cooking-time-hours').val() + ':' + $('#cooking-time-minutes').val();
             pt = $('#prep-time-days').val() + ':' + $('#prep-time-hours').val() + ':' + $('#prep-time-minutes').val();
-            r = new Recipe(0, $('#recipe-name').val(), ct, pt, $('#description').val(),
+            r = new Recipe(0, $('#recipe-name').val(), $('#serves').val(), ct, pt, $('#description').val(),
                 $('#method').val(), $('#requirements').val(), ingredients, null, null); // ignore tags and meal for now.
             req = new Recipe_Request(r);
             console.log('created recipe request object', req);

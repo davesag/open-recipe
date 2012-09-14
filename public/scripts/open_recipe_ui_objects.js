@@ -26,10 +26,11 @@ function Ingredient() {
   this.tags = some_tags;
 }
 
-function Recipe(an_id, a_name, a_cooking_time, a_prep_time, a_description,
+function Recipe(an_id, a_name, a_serves, a_cooking_time, a_prep_time, a_description,
                 a_method, a_requirements, some_active_ingredients, some_tags, a_meal) {
   this.id = an_id;
   this.name = a_name;
+  this.serves = a_serves;
   this.cooking_time = a_cooking_time;
   this.prep_time = a_prep_time;
   this.description = a_description;
