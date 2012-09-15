@@ -237,6 +237,89 @@ class OpenRecipeApp < Sinatra::Application
       return ActiveRecord::Base.connection.select_values('SELECT name FROM ingredients ORDER BY name COLLATE NOCASE ASC').to_json;
     end
 
+    def parse_time(a_time)
+      # comes in as 'dd:hh:mm'
+      times = a_time.split(':')
+      return times[0].to_i * 24 * 60 * 60 + 60 * 60 * times[1].to_i + 60 * times[2].to_i
+    end
+
+    def parse_tags_from_json(recipe_json)
+      tags = recipe_json['tags']
+      result = []
+      return result if tags == nil
+      tags.each do |tag|
+        result << Tag.where(:name => tag).first_or_create
+      end
+      return result;
+    end
+
+    def parse_ingredients_from_json(recipe_json)
+      ais = recipe_json['active_ingredients']
+      result = []
+      ais.each do |ai|
+        i = ai['ingredient']
+        ingredient = Ingredient.where(:name => i).first_or_create
+        pid = ai['preparation_id']
+        uid = ai['unit_id']
+        q = ai['quantity']
+        quantity = Quantity.create(:amount => q['amount'],
+                                    :unit => AllowedUnit.find_by_id(uid))
+        preparation = Preparation.find_by_id(pid)
+        result << ActiveIngredient.create(:ingredient => ingredient,
+                                                    :quantity => quantity,
+                                                    :preparation => preparation)
+      end
+      return result
+    end
+
+    def parse_recipe_from_json(recipe_json)
+      id = recipe_json['id'].to_i
+      n = recipe_json['name']
+      d = recipe_json['description']
+      s = recipe_json['serves'].to_i
+      ct = parse_time recipe_json['cooking_time']
+      pt = parse_time recipe_json['prep_time']
+      m = recipe_json['method']
+      r = recipe_json['requirements']
+      mn = recipe_json['meal']
+      ActiveRecord::Base.transaction do |t|
+        active_ingredients = parse_ingredients_from_json recipe_json
+        tags = parse_tags_from_json recipe_json
+        meal = nil if mn == nil
+        meal = Meal.find_by_name(mn).first_or_create if mn != nil
+    
+        if id == 0
+          recipe = Recipe.create(:owner => active_user, :name => n, :cooking_time => ct,
+                                 :preparation_time => pt, :serves => s, :description => d,
+                                 :method => m, :active_ingredients => active_ingredients,
+                                 :requirements => r, :tags => tags, :meal => meal)
+            
+        else  # a non-zero id implies we are saving an existing record.
+          recipe = Recipe.find_by_id(id)
+          recipe.owner = active_user unless recipe.owner.id == active_user.id
+          recipe.name = n unless recipe.name == n
+          recipe.cooking_time = ct unless recipe.cooking_time == ct
+          recipe.preparation_time = pt unless recipe.preparation_time == pt
+          recipe.description = d unless recipe.description == d
+          recipe.method = m unless recipe.method == m
+          recipe.requirements = r unless recipe.requirements == r
+          recipe.serves = s unless recipe.serves == s
+          
+          logger.debug "Todo: save active ingredients, tags and meal"
+          # active ingredients
+          # first go through and remove any ingredients we currently have
+          recipe.active_ingredients.each {|ai| ai.destroy}
+          recipe.active_ingredients = active_ingredients
+          # tags
+          recipe.tags = tags
+          
+          # meal
+          recipe.meal = meal
+          recipe.save
+        end
+      end
+    end
+
     def logged_in?
       return session['access_token'] != nil
     end
@@ -246,17 +329,33 @@ class OpenRecipeApp < Sinatra::Application
       load_active_user
       return @active_user
     end
+    
+    def graph
+      @graph = Koala::Facebook::API.new(session['access_token']) if @graph == nil
+      return @graph
+    end
+    
+    def logout_user!
+      logger.debug "Logout from session #{session['session_id']}"
+      session['oauth'] = nil
+      session['access_token'] = nil
+      session['user_id'] = nil
+      @active_user = nil
+      @graph = nil
+    end
   end
 
   def load_active_user
     return unless @active_user == nil
     return unless logged_in?
-    
-    @graph = Koala::Facebook::API.new(session['access_token']) if @graph == nil
-    me = @graph.get_object('me')
-    @active_user = User.where(:username => me['username']).first_or_create(:remote_id => me['id'].to_i)
-    @active_user.update_from_facebook me
-    @active_user.save
+    @active_user = User.find_by_id(session['user_id'])
+    if (@active_user == nil)
+      me = graph.get_object('me')
+      @active_user = User.where(:username => me['username']).first_or_create(:remote_id => me['id'].to_i)
+      @active_user.update_from_facebook me
+      @active_user.save
+      session['user_id'] = @active_user.id
+    end
     return @active_user
   end
 
@@ -300,11 +399,7 @@ class OpenRecipeApp < Sinatra::Application
 	end
 
 	get '/logout' do
-	  logger.debug "Logout from session #{session['session_id']}"
-		session['oauth'] = nil
-		session['access_token'] = nil
-		@active_user = nil
-		@graph = nil
+    logout_user!
 		redirect '/'
 	end
 
@@ -369,8 +464,8 @@ class OpenRecipeApp < Sinatra::Application
   	content_type :json
   	logger.debug 'Login Request Received.'
     req = JSON.parse request.body.read
-
-    logger.debug "Recieved Recipe Request: #{req.inspect}"
+    parse_recipe_from_json req['recipe']
+    # logger.debug "Recieved Recipe Request: #{req.inspect}"
 
     return {:success => true, :message => 'Recipe Saved.'}.to_json
   end

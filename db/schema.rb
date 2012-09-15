@@ -115,6 +115,7 @@ ActiveRecord::Schema.define(:version => 2012082600) do
 
   create_table "recipes", :force => true do |t|
     t.string  "name",             :null => false
+    t.integer "serves",           :null => false
     t.integer "cooking_time"
     t.integer "preparation_time"
     t.text    "requirements",     :null => false

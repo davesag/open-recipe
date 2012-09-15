@@ -51,9 +51,12 @@ preparation:
   finely-sliced: finely sliced
   grated: grated
   julienned: julienned
+  melted: melted
+  powdered: powdered
   rinsed: rinsed
   sliced: sliced
   soaked: soaked
+  whole: whole
 
 #phrase:
 #  ml: !!pl

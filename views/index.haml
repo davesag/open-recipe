@@ -22,14 +22,48 @@
     #my-recipes
       - if active_user.recipes.empty?
         %p< You have not added any recipes yet.
-        %button#add-recipe< Add a recipe.
       - else
-        %p< Here's where we list all your personal recipes.
+        %table#recipe-list.recipe-list
+          %thead
+            %tr
+              %th< Name
+              %th< Serves
+              %th< Description
+              %th< Prep Time
+              %th< Cooking Time
+          %tbody
+            - for r in active_user.recipes
+              %tr
+                %td< #{r.name}
+                %td< #{r.serves}
+                %td< #{r.description}
+                %td< #{r.preparation_time}
+                %td< #{r.cooking_time}
+          %tfoot
+      %button#add-recipe< Add a recipe.
     #my-favourite-recipes
       - if active_user.favourite_recipes.empty?
         %p< You have not favourited any recipes yet.
       - else
-        %p< Here's where we list all your favourite recipes.
+        %table#recipe-list.recipe-list
+          %thead
+            %tr
+              %th< Name
+              %th< Serves
+              %th< Description
+              %th< Prep Time
+              %th< Cooking Time
+              %th< Rating
+          %tbody
+            - for fr in active_user.favourite_recipes
+              %tr
+                %td< #{fr.recipe.name}
+                %td< #{fr.recipe.serves}
+                %td< #{fr.recipe.description}
+                %td< #{fr.recipe.preparation_time}
+                %td< #{fr.recipe.cooking_time}
+                %td< #{fr.recipe.rating}
+          %tfoot
   #new-recipe
     %form
       %label(for = 'recipe-name')< Recipe Name:
@@ -96,7 +130,7 @@
       // first turn on the tabs.
       $('#recipes').tabs();
       // next set up five ingredient rows, with appropriate menus and autocomplete handlers
-      for (i = 0; i < 5; i++) {
+      for (i = 0; i < 3; i++) {
         var i_row = create_blank_ingredients_row(i)
         // console.log(i_row);
         $(i_row).appendTo('#ingredients tbody');
@@ -121,7 +155,6 @@
             $(default_preparation_options).appendTo(new_row.find('.prep-menu'));
             $(default_allowed_unit_options).appendTo(new_row.find('.unit-menu'));
             new_row.find('.ingredient').autocomplete(ingredient_name_autocompleter);
-            console.log("created new row",new_row);
           }
         }
       };
@@ -178,12 +211,13 @@
                 // there is a message
                 console.log('message', data['message']);
                 // perhaps do something with this message.
+                $('#new-recipe').dialog("close");
+                location.reload();
               }
             }).error(function() {
                 alert('Request failed due to a server error.');
             });
             // then close the dialog.
-            $(this).dialog("close");
           },
           "Cancel" : function () {
             $(this).dialog("close");
@@ -198,6 +232,12 @@
       $('#add-recipe').button({icons: {primary:'ui-icon-circle-plus'}}).click(function() {
         $("#new-recipe").dialog("open");
       });
+    });
+    
+    // now make sure the tables of recipes are nicely formatted and interactive.
+    $('.recipe-list').dataTable( {
+      "bJQueryUI": true,
+      "sPaginationType": "full_numbers"
     });
   :css
     #new-recipe label {
