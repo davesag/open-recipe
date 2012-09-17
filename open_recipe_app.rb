@@ -146,10 +146,7 @@ class OpenRecipeApp < Sinatra::Application
     # or publish to someone else (if you have the permissions too ;) )
     # graph.put_wall_post("Checkout my new cool app!", {}, "someoneelse's id")
     def homepage
-      @recipes = []
-      @recipes << {:title => 'Delicious Duck in Orange Sauce', :url => 'http://about.me/davesag'}
-      @recipes << {:title => 'Goat Cheese Pankakes', :url => 'http://www.ruby-lang.org/en/documentation/quickstart/'}
-      @recipes << {:title => 'Fudge Soup', :url => 'http://www.ruby-lang.org/en/documentation/quickstart/'}
+
     end
 
     def menu_item(title, href)
@@ -321,7 +318,17 @@ class OpenRecipeApp < Sinatra::Application
     end
 
     def logged_in?
-      return session['access_token'] != nil
+      logger.debug "logged_in?"
+      if session['access_token'] != nil && session['access_token'].empty?
+        logger.debug "session['access_token'] is non-nil but empty, so reset it to nil"
+        session['access_token'] = nil
+      end
+      if session['access_token'] == nil
+        logger.debug "Not Logged In."
+        return false
+      end
+      logger.debug "Logged In with access token #{session['access_token']}."
+      return true
     end
 
     def active_user
@@ -331,7 +338,10 @@ class OpenRecipeApp < Sinatra::Application
     end
     
     def graph
-      @graph = Koala::Facebook::API.new(session['access_token']) if @graph == nil
+      if @graph == nil
+        logger.debug "Loading Facebook Graph using access token '#{session['access_token']}'"
+        @graph = Koala::Facebook::API.new(session['access_token'])
+      end
       return @graph
     end
     
@@ -346,22 +356,39 @@ class OpenRecipeApp < Sinatra::Application
   end
 
   def load_active_user
-    return unless @active_user == nil
-    return unless logged_in?
-    @active_user = User.find_by_id(session['user_id'])
+    logger.debug "Loading active User into @active_user"
+    return if @active_user != nil # active_user is already loaded.
+    if !logged_in?
+      logger.debug "@active_user is nil and so is session['access_token']"
+      return nil
+    end
+    if session['user_id'] == nil
+      logger.debug "There is no saved user_id in this session."
+    else
+      logger.debug "session['user_id'] = #{session['user_id']}"
+      logger.debug "Looking in the database for a user with id #{session['user_id']}"
+      @active_user = User.find_by_id(session['user_id'])
+    end
     if (@active_user == nil)
+      logger.debug "There was no user with id = #{session['user_id']}"
       me = graph.get_object('me')
+      logger.debug "me = #{me.inspect}"
       @active_user = User.where(:username => me['username']).first_or_create(:remote_id => me['id'].to_i)
+      logger.debug "@active_user = #{@active_user.inspect}"
       @active_user.update_from_facebook me
+      logger.debug "@active_user = #{@active_user.inspect}"      
       @active_user.save
       session['user_id'] = @active_user.id
+      logger.debug "session['user_id'] = #{session['user_id']}"
+    else
+      logger.debug "Found @active_user.id = #{@active_user.id} in the database."
     end
     return @active_user
   end
 
   before do
     logger.level = Logger::DEBUG
-    logger.debug "---------------------------------------------------------"
+    logger.debug "========================================================="
     logger.debug "---------------------------------------------------------"
     logger.debug "Handling request from host #{request.env['REMOTE_HOST']}"
     logger.debug "Session ID: #{session['session_id']}"
@@ -369,6 +396,8 @@ class OpenRecipeApp < Sinatra::Application
 
     session[:locale] = params[:locale] if params[:locale] #the r18n system will load it automatically
     load_active_user
+    session[:locale] = @active_user.locale if @active_user != nil && session[:locale] == nil
+    logger.debug "session[:locale] = '#{session[:locale]}'"
   end
 
   after do
@@ -376,7 +405,7 @@ class OpenRecipeApp < Sinatra::Application
     logger.debug "Session ID: #{session['session_id']}"
     logger.debug "Completed request from host #{request.env['REMOTE_HOST']}"
     logger.debug "---------------------------------------------------------"
-    logger.debug "---------------------------------------------------------"
+    logger.debug "========================================================="
   end
 
 	post '/' do
@@ -391,28 +420,48 @@ class OpenRecipeApp < Sinatra::Application
 
 	get '/login' do
 		# generate a new oauth object with your app data and your callback url
+		logger.debug "Received login request."
 		session['oauth'] = Facebook::OAuth.new(APP_ID, APP_CODE, CALLBACK_URL)
-		logger.debug "Set session['oauth'] : #{session['oauth'].class}"
-    logger.debug "Session id: #{session['session_id']}"
+		logger.debug "session['oauth'] = #{session['oauth'].inspect}"
+    logger.debug "session['session_id'] = #{session['session_id']}"
 		# redirect to facebook to get your code
-		redirect session['oauth'].url_for_oauth_code(:permissions => settings.facebook_permissions)
+		redirect_url = session['oauth'].url_for_oauth_code(:permissions => settings.facebook_permissions)
+		logger.debug "redirecting to '#{redirect_url}'"
+		redirect redirect_url
 	end
 
 	get '/logout' do
+		logger.debug "Received logout request."
     logout_user!
+		logger.debug "redirecting to '/'"
 		redirect '/'
 	end
 
 	#method to handle the redirect from facebook back to you
 	get '/callback' do
-		#get the access token from facebook with your code
-		if session['oauth'] == nil
-		  logger.error "Could not find oauth key in session #{session['session_id']}"
-    else
-      session['access_token'] = session['oauth'].get_access_token(params[:code])
-      load_active_user
-		end
-		redirect '/'
+    logger.debug "Received facebook /callback request with params #{params.inspect}"
+	  if params[:error] != nil
+	    logger.error "Callback received error code: #{params[:error]}"
+	    logger.error "Reason: #{params[:error_reason]}"
+	    logger.error "Description: #{params[:error_description]}"
+	    error = {'name' => params[:error],
+	             'description' => params[:error_description],
+	             'reason' => params[:error_reason]}
+	    haml :error, :locals => {:error => error}
+	  else
+      #get the access token from facebook with your code
+      if session['oauth'] == nil
+        logger.error "Could not find oauth key in session #{session['session_id']}"
+      else
+        logger.debug "Found session['oauth'] = #{session['oauth'].inspect}"
+        logger.debug "Using params[:code] = '#{params[:code]}'"
+        session['access_token'] = session['oauth'].get_access_token(params[:code])
+        logger.debug "session['access_token'] = #{session['access_token']}"
+        load_active_user
+      end
+      logger.debug "redirecting to '/'"
+      redirect '/'
+    end
 	end
 
   get '/privacy' do
@@ -460,6 +509,7 @@ class OpenRecipeApp < Sinatra::Application
     return result.to_json
   end
 
+  # receive a recipe create or update request via JSON.
   post "/recipe-request" do
   	content_type :json
   	logger.debug 'Login Request Received.'

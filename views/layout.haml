@@ -121,6 +121,7 @@
       #page-bottom.ui-helper-reset.ui-widget.ui-widget-content.ui-corner-all
         #copyright< ©2012 #{settings.owner}
         - if logged_in?
+          %p <a href='/logout'>Logout</a>
           %hr
           %p{:class=>'like_site'} Do you like this site?
           %p
