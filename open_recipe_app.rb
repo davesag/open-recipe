@@ -216,15 +216,6 @@ class OpenRecipeApp < Sinatra::Application
       return result.to_json
     end
 
-    def preparations
-      result = [{:kind => 'option', :value => '', :label => Unicode::capitalize(t.units.none)}]
-      Preparation.all.each do |p|
-        result << {:kind => 'option', :value => p.id,
-                   :label => Unicode::capitalize(t.preparation[p.name])}
-      end
-      return result.to_json
-    end
-
     def ingredient_names
       # return Ingredient.find(:all, :select => 'name', :order => 'name collate nocase ASC').to_json
       # note the above returns a hash of objects, not an array of ingredient names.
@@ -256,15 +247,12 @@ class OpenRecipeApp < Sinatra::Application
       ais.each do |ai|
         i = ai['ingredient']
         ingredient = Ingredient.where(:name => i).first_or_create
-        pid = ai['preparation_id']
         uid = ai['unit_id']
         q = ai['quantity']
         quantity = Quantity.create(:amount => q['amount'],
                                     :unit => AllowedUnit.find_by_id(uid))
-        preparation = Preparation.find_by_id(pid)
         result << ActiveIngredient.create(:ingredient => ingredient,
-                                                    :quantity => quantity,
-                                                    :preparation => preparation)
+                                                    :quantity => quantity)
       end
       return result
     end

@@ -14,9 +14,8 @@ function copy_prototype(a_descendant, a_parent) {
 	}
 }
 
-function ActiveIngredient(an_ingredient, a_prep, a_quantity) {
+function ActiveIngredient(an_ingredient, a_quantity) {
   this.ingredient = an_ingredient;
-  this.preparation_id = a_prep;
   this.quantity = a_quantity;
 }
 

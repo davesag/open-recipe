@@ -88,7 +88,7 @@
       %table#ingredients
         %thead
           %tr
-            %th(colspan=2)< Ingredient Name
+            %th< Ingredient Name
             %th< Amount
             %th< Unit
         %tbody
@@ -121,7 +121,6 @@
     
     function create_blank_ingredients_row(a_row_number) {
       return "<tr><td><input class='ingredient ui-corner-all' id='ingredient" + a_row_number + "'></td>" +
-               "<td><select class='prep-menu' id='prep" + a_row_number + "'></select></td>" +
                "<td><input class='amount ui-corner-all' id='amount" + a_row_number + "'></td>" +
                "<td><select class='unit-menu' id='unit" + a_row_number + "'></select></td></tr>";
     };
@@ -135,12 +134,9 @@
         // console.log(i_row);
         $(i_row).appendTo('#ingredients tbody');
       }
-      var preparation_options = #{preparations};
       var allowed_unit_options = #{allowed_units};
       var all_ingredient_names = #{ingredient_names}
-      var default_preparation_options = convert_to_options_html(preparation_options);
       var default_allowed_unit_options = convert_to_options_html(allowed_unit_options);
-      $(default_preparation_options).appendTo('#ingredients .prep-menu');
       $(default_allowed_unit_options).appendTo('#ingredients .unit-menu');
       var ingredient_name_autocompleter = {
         source: all_ingredient_names,
@@ -152,7 +148,6 @@
             var new_row_number = this_row.siblings('tr').length + 1;
             $(create_blank_ingredients_row(new_row_number)).appendTo(this_row.parent());
             var new_row = this_row.next();
-            $(default_preparation_options).appendTo(new_row.find('.prep-menu'));
             $(default_allowed_unit_options).appendTo(new_row.find('.unit-menu'));
             new_row.find('.ingredient').autocomplete(ingredient_name_autocompleter);
           }
@@ -183,12 +178,11 @@
             var number_of_ingredients = $('#ingredients .ingredient').length
             for (i = 0; i < number_of_ingredients ; i++ ) {
               var n = $('#ingredient'+i).val();
-              var p = $('#prep'+i).val();
               var a = $('#amount'+i).val();
               var u = $('#unit'+i).val();
               if (n != '') {
                 q = new Quantity(a, u);
-                ingredients.push(new ActiveIngredient(n,p,q));
+                ingredients.push(new ActiveIngredient(n,q));
               }
             }
             // merge cooking and prep time fields into a nice time string
@@ -261,7 +255,7 @@
       vertical-align:top;
     }
     #new-recipe td input.ingredient {
-      width:20em;
+      width:26em;
     }
     #new-recipe td input.amount {
       width:4em;
