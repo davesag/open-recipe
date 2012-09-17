@@ -1,0 +1,22 @@
+%h3 Sorry but an error has occured.
+#error-message
+  %p< We're sorry but we could not complete that action for you.
+  %p< #{error['name']}
+  %p< #{error['description']}
+  %p< #{error['reason']}
+:javascript
+  $('#error-message').dialog({
+    title: 'Error',
+    autoOpen: true,
+    height: 250,
+    width: 250,
+    modal: true,
+    buttons: {
+      "Okay" : function () {
+        $(this).dialog("close");
+      }
+    },
+    close: function () {
+      // do something on close if needs be.
+    }
+  });

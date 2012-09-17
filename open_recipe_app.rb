@@ -78,7 +78,7 @@ class OpenRecipeApp < Sinatra::Application
     ActiveRecord::Base.default_timezone = :utc
 
     ActiveRecord::Base.logger = Logger.new(STDOUT)
-    ActiveRecord::Base.logger.level = Logger::DEBUG      #not interested in database stuff right now.
+    ActiveRecord::Base.logger.level = Logger::ERROR      #not interested in database stuff right now.
 
     ActiveRecord::Base.establish_connection (ENV['DATABASE_URL'] || "sqlite3:///#{Dir.pwd}/db/test.sqlite3")
 

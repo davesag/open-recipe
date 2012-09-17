@@ -20,12 +20,11 @@ class RecipeTest < HandlerTestBase
 
     # and active_ingredients
     ie = 'ing1'
-    p_ide = '3'
     q_ae = '5'
     q_ue = '4'
   
     rjr = {"recipe"=>{"id"=>0, "name"=>ne, "serves" => se, "cooking_time"=>cte, "prep_time"=>pte, "description"=>de, "method"=>me, "requirements"=>re,
-            "active_ingredients"=>[{"ingredient"=>ie, "preparation_id"=>p_ide, "quantity"=>{"amount"=>q_ae, "unit_id"=>q_ue}}],
+            "active_ingredients"=>[{"ingredient"=>ie, "quantity"=>{"amount"=>q_ae, "unit_id"=>q_ue}}],
             "tags"=>tagse, "meal"=>meale}, "path"=>"/recipe-request"}
     rj = check_param_not_nil rjr, 'recipe'
 
@@ -45,7 +44,6 @@ class RecipeTest < HandlerTestBase
     ais = check_param_not_nil rj, 'active_ingredients'
     assert ais.length == 1, "expected only one ingredient."
     i = check_param ais[0], 'ingredient', ie
-    p_id = check_param ais[0], 'preparation_id', p_ide
     q = check_param_not_nil ais[0], 'quantity'
     q_a = check_param q, 'amount', q_ae
     q_u = check_param q, 'unit_id', q_ue
@@ -65,10 +63,8 @@ class RecipeTest < HandlerTestBase
       ingredient = Ingredient.where(:name => i).first_or_create
       quantity = Quantity.create(:amount => q_a,
                   :unit => AllowedUnit.where(:id => q_u.to_i).first_or_create(:name => 'test unit' << q_u.to_s))
-      preparation = Preparation.where(:id => p_id.to_i).first_or_create(:name => 'test unit' << p_id.to_s)
       active_ingredient = ActiveIngredient.create(:ingredient => ingredient,
-                                                  :quantity => quantity,
-                                                  :preparation => preparation)
+                                                  :quantity => quantity)
       ct_parsed = parse_time(ct)
       pt_parsed = parse_time(pt)
       recipe = Recipe.create(:owner => user, :name => n, :cooking_time => ct_parsed, :preparation_time => pt_parsed,
@@ -78,7 +74,6 @@ class RecipeTest < HandlerTestBase
       user.destroy
       # recipe.destroy
       # active_ingredient.destroy
-      preparation.destroy
       ingredient.destroy
       AllowedUnit.all.each {|au| au.destroy}
     end
@@ -86,12 +81,13 @@ class RecipeTest < HandlerTestBase
     assert Quantity.count == 0, "There #{Quantity.count == 1 ? 'is' : 'are'} #{Quantity.count} Quantit#{Quantity.count == 1 ? 'y' : 'ies'} left over."
     assert Recipe.count == 0, "There #{Recipe.count == 1 ? 'is' : 'are'} #{Recipe.count} Recipe#{Recipe.count == 1 ? '' : 's'} left over."
     assert Ingredient.count == 0, "There #{Ingredient.count == 1 ? 'is' : 'are'} #{Ingredient.count} Ingredient#{Ingredient.count == 1 ? '' : 's'} left over."
+    assert CoreIngredient.count == 0, "There #{CoreIngredient.count == 1 ? 'is' : 'are'} #{CoreIngredient.count} CoreIngredient#{CoreIngredient.count == 1 ? '' : 's'} left over."
     assert Preparation.count == 0, "There #{Preparation.count == 1 ? 'is' : 'are'} #{Preparation.count} Preparation#{Preparation.count == 1 ? '' : 's'} left over."
     assert ActiveIngredient.count == 0, "There #{ActiveIngredient.count == 1 ? 'is' : 'are'} #{ActiveIngredient.count} ActiveIngredient#{ActiveIngredient.count == 1 ? '' : 's'} left over."
     assert AllowedUnit.count == 0, "There #{AllowedUnit.count == 1 ? 'is' : 'are'} #{AllowedUnit.count} AllowedUnit#{AllowedUnit.count == 1 ? '' : 's'} left over."
     assert Preparation.count == 0, "There #{Preparation.count == 1 ? 'is' : 'are'} #{Preparation.count} Preparation#{Preparation.count == 1 ? '' : 's'} left over."
-#    assert Season.count == 0, "There #{Season.count == 1 ? 'is' : 'are'} #{Season.count} Season#{Season.count == 1 ? '' : 's'} left over."
-#    assert Tag.count == 0, "There #{Tag.count == 1 ? 'is' : 'are'} #{Tag.count} tag#{Tag.count == 1 ? '' : 's'} left over."
+    assert Season.count == 0, "There #{Season.count == 1 ? 'is' : 'are'} #{Season.count} Season#{Season.count == 1 ? '' : 's'} left over."
+    assert Tag.count == 0, "There #{Tag.count == 1 ? 'is' : 'are'} #{Tag.count} Tag#{Tag.count == 1 ? '' : 's'} left over."
   end
 
   def parse_time(a_time)

@@ -27,14 +27,37 @@ ActiveRecord::Base.transaction do |tran|
 end
 
 ActiveRecord::Base.transaction do |tran|
-  puts "Seeding Preparations."
-  seasons = YAML.load(File.read('./config/preparations.yml'))
+  puts "Seeding Core Ingredients."
+  core_ingredients = YAML.load(File.read('./config/core_ingredients.yml'))
+  core_ingredients.each do |ihash|
+    name = ihash.keys.first
+    puts "name: #{name}"
+    i = ihash[name]
+    puts "i: #{i.inspect}"
   
-  seasons.each do |t|
-    puts "Preparation: #{t}"
-    preparation = Preparation.where(:name => t).first_or_create
+    core_ingredient = CoreIngredient.where(:name => name).first_or_create(:description => i['description'], :energy => i['energy'])
+    # read in the tags
+    tags = i['tags']
+    tags.each do |t|
+      tag = Tag.where(:name => t).first_or_create
+      core_ingredient.tags << tag unless core_ingredient.tags.include?(tag)
+    end
+
+    # now process seasons, either 'all' or comma separated list of season names.
+    if 'all' == i['season']
+      Season.all.each do |s|
+        core_ingredient.seasons << s
+      end
+    else
+      seasons = i['season'].split(',')
+      seasons.each do |s|
+        season = Season.find_by_name(s.strip)
+        core_ingredient.seasons << season unless (season == nil || core_ingredient.seasons.include?(season))
+      end
+    end
+    core_ingredient.save
   end
-  puts "Preparations seeded."
+  puts "Core Ingredients seeded."
 end
 
 ActiveRecord::Base.transaction do |tran|
@@ -92,24 +115,17 @@ ActiveRecord::Base.transaction do |tran|
     i = ihash[name]
     puts "i: #{i.inspect}"
   
-    ingredient = Ingredient.where(:name => name).first_or_create(:description => i['description'], :energy => i['energy'])
+    core_ingredient = CoreIngredient.match_core(i['core_ingredient'])
+    puts "found core_ingredient #{core_ingredient.inspect}"
+
+    ingredient = Ingredient.where(:name => name).first_or_create(:description => i['description'],
+                                                            :core_ingredients => [core_ingredient])
     # read in the tags
     tags = i['tags']
-    tags.each do |t|
-      tag = Tag.where(:name => t).first_or_create
-      ingredient.tags << tag unless ingredient.tags.include?(tag)
-    end
-
-    # now process seasons, either 'all' or comma separated list of season names.
-    if 'all' == i['season']
-      Season.all.each do |s|
-        ingredient.seasons << s
-      end
-    else
-      seasons = i['season'].split(',')
-      seasons.each do |s|
-        season = Season.find_by_name(s.strip)
-        ingredient.seasons << season unless (season == nil || ingredient.seasons.include?(season))
+    if tags != nil
+      tags.each do |t|
+        tag = Tag.where(:name => t).first_or_create
+        ingredient.tags << tag unless ingredient.tags.include?(tag)
       end
     end
     ingredient.save

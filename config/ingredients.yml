@@ -1,657 +1,403 @@
 # tags you specify here will be added to the startup collection of tags.
 - bacon:
     description: Smoked, thinly sliced pork belly
-    season: all
-    tags:
-      - meat
+    core_ingredient: bacon
 
 - asparagus:
     description: a spring vegetable, native to most of Europe, northern Africa and western Asia
-    season: spring
-    tags: 
-      - vegetable
+    core_ingredient: asparagus
 
 - flour:
     description: a powder made by grinding cereal grains, other seeds or roots
-    season: all
-    tags:
-      - gluten
+    core_ingredient: flour
 
 - plain flour:
     description: flour that does not have a leavening agent. Aka all-purpose flour
-    season: all
-    tags:
-      - gluten
+    core_ingredient: flour
 
 - refined flour:
     description: flour that has had the germ and bran removed. Typically referred to as "white flour"
-    season: all
-    tags:
-      - gluten
+    core_ingredient: flour
 
 - bleached flour:
     description: any refined flour with a whitening agent added
-    season: all
-    tags:
-      - gluten
+    core_ingredient: flour
 
 - unbleached flour:
     description: flour that has not undergone bleaching and therefore does not have the color of "white" flour
-    season: all
-    tags:
-      - gluten
+    core_ingredient: flour
 
 - self raising flour:
     description: flour sold premixed with chemical leavening agents
-    season: all
-    tags:
-      - gluten
+    core_ingredient: flour
 
 - beer:
     description: the world's most loved alcoholic beverage
-    season: all
-    tags:
-      - alcohol
+    core_ingredient: beer
 
 - bamboo: 
     description: the largest members of the grass family, and some of the fastest growing plants in the world
-    season: all
-    tags:
-      - Asian
-      - vegetable
+    core_ingredient: bamboo
 
 - beans:
     description: large plant seeds of several genera of the family Leguminosae
-    season: summer
-    tags:
-      - pulse
+    core_ingredient: beans
 
 - broad beans:
     description: an edible pulse
-    season: summer
-    tags:
-      - pulse
+    core_ingredient: beans
 
 - mung beans:
     description: an edible pulse
-    season: summer
-    tags:
-      - pulse
+    core_ingredient: beans
 
 - baked beans:
     description: an edible pulse
-    season: all
-    tags:
-      - pulse
+    core_ingredient: beans
 
 - lentils:
     description: an edible pulse
-    season: summer
-    tags:
-      - pulse
+    core_ingredient: lentils
     
 - red lentils:
     description: an edible pulse
-    season: summer
-    tags:
-      - pulse
+    core_ingredient: lentils
 
 - puy lentils:
     description: an edible pulse
-    season: summer
-    tags:
-      - pulse
+    core_ingredient: lentils
 
 - runner beans:
     description: an edible pulse
-    season: summer
-    tags:
-      - pulse
+    core_ingredient: beans
 
 - peas:
     description: an edible pulse
-    season: summer
-    tags:
-      - pulse
+    core_ingredient: peas
 
 - black eyed peas:
     description: an edible pulse
-    season: summer
-    tags:
-      - pulse
+    core_ingredient: peas
 
 - lima beans:
     description: an edible pulse
-    season: summer
-    tags:
-      - pulse
+    core_ingredient: beans
 
 - kidney beans:
     description: an edible pulse
-    season: summer
-    tags:
-      - pulse
+    core_ingredient: beans
 
 - soy beans:
     description: an edible pulse
-    season: summer
-    tags:
-      - pulse
+    core_ingredient: beans
 
 - beef:
     description: meat from domestic cattle
-    season: all
-    tags:
-      - meat
-      - red meat
+    core_ingredient: beef
 
 - veal:
     description: meat from infant domestic cattle
-    season: all
-    tags:
-      - meat
-      - red meat
+    core_ingredient: veal
 
 - pork:
     description: meat from domestic pigs
-    season: all
-    tags:
-      - meat
-      - white meat
+    core_ingredient: pork
 
 - mushrooms:
     description: the fleshy body of a fungus
-    season: all
-    tags:
-      - fungus
-      - vegetarian
+    core_ingredient: mushrooms
 
 - cod:
     description: salt water fish with a mild flavour and a dense, flaky white flesh
-    season: all
-    tags:
-      - fish
+    core_ingredient: cod
 
 - vinegar:
     description: acetic acid diluted in water
-    season: all
-    tags:
-      - acid
-      - slow cooking
+    core_ingredient: vinegar
 
 - apple cider vinegar:
     description: acetic acid diluted in water
     season: all
-    tags:
-      - acid
-      - slow cooking
+    core_ingredient: vinegar
 
 - balsamic vinegar:
     description: dark brown, aromatic, aged type of vinegar
-    season: all
+    core_ingredient: vinegar
     tags:
-      - acid
-      - slow cooking
       - Italian
       - traditional
 
 - white vinegar:
     description: a colorless solution of acetic acid diluted in water
-    season: all
-    tags:
-      - acid
-      - slow cooking
+    core_ingredient: vinegar
 
 - bok choy:
     description: Chinese cabbage
-    season: all
-    tags:
-      - green
-      - Chinese
-      - vegetable
+    core_ingredient: bok choy
 
 - garlic:
     description: pungent flavored bulb related to onions
-    season: all
-    tags:
-      - vegetable
-      - smelly
+    core_ingredient: garlic
 
 - onions:
     description: the most widely cultivated species of the genus Allium
-    season: all
-    tags:
-      - vegetable
+    core_ingredient: onions
 
 - red onions:
     description: medium to large sized onions with a mild to sweet flavor
-    season: all
-    tags:
-      - vegetable
+    core_ingredient: onions
 
 - chicken:
     description:  the most common type of poultry in the world
-    energy: 916000
-    season: all
-    tags:
-      - poultry
-      - meat
-      - white meat
+    core_ingredient: chicken
 
 - chicken thighs:
     description:  the most common type of poultry in the world
-    season: all
-    tags:
-      - poultry
-      - meat
-      - white meat
+    core_ingredient: chicken
 
 - chicken wings:
     description:  the wings of a chicken
-    season: all
-    tags:
-      - poultry
-      - meat
-      - white meat
-      - snack
+    core_ingredient: chicken
 
 - drumsticks:
     description:  the legs of a chicken
-    season: all
-    tags:
-      - poultry
-      - meat
-      - white meat
+    core_ingredient: chicken
 
 - chicken livers:
     description:  the livers of a chicken
-    season: all
-    tags:
-      - poultry
-      - meat
-      - white meat
-      - offal
+    core_ingredient: chicken
 
 - icecream:
     description: Cold, creamy and delicious.  Comes in various flavours
-    season: all
-    tags:
-      - cold
-      - sweet
-      - dessert
+    core_ingredient: icecream
 
 - pastry:
     description: The dough from which baked products are made
-    season: all
-    tags:
-      - gluten
-      - baking
+    core_ingredient: pastry
 
 - shortcrust pastry:
     description: Shortcrust, or short, pastry is the simplest and most common pastry. It is made with flour, fat, salt, and water. It is mainly used to make tarts
-    season: all
+    core_ingredient: pastry
     tags:
-      - baking
       - tart
-      - gluten
 
 - flaky pastry:
     description: Flaky pastry is a simple pastry that expands when cooked due to the number of layers. It bakes into a crisp, buttery pastry
-    season: all
-    tags:
-      - baking
-      - gluten
+    core_ingredient: pastry
 
 - puff pastry:
     description: Puff pastry has many layers that cause it to expand or “puff” when baked. Pastries are made using flour, butter, salt, and water. Pastry rises up due to the combination and reaction of the four ingredients and also from the air that gets between the layers
-    season: all
-    tags:
-      - baking
-      - gluten
+    core_ingredient: pastry
 
 - filo pastry:
     description: Delicate and flaky, Filo pastry is paper-thin pastry dough and used in layers, is generally wrapped around a filling and brushed with butter before baking
-    season: all
+    core_ingredient: pastry
     tags:
-      - baking
-      - gluten
       - Greek
 
 - sugar:
     description: a sweet carbohydrate
-    season: all
-    tags:
-      - sweet
-      - carbohydrate
-      - glucose
-      - fructose
-      - galactose
+    core_ingredient: sugar
 
 - brown sugar:
     description: Unrefined or partially refined soft sugar with residual molasses content
-    season: all
+    core_ingredient: sugar
     tags:
       - molasses
-      - sweet
-      - carbohydrate
-      - glucose
-      - fructose
-      - galactose
 
 - white sugar:
     description: Refined sugar.
-    season: all
-    tags:
-      - sweet
-      - carbohydrate
-      - glucose
-      - fructose
-      - galactose
+    core_ingredient: sugar
 
 - icing sugar:
     description: Very fine sugar that typically contains a small amount of anti-caking agent
-    season: all
+    core_ingredient: sugar
     tags:
-      - sweet
-      - carbohydrate
-      - glucose
-      - fructose
-      - galactose
       - powder
 
 - palm sugar:
     description: Sugar made from the sap of the Palmyra palm, the date palm, the sugar date palm, the sago palm or the arenga pinnata, aka sugar palm.
-    season: all
+    core_ingredient: sugar
     tags:
       - Thai
       - Asian
-      - sweet
-      - carbohydrate
-      - glucose
-      - fructose
-      - galactose
 
 - honey:
     description: A sweet food made by bees using nectar from flowers
-    season: all
-    tags:
-      - sweet
-      - fructose
-      - glucose
+    core_ingredient: honey
 
 - maple syrup:
     description: A syrup usually made from the xylem sap of Maple trees
-    season: all
-    tags:
-      - maple
-      - sap
-      - syrup
-      - sweet
+    core_ingredient: maple syrup
 
 - molasses:
     description: Sweet, viscous by-product of the beating of sugarcane, grapes or sugar beets into sugar
-    season: all
-    tags:
-      - sweet
+    core_ingredient: molasses
 
 - toffee:
     description: Sweet confenction made by caramelizing sugar or molasses (creating inverted sugar) along with butter, and occasionally flour
-    season: all
-    tags:
-      - sweet
-      - carbohydrate
-      - glucose
-      - fructose
-      - galactose
+    core_ingredient: toffee
 
 - cinnamon:
     description: A spice obtained from the inner bark of several trees from the genus Cinnamomum, native to Sri Lanka, that is used in both sweet and savoury foods.
-    season: all
-    tags:
-      - Sri Lanka
-      - spice
+    core_ingredient: cinnamon
 
 - ginger:
     description:  The rhizome of the plant Zingiber officinale, consumed as a delicacy, medicine, or spice.
-    season: all
-    tags:
-      - spice
-      - Asian
+    core_ingredient: ginger
 
 - cardamom:
     description: Several plants of the similar genera Elettaria and Amomum in the ginger family Zingiberaceae
-    season: all
-    tags:
-      - India
-      - Bhutan
-      - Nepal
-      - spice
+    core_ingredient: cardamom
 
 - cardamom pod:
     description: The whole seeds of a cardamom plant
-    season: all
+    core_ingredient: cardamom
     tags:
-      - India
-      - Bhutan
-      - Nepal
-      - spice
       - seed
 
 - nutmeg:
     description: A spice made from Myristica fragrans, an evergreen tree indigenous to the Banda Islands in the Moluccas (or Spice Islands) of Indonesia.
-    season: all
-    tags:
-      - spice
-      - Indonesia
+    core_ingredient: nutmeg
 
 - black pepper:
     description: The dried fruit of the Piper nigrum vine
-    season: all
-    tags:
-      - pepper
-      - spice
-      - condiment
+    core_ingredient: pepper
 
 - salt:
     description:
-    season: all
-    tags:
-      - 
+    core_ingredient: salt
 
 - white pepper:
     description: White pepper consists of the seed of the pepper plant alone, with the darker coloured skin of the pepper fruit removed.
-    season: all
-    tags:
-      - pepper
-      - spice
-      - condiment
+    core_ingredient: pepper
 
 - kampot pepper:
     description: A black pepper local to Kampot Province in Cambodia
-    season: all
+    core_ingredient: pepper
     tags:
-      - pepper
-      - spice
-      - condiment
       - Asian
       - Cambodia
 
 - cocoa powder:
     description: A low-fat component of chocolate, extracted from cocoa beans
-    season: all
+    core_ingredient: cocoa
     tags:
       - chocolate
-      - powder
 
 - milk:
     description: A white liquid produced by the mammary glands of mammals
-    season: all
-    tags:
-      - white
-      - liquid
-      - dairy
-
+    core_ingredient: milk
+  
 - condensed milk:
     description:  Cow's milk from which water has been removed.
-    season: all
+    core_ingredient: milk
     tags:
       - sweet
-      - milk
       - viscous
-      - dairy
 
 - butter:
     description: A dairy product made by churning fresh or fermented cream or milk
-    season: all
-    tags:
-      - dairy
-      - spread
-      - oil
+    core_ingredient: butter
 
 - olive oil:
     description: A fat obtained from olives
-    season: all
+    core_ingredient: oil
     tags:
       - olive
-      - oil
       - Mediterranean
       - Greek
       - Italian
 
 - sunflower oil:
     description: A non-volatile oil expressed from sunflower (Helianthus annuus) seeds
-    season: all
+    core_ingredient: oil
     tags:
       - sunflower
-      - oil
       - frying
       - triglyceride
 
 - peanut oil:
     description: A mild tasting vegetable oil derived from peanuts
-    season: all
+    core_ingredient: oil
     tags:
       - peanut
-      - oil
       - frying
 
 - nuts:
     description: Hard-shelled indehiscent fruits of some plants
-    season: all
+    core_ingredient: nuts
     tags:
       - seed
 
 - walnuts:
     description: An edible seed of any tree of the genus Juglans, especially the Persian walnut, Juglans regia
-    season: all
-    tags:
-      - nut
-      - seed
+    core_ingredient: walnuts
 
 - pecans:
     description: Carya illinoinensis, is a species of hickory, native to south-central North America, in Mexico from Coahuila south to Jalisco and Veracruz
-    season: all
-    tags:
-      - America
-      - USA
-      - Mexico
-      - nut
+    core_ingredient: pecans
 
 - almonds:
     description: The edible and widely cultivated seed of the Prunus dulcis tree
-    season: all
-    tags:
-      - Middle East
-      - nut
+    core_ingredient: almonds
 
 - pistachios:
     description: Seeds from the Pistacia vera tree
-    season: all
-    tags:
-      - Middle East
-      - USA
-      - Turkey
-      - nut
+    core_ingredient: pistachios
 
 - dried fruit:
     description: Fruit where the majority of the original water content has been removed either naturally, through sun drying, or through the use of specialized dryers or dehydrators
-    season: all
-    tags:
-      - fruit
-      - dried
-      - dehydrated
+    core_ingredient: dried fruit
 
 - sultanas:
     description: Sultana raisins are small, sweet and have a golden colour
-    season: all
-    tags:
-      - raisin
-      - dried
-      - fruit
-      - sweet
+    core_ingredient: sultanas
 
 - figs:
     description: Fruit of the Ficus carica tree
-    season: all
-    tags:
-      - Middle East
-      - fruit
+    core_ingredient: figs
 
 - rolled oats:
     description: Oat groats that have been rolled into flat flakes under heavy rollers and then steamed and lightly toasted
-    season: all
-    tags:
-      - oat
-      - cerial
-      - grain
+    core_ingredient: oats
 
 - poppy seeds:
     description: Kydney-shaped oilseed obtained from the opium poppy (Papaver somniferum)
-    season: all
+    core_ingredient: seeds
     tags:
       - opium
-      - seed
 
 - sesame seeds:
     description: Sesame seed is considered to be the oldest oilseed crop known to man, domesticated well over 5000 years ago
-    season: all
+    core_ingredient: seeds
     tags:
       - oil
-      - seed
 
 - sunflower seeds:
     description:  The fruit of the sunflower (Helianthus annuus)
-    season: all
+    core_ingredient: seeds
     tags:
       - sunflower
-      - seed
       - oil
 
 - zucchini:
     description: The zucchini or courgette is a dark o rlight green summer squash which can reach nearly a meter in length, but which is usually harvested at half that size or less
-    season: all
-    tags:
-      - green
-      - vegetable
-      - squash
+    core_ingredient: zucchini
 
 - zucchini flowers:
     description: A golden blossom on the end of each emergent zucchini. The male flower grows directly on the stem of the zucchini plant in the leaf axils (where leaf petiole meets stem), on a long stalk, and is slightly smaller than the female. Both flowers are edible, and are often used to dress a meal or to garnish the cooked fruit
-    season: all
+    core_ingredient: zucchini
     tags:
       - flower
-      - zucchini
 
 - eggs:
     description: Typically refers to Chicken Eggs which and have been eaten by humans for millennia
-    season: all
-    tags:
-      - egg
-      - chicken
+    core_ingredient: eggs
 
 - duck eggs:
     description: Eggs laid by ducks. Larger and fattier than chicken eggs
-    season: all
+    core_ingredient: duck eggs
     tags:
       - egg
       - duck

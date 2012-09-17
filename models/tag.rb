@@ -10,6 +10,7 @@ class Tag < ActiveRecord::Base
   has_and_belongs_to_many :users #users who have this as a favourite tag.
   has_and_belongs_to_many :meals # meals tagged with this tag.
   has_and_belongs_to_many :ingredients # ingredients tagged with this tag.
+  has_and_belongs_to_many :core_ingredients # core_ingredients tagged with this tag.
   has_and_belongs_to_many :recipes # recipes tagged with this tag.
 
   scope :name_starts_with, lambda { |str|
@@ -33,6 +34,10 @@ class Tag < ActiveRecord::Base
       select tags.* from tags
       inner join ingredients_tags on tags.id = ingredients_tags.tag_id
       inner join ingredients on ingredients_tags.ingredient_id = ingredients.id
+      union
+      select tags.* from tags
+      inner join core_ingredients_tags on tags.id = core_ingredients_tags.tag_id
+      inner join core_ingredients on core_ingredients_tags.core_ingredient_id = core_ingredients.id
       union
       select tags.* from tags
       inner join recipes_tags on tags.id = recipes_tags.tag_id

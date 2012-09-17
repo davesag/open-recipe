@@ -16,7 +16,6 @@ ActiveRecord::Schema.define(:version => 2012082600) do
     t.integer "recipe_id"
     t.integer "ingredient_id"
     t.integer "quantity_id"
-    t.integer "preparation_id"
   end
 
   create_table "allowed_units", :force => true do |t|
@@ -25,6 +24,34 @@ ActiveRecord::Schema.define(:version => 2012082600) do
   end
 
   add_index "allowed_units", ["name"], :name => "index_allowed_units_on_name", :unique => true
+
+  create_table "core_ingredients", :force => true do |t|
+    t.string  "name",        :null => false
+    t.text    "description"
+    t.integer "energy"
+  end
+
+  add_index "core_ingredients", ["name"], :name => "index_core_ingredients_on_name", :unique => true
+
+  create_table "core_ingredients_ingredients", :id => false, :force => true do |t|
+    t.integer "core_ingredient_id"
+    t.integer "ingredient_id"
+  end
+
+  create_table "core_ingredients_photos", :id => false, :force => true do |t|
+    t.integer "core_ingredient_id"
+    t.integer "photo_id"
+  end
+
+  create_table "core_ingredients_seasons", :id => false, :force => true do |t|
+    t.integer "core_ingredient_id"
+    t.integer "season_id"
+  end
+
+  create_table "core_ingredients_tags", :id => false, :force => true do |t|
+    t.integer "core_ingredient_id"
+    t.integer "tag_id"
+  end
 
   create_table "favourite_recipes", :force => true do |t|
     t.integer "recipe_id"
@@ -48,11 +75,6 @@ ActiveRecord::Schema.define(:version => 2012082600) do
   create_table "ingredients_recipes", :id => false, :force => true do |t|
     t.integer "ingredient_id"
     t.integer "recipe_id"
-  end
-
-  create_table "ingredients_seasons", :id => false, :force => true do |t|
-    t.integer "ingredient_id"
-    t.integer "season_id"
   end
 
   create_table "ingredients_tags", :id => false, :force => true do |t|

@@ -1,0 +1,344 @@
+# tags you specify here will be added to the startup collection of tags.
+- bacon:
+    description: Smoked, thinly sliced pork belly
+    season: all
+    tags:
+      - meat
+
+- asparagus:
+    description: a spring vegetable, native to most of Europe, northern Africa and western Asia
+    season: spring
+    tags: 
+      - vegetable
+
+- flour:
+    description: a powder made by grinding cereal grains, other seeds or roots
+    season: all
+    tags:
+      - gluten
+
+- beer:
+    description: the world's most loved alcoholic beverage
+    season: all
+    tags:
+      - alcohol
+
+- bamboo: 
+    description: the largest members of the grass family, and some of the fastest growing plants in the world
+    season: all
+    tags:
+      - Asian
+      - vegetable
+
+- beans:
+    description: large plant seeds of several genera of the family Leguminosae
+    season: summer
+    tags:
+      - pulse
+
+- lentils:
+    description: an edible pulse
+    season: summer
+    tags:
+      - pulse
+    
+- peas:
+    description: an edible pulse
+    season: summer
+    tags:
+      - pulse
+
+- beef:
+    description: meat from domestic cattle
+    season: all
+    tags:
+      - meat
+      - red meat
+
+- veal:
+    description: meat from infant domestic cattle
+    season: all
+    tags:
+      - meat
+      - red meat
+
+- pork:
+    description: meat from domestic pigs
+    season: all
+    tags:
+      - meat
+      - white meat
+
+- mushrooms:
+    description: the fleshy body of a fungus
+    season: all
+    tags:
+      - fungus
+      - vegetarian
+
+- cod:
+    description: salt water fish with a mild flavour and a dense, flaky white flesh
+    season: all
+    tags:
+      - fish
+
+- vinegar:
+    description: acetic acid diluted in water
+    season: all
+    tags:
+      - acid
+      - slow cooking
+
+- bok choy:
+    description: Chinese cabbage
+    season: all
+    tags:
+      - green
+      - Chinese
+      - vegetable
+
+- garlic:
+    description: pungent flavored bulb related to onions
+    season: all
+    tags:
+      - vegetable
+      - smelly
+
+- onions:
+    description: the most widely cultivated species of the genus Allium
+    season: all
+    tags:
+      - vegetable
+
+- chicken:
+    description:  the most common type of poultry in the world
+    energy: 916000
+    season: all
+    tags:
+      - poultry
+      - meat
+      - white meat
+
+- icecream:
+    description: Cold, creamy and delicious.  Comes in various flavours
+    season: all
+    tags:
+      - cold
+      - sweet
+      - dessert
+
+- pastry:
+    description: The dough from which baked products are made
+    season: all
+    tags:
+      - gluten
+      - baking
+
+- sugar:
+    description: a sweet carbohydrate
+    season: all
+    tags:
+      - sweet
+      - carbohydrate
+      - glucose
+      - fructose
+      - galactose
+
+- honey:
+    description: A sweet food made by bees using nectar from flowers
+    season: all
+    tags:
+      - sweet
+      - fructose
+      - glucose
+
+- maple syrup:
+    description: A syrup usually made from the xylem sap of Maple trees
+    season: all
+    tags:
+      - maple
+      - sap
+      - syrup
+      - sweet
+
+- molasses:
+    description: Sweet, viscous by-product of the beating of sugarcane, grapes or sugar beets into sugar
+    season: all
+    tags:
+      - sweet
+
+- toffee:
+    description: Sweet confenction made by caramelizing sugar or molasses (creating inverted sugar) along with butter, and occasionally flour
+    season: all
+    tags:
+      - sweet
+      - carbohydrate
+      - glucose
+      - fructose
+      - galactose
+
+- cinnamon:
+    description: A spice obtained from the inner bark of several trees from the genus Cinnamomum, native to Sri Lanka, that is used in both sweet and savoury foods.
+    season: all
+    tags:
+      - Sri Lanka
+      - spice
+
+- ginger:
+    description:  The rhizome of the plant Zingiber officinale, consumed as a delicacy, medicine, or spice.
+    season: all
+    tags:
+      - spice
+      - Asian
+
+- cardamom:
+    description: Several plants of the similar genera Elettaria and Amomum in the ginger family Zingiberaceae
+    season: all
+    tags:
+      - India
+      - Bhutan
+      - Nepal
+      - spice
+
+- nutmeg:
+    description: A spice made from Myristica fragrans, an evergreen tree indigenous to the Banda Islands in the Moluccas (or Spice Islands) of Indonesia.
+    season: all
+    tags:
+      - spice
+      - Indonesia
+
+- salt:
+    description:
+    season: all
+    tags:
+      - 
+
+- cocoa:
+    description: A low-fat component of chocolate, extracted from cocoa beans
+    season: all
+    tags:
+      - chocolate
+
+- milk:
+    description: A white liquid produced by the mammary glands of mammals
+    season: all
+    tags:
+      - white
+      - liquid
+      - dairy
+
+- butter:
+    description: A dairy product made by churning fresh or fermented cream or milk
+    season: all
+    tags:
+      - dairy
+      - spread
+      - oil
+
+- oil:
+    description: A fat obtained from animals or vegetables, or from drilling for oil
+    season: all
+    tags:
+      - oil
+
+- nuts:
+    description: Hard-shelled indehiscent fruits of some plants
+    season: all
+    tags:
+      - seed
+
+- walnuts:
+    description: An edible seed of any tree of the genus Juglans, especially the Persian walnut, Juglans regia
+    season: all
+    tags:
+      - nut
+      - seed
+
+- pecans:
+    description: Carya illinoinensis, is a species of hickory, native to south-central North America, in Mexico from Coahuila south to Jalisco and Veracruz
+    season: all
+    tags:
+      - America
+      - USA
+      - Mexico
+      - nut
+
+- almonds:
+    description: The edible and widely cultivated seed of the Prunus dulcis tree
+    season: all
+    tags:
+      - Middle East
+      - nut
+
+- pistachios:
+    description: Seeds from the Pistacia vera tree
+    season: all
+    tags:
+      - Middle East
+      - USA
+      - Turkey
+      - nut
+
+- dried fruit:
+    description: Fruit where the majority of the original water content has been removed either naturally, through sun drying, or through the use of specialized dryers or dehydrators
+    season: all
+    tags:
+      - fruit
+      - dried
+      - dehydrated
+
+- oats:
+    description: Oats are a cerial
+    season: all
+    tags:
+      - oat
+      - cerial
+      - grain
+
+- sultanas:
+    description: A delicious dried grape
+    season: all
+    tags:
+      - grape
+      - fruit
+
+- figs:
+    description: A delicious fruit
+    season: all
+    tags:
+      - fig
+      - fruit
+
+- seeds:
+    description: Edible seeds from various plants
+    season: all
+    tags:
+      - seed
+
+- zucchini:
+    description: The zucchini or courgette is a dark o rlight green summer squash which can reach nearly a meter in length, but which is usually harvested at half that size or less
+    season: all
+    tags:
+      - green
+      - vegetable
+      - squash
+
+- eggs:
+    description: Typically refers to Chicken Eggs which and have been eaten by humans for millennia
+    season: all
+    tags:
+      - egg
+      - chicken
+
+- duck eggs:
+    description: Eggs laid by ducks. Larger and fattier than chicken eggs
+    season: all
+    tags:
+      - egg
+      - duck
+
+- pepper:
+    description: The genus Piper (genus) of the pepper family (Piperaceae)
+    season: all
+    tags:
+      - spice

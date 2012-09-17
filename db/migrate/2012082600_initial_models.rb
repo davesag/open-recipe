@@ -29,14 +29,31 @@ class InitialModels < ActiveRecord::Migration
 
     add_index :ingredients, :name, :unique => true
 
+    create_table :core_ingredients do |t|
+      t.string   :name, :null => false, :limit => 255
+      t.text     :description
+      t.integer  :energy            # joules per 100g consumed
+                                    # core_ingredient has_and_belongs_to_many :ingredients
+                                    # core_ingredient has_and_belongs_to_many :seasons
+                                    # recipe has_and_belongs_to_many :tags
+
+    end
+
+    add_index :core_ingredients, :name, :unique => true
+
+    create_table :core_ingredients_ingredients, :id => false do |t|
+      t.integer  :core_ingredient_id
+      t.integer  :ingredient_id
+    end
+
     create_table :seasons do |t|
       t.string   :name, :null => false, :limit => 7
     end
     
     add_index :seasons, :name, :unique => true
 
-    create_table :ingredients_seasons, :id => false do |t|
-      t.integer  :ingredient_id
+    create_table :core_ingredients_seasons, :id => false do |t|
+      t.integer  :core_ingredient_id
       t.integer  :season_id
     end
 
@@ -72,11 +89,15 @@ class InitialModels < ActiveRecord::Migration
                                   # the ingredient to use
       t.integer  :quantity_id     # belongs_to :quantity
                                   # the amount and units used
-      t.integer  :preparation_id  # belongs_to :preparation
     end
 
     create_table :ingredients_tags, :id => false do |t|
       t.integer  :ingredient_id
+      t.integer  :tag_id
+    end
+
+    create_table :core_ingredients_tags, :id => false do |t|
+      t.integer  :core_ingredient_id
       t.integer  :tag_id
     end
 
@@ -180,6 +201,11 @@ class InitialModels < ActiveRecord::Migration
       t.integer :ingredient_id
       t.integer :photo_id
     end
+
+    create_table :core_ingredients_photos, :id => false do |t|
+      t.integer :core_ingredient_id
+      t.integer :photo_id
+    end
     
     create_table :photos_recipes, :id => false do |t|
       t.integer :recipe_id
@@ -198,6 +224,9 @@ class InitialModels < ActiveRecord::Migration
   end
 
   def self.down
+  	drop_table :core_ingredients
+  	drop_table :core_ingredients_ingredients
+  	drop_table :core_ingredients_photos
     drop_table :preferences
   	drop_table :quantities
   	drop_table :ingredients_photos
@@ -210,6 +239,8 @@ class InitialModels < ActiveRecord::Migration
   	drop_table :favourite_recipes
   	drop_table :ingredients_recipes
   	drop_table :ingredients_tags
+  	drop_table :core_ingredients_tags
+  	drop_table :core_ingredients_seasons
   	drop_table :recipes
 		drop_table :unit_types
   	drop_table :allowed_units
