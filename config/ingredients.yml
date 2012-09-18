@@ -1,403 +1,342 @@
-# tags you specify here will be added to the startup collection of tags.
+---
 - bacon:
     description: Smoked, thinly sliced pork belly
     core_ingredient: bacon
-
 - asparagus:
-    description: a spring vegetable, native to most of Europe, northern Africa and western Asia
+    description: a spring vegetable, native to most of Europe, northern Africa and
+      western Asia
     core_ingredient: asparagus
-
 - flour:
     description: a powder made by grinding cereal grains, other seeds or roots
     core_ingredient: flour
-
 - plain flour:
     description: flour that does not have a leavening agent. Aka all-purpose flour
     core_ingredient: flour
-
 - refined flour:
-    description: flour that has had the germ and bran removed. Typically referred to as "white flour"
+    description: flour that has had the germ and bran removed. Typically referred
+      to as "white flour"
     core_ingredient: flour
-
 - bleached flour:
     description: any refined flour with a whitening agent added
     core_ingredient: flour
-
 - unbleached flour:
-    description: flour that has not undergone bleaching and therefore does not have the color of "white" flour
+    description: flour that has not undergone bleaching and therefore does not have
+      the color of "white" flour
     core_ingredient: flour
-
 - self raising flour:
     description: flour sold premixed with chemical leavening agents
     core_ingredient: flour
-
 - beer:
     description: the world's most loved alcoholic beverage
     core_ingredient: beer
-
-- bamboo: 
-    description: the largest members of the grass family, and some of the fastest growing plants in the world
+- bamboo:
+    description: the largest members of the grass family, and some of the fastest
+      growing plants in the world
     core_ingredient: bamboo
-
 - beans:
     description: large plant seeds of several genera of the family Leguminosae
     core_ingredient: beans
-
 - broad beans:
     description: an edible pulse
     core_ingredient: beans
-
 - mung beans:
     description: an edible pulse
     core_ingredient: beans
-
 - baked beans:
     description: an edible pulse
     core_ingredient: beans
-
 - lentils:
     description: an edible pulse
     core_ingredient: lentils
-    
 - red lentils:
     description: an edible pulse
     core_ingredient: lentils
-
 - puy lentils:
     description: an edible pulse
     core_ingredient: lentils
-
 - runner beans:
     description: an edible pulse
     core_ingredient: beans
-
 - peas:
     description: an edible pulse
     core_ingredient: peas
-
 - black eyed peas:
     description: an edible pulse
     core_ingredient: peas
-
 - lima beans:
     description: an edible pulse
     core_ingredient: beans
-
 - kidney beans:
     description: an edible pulse
     core_ingredient: beans
-
 - soy beans:
     description: an edible pulse
     core_ingredient: beans
-
 - beef:
     description: meat from domestic cattle
     core_ingredient: beef
-
 - veal:
     description: meat from infant domestic cattle
     core_ingredient: veal
-
 - pork:
     description: meat from domestic pigs
     core_ingredient: pork
-
 - mushrooms:
     description: the fleshy body of a fungus
     core_ingredient: mushrooms
-
 - cod:
     description: salt water fish with a mild flavour and a dense, flaky white flesh
     core_ingredient: cod
-
 - vinegar:
     description: acetic acid diluted in water
     core_ingredient: vinegar
-
 - apple cider vinegar:
     description: acetic acid diluted in water
-    season: all
     core_ingredient: vinegar
-
 - balsamic vinegar:
     description: dark brown, aromatic, aged type of vinegar
     core_ingredient: vinegar
     tags:
-      - Italian
-      - traditional
-
+    - Italian
+    - traditional
 - white vinegar:
     description: a colorless solution of acetic acid diluted in water
     core_ingredient: vinegar
-
 - bok choy:
     description: Chinese cabbage
     core_ingredient: bok choy
-
 - garlic:
     description: pungent flavored bulb related to onions
     core_ingredient: garlic
-
 - onions:
     description: the most widely cultivated species of the genus Allium
     core_ingredient: onions
-
 - red onions:
     description: medium to large sized onions with a mild to sweet flavor
     core_ingredient: onions
-
 - chicken:
-    description:  the most common type of poultry in the world
+    description: the most common type of poultry in the world
     core_ingredient: chicken
-
 - chicken thighs:
-    description:  the most common type of poultry in the world
+    description: the most common type of poultry in the world
     core_ingredient: chicken
-
 - chicken wings:
-    description:  the wings of a chicken
+    description: the wings of a chicken
     core_ingredient: chicken
-
 - drumsticks:
-    description:  the legs of a chicken
+    description: the legs of a chicken
     core_ingredient: chicken
-
 - chicken livers:
-    description:  the livers of a chicken
+    description: the livers of a chicken
     core_ingredient: chicken
-
 - icecream:
     description: Cold, creamy and delicious.  Comes in various flavours
     core_ingredient: icecream
-
 - pastry:
     description: The dough from which baked products are made
     core_ingredient: pastry
-
 - shortcrust pastry:
-    description: Shortcrust, or short, pastry is the simplest and most common pastry. It is made with flour, fat, salt, and water. It is mainly used to make tarts
+    description: Shortcrust, or short, pastry is the simplest and most common pastry.
+      It is made with flour, fat, salt, and water. It is mainly used to make tarts
     core_ingredient: pastry
     tags:
-      - tart
-
+    - tart
 - flaky pastry:
-    description: Flaky pastry is a simple pastry that expands when cooked due to the number of layers. It bakes into a crisp, buttery pastry
+    description: Flaky pastry is a simple pastry that expands when cooked due to the
+      number of layers. It bakes into a crisp, buttery pastry
     core_ingredient: pastry
-
 - puff pastry:
-    description: Puff pastry has many layers that cause it to expand or “puff” when baked. Pastries are made using flour, butter, salt, and water. Pastry rises up due to the combination and reaction of the four ingredients and also from the air that gets between the layers
+    description: Puff pastry has many layers that cause it to expand or “puff” when
+      baked. Pastries are made using flour, butter, salt, and water. Pastry rises
+      up due to the combination and reaction of the four ingredients and also from
+      the air that gets between the layers
     core_ingredient: pastry
-
 - filo pastry:
-    description: Delicate and flaky, Filo pastry is paper-thin pastry dough and used in layers, is generally wrapped around a filling and brushed with butter before baking
+    description: Delicate and flaky, Filo pastry is paper-thin pastry dough and used
+      in layers, is generally wrapped around a filling and brushed with butter before
+      baking
     core_ingredient: pastry
     tags:
-      - Greek
-
+    - Greek
 - sugar:
     description: a sweet carbohydrate
     core_ingredient: sugar
-
 - brown sugar:
-    description: Unrefined or partially refined soft sugar with residual molasses content
+    description: Unrefined or partially refined soft sugar with residual molasses
+      content
     core_ingredient: sugar
     tags:
-      - molasses
-
+    - molasses
 - white sugar:
     description: Refined sugar.
     core_ingredient: sugar
-
 - icing sugar:
-    description: Very fine sugar that typically contains a small amount of anti-caking agent
+    description: Very fine sugar that typically contains a small amount of anti-caking
+      agent
     core_ingredient: sugar
     tags:
-      - powder
-
+    - powder
 - palm sugar:
-    description: Sugar made from the sap of the Palmyra palm, the date palm, the sugar date palm, the sago palm or the arenga pinnata, aka sugar palm.
+    description: Sugar made from the sap of the Palmyra palm, the date palm, the sugar
+      date palm, the sago palm or the arenga pinnata, aka sugar palm.
     core_ingredient: sugar
     tags:
-      - Thai
-      - Asian
-
+    - Thai
+    - Asian
 - honey:
     description: A sweet food made by bees using nectar from flowers
     core_ingredient: honey
-
 - maple syrup:
     description: A syrup usually made from the xylem sap of Maple trees
     core_ingredient: maple syrup
-
 - molasses:
-    description: Sweet, viscous by-product of the beating of sugarcane, grapes or sugar beets into sugar
+    description: Sweet, viscous by-product of the beating of sugarcane, grapes or
+      sugar beets into sugar
     core_ingredient: molasses
-
 - toffee:
-    description: Sweet confenction made by caramelizing sugar or molasses (creating inverted sugar) along with butter, and occasionally flour
+    description: Sweet confenction made by caramelizing sugar or molasses (creating
+      inverted sugar) along with butter, and occasionally flour
     core_ingredient: toffee
-
 - cinnamon:
-    description: A spice obtained from the inner bark of several trees from the genus Cinnamomum, native to Sri Lanka, that is used in both sweet and savoury foods.
+    description: A spice obtained from the inner bark of several trees from the genus
+      Cinnamomum, native to Sri Lanka, that is used in both sweet and savoury foods.
     core_ingredient: cinnamon
-
 - ginger:
-    description:  The rhizome of the plant Zingiber officinale, consumed as a delicacy, medicine, or spice.
+    description: The rhizome of the plant Zingiber officinale, consumed as a delicacy,
+      medicine, or spice.
     core_ingredient: ginger
-
 - cardamom:
-    description: Several plants of the similar genera Elettaria and Amomum in the ginger family Zingiberaceae
+    description: Several plants of the similar genera Elettaria and Amomum in the
+      ginger family Zingiberaceae
     core_ingredient: cardamom
-
 - cardamom pod:
     description: The whole seeds of a cardamom plant
     core_ingredient: cardamom
     tags:
-      - seed
-
+    - seed
 - nutmeg:
-    description: A spice made from Myristica fragrans, an evergreen tree indigenous to the Banda Islands in the Moluccas (or Spice Islands) of Indonesia.
+    description: A spice made from Myristica fragrans, an evergreen tree indigenous
+      to the Banda Islands in the Moluccas (or Spice Islands) of Indonesia.
     core_ingredient: nutmeg
-
 - black pepper:
     description: The dried fruit of the Piper nigrum vine
     core_ingredient: pepper
-
 - salt:
-    description:
+    description: 
     core_ingredient: salt
-
 - white pepper:
-    description: White pepper consists of the seed of the pepper plant alone, with the darker coloured skin of the pepper fruit removed.
+    description: White pepper consists of the seed of the pepper plant alone, with
+      the darker coloured skin of the pepper fruit removed.
     core_ingredient: pepper
-
 - kampot pepper:
     description: A black pepper local to Kampot Province in Cambodia
     core_ingredient: pepper
     tags:
-      - Asian
-      - Cambodia
-
+    - Asian
+    - Cambodia
 - cocoa powder:
     description: A low-fat component of chocolate, extracted from cocoa beans
     core_ingredient: cocoa
-    tags:
-      - chocolate
-
 - milk:
     description: A white liquid produced by the mammary glands of mammals
     core_ingredient: milk
-  
 - condensed milk:
-    description:  Cow's milk from which water has been removed.
+    description: Cow's milk from which water has been removed.
     core_ingredient: milk
     tags:
-      - sweet
-      - viscous
-
+    - sweet
+    - viscous
 - butter:
     description: A dairy product made by churning fresh or fermented cream or milk
     core_ingredient: butter
-
 - olive oil:
     description: A fat obtained from olives
     core_ingredient: oil
     tags:
-      - olive
-      - Mediterranean
-      - Greek
-      - Italian
-
+    - olive
+    - Mediterranean
+    - Greek
+    - Italian
 - sunflower oil:
     description: A non-volatile oil expressed from sunflower (Helianthus annuus) seeds
     core_ingredient: oil
     tags:
-      - sunflower
-      - frying
-      - triglyceride
-
+    - sunflower
+    - frying
+    - triglyceride
 - peanut oil:
     description: A mild tasting vegetable oil derived from peanuts
     core_ingredient: oil
     tags:
-      - peanut
-      - frying
-
+    - peanut
+    - frying
 - nuts:
     description: Hard-shelled indehiscent fruits of some plants
     core_ingredient: nuts
-    tags:
-      - seed
-
 - walnuts:
-    description: An edible seed of any tree of the genus Juglans, especially the Persian walnut, Juglans regia
+    description: An edible seed of any tree of the genus Juglans, especially the Persian
+      walnut, Juglans regia
     core_ingredient: walnuts
-
 - pecans:
-    description: Carya illinoinensis, is a species of hickory, native to south-central North America, in Mexico from Coahuila south to Jalisco and Veracruz
+    description: Carya illinoinensis, is a species of hickory, native to south-central
+      North America, in Mexico from Coahuila south to Jalisco and Veracruz
     core_ingredient: pecans
-
 - almonds:
     description: The edible and widely cultivated seed of the Prunus dulcis tree
     core_ingredient: almonds
-
 - pistachios:
     description: Seeds from the Pistacia vera tree
     core_ingredient: pistachios
-
 - dried fruit:
-    description: Fruit where the majority of the original water content has been removed either naturally, through sun drying, or through the use of specialized dryers or dehydrators
+    description: Fruit where the majority of the original water content has been removed
+      either naturally, through sun drying, or through the use of specialized dryers
+      or dehydrators
     core_ingredient: dried fruit
-
 - sultanas:
     description: Sultana raisins are small, sweet and have a golden colour
     core_ingredient: sultanas
-
 - figs:
     description: Fruit of the Ficus carica tree
     core_ingredient: figs
-
 - rolled oats:
-    description: Oat groats that have been rolled into flat flakes under heavy rollers and then steamed and lightly toasted
+    description: Oat groats that have been rolled into flat flakes under heavy rollers
+      and then steamed and lightly toasted
     core_ingredient: oats
-
 - poppy seeds:
     description: Kydney-shaped oilseed obtained from the opium poppy (Papaver somniferum)
     core_ingredient: seeds
     tags:
-      - opium
-
+    - opium
 - sesame seeds:
-    description: Sesame seed is considered to be the oldest oilseed crop known to man, domesticated well over 5000 years ago
+    description: Sesame seed is considered to be the oldest oilseed crop known to
+      man, domesticated well over 5000 years ago
     core_ingredient: seeds
     tags:
-      - oil
-
+    - oil
 - sunflower seeds:
-    description:  The fruit of the sunflower (Helianthus annuus)
+    description: The fruit of the sunflower (Helianthus annuus)
     core_ingredient: seeds
     tags:
-      - sunflower
-      - oil
-
+    - sunflower
+    - oil
 - zucchini:
-    description: The zucchini or courgette is a dark o rlight green summer squash which can reach nearly a meter in length, but which is usually harvested at half that size or less
+    description: The zucchini or courgette is a dark o rlight green summer squash
+      which can reach nearly a meter in length, but which is usually harvested at
+      half that size or less
     core_ingredient: zucchini
-
 - zucchini flowers:
-    description: A golden blossom on the end of each emergent zucchini. The male flower grows directly on the stem of the zucchini plant in the leaf axils (where leaf petiole meets stem), on a long stalk, and is slightly smaller than the female. Both flowers are edible, and are often used to dress a meal or to garnish the cooked fruit
+    description: A golden blossom on the end of each emergent zucchini. The male flower
+      grows directly on the stem of the zucchini plant in the leaf axils (where leaf
+      petiole meets stem), on a long stalk, and is slightly smaller than the female.
+      Both flowers are edible, and are often used to dress a meal or to garnish the
+      cooked fruit
     core_ingredient: zucchini
     tags:
-      - flower
-
+    - flower
 - eggs:
-    description: Typically refers to Chicken Eggs which and have been eaten by humans for millennia
+    description: Typically refers to Chicken Eggs which and have been eaten by humans
+      for millennia
     core_ingredient: eggs
-
 - duck eggs:
     description: Eggs laid by ducks. Larger and fattier than chicken eggs
     core_ingredient: duck eggs
-    tags:
-      - egg
-      - duck

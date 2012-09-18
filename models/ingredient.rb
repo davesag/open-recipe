@@ -14,8 +14,9 @@ class Ingredient < ActiveRecord::Base
   has_many :active_ingredients #Ingredients paired with Quantities in specific recipes.
 
   before_create :import_from_core
+  before_update :import_from_core
 
-  # look at the name of this ingredient and try and work out which CoreIngredient might match.
+  # look at the name of this ingredient and try and work out which CoreIngredients match.
   def match_core
   puts "debug: Matching Core Ingredients. self = #{self.inspect}"
     results = []
@@ -24,32 +25,27 @@ class Ingredient < ActiveRecord::Base
     names = self.name.split(' ')                  # then look for individual words
     names.each do |n|
       result = CoreIngredient.match_core(n)
-      results << result unless (results.include?(result) || result == nil)
+      results << result unless (result == nil || results.include?(result))
     end
     puts "returning results = #{results.inspect}"
     # could get fancy and look for combinations of word pairs too.
     return results
   end
 
-  def core_ingredients=(an_array)
-    @core_ingredients = an_array
-    import_from_core
-  end
-
   def import_from_core
-    if @core_ingredients == nil || @core_ingredients.empty?
-      @core_ingredients = self.match_core
-      puts "@core_ingredients = #{@core_ingredients.inspect}" if @core_ingredients != nil
-      puts "@core_ingredients is nil" if @core_ingredients == nil
+    if self.core_ingredients == nil || self.core_ingredients.empty?
+      self.core_ingredients = self.match_core
+      puts "self.core_ingredients = #{self.core_ingredients.inspect}" if self.core_ingredients != nil
+      puts "self.core_ingredients is nil" if self.core_ingredients == nil
 
-      if (@core_ingredients == nil || @core_ingredients.empty?)
-        puts "@core_ingredients nill or empty so stop imorting."
+      if (self.core_ingredients == nil || self.core_ingredients.empty?)
+        puts "self.core_ingredients nill or empty so stop imorting."
         return
       end
     end
     # if there are core_ingredients then import tag data.
-    puts "Importing tag data from #{@core_ingredients.inspect}"
-    @core_ingredients.each do |ci|
+    puts "Importing tag data from #{self.core_ingredients.inspect}"
+    self.core_ingredients.each do |ci|
       if self.tags == nil || self.tags.empty?
         puts "debug: Importing tags from #{ci.tags.inspect}"
         self.tags = ci.tags

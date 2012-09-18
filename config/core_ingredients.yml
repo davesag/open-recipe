@@ -1,344 +1,311 @@
-# tags you specify here will be added to the startup collection of tags.
+---
 - bacon:
     description: Smoked, thinly sliced pork belly
-    season: all
     tags:
-      - meat
-
+    - meat
+    season: all
 - asparagus:
-    description: a spring vegetable, native to most of Europe, northern Africa and western Asia
+    description: a spring vegetable, native to most of Europe, northern Africa and
+      western Asia
+    tags:
+    - vegetable
     season: spring
-    tags: 
-      - vegetable
-
 - flour:
     description: a powder made by grinding cereal grains, other seeds or roots
-    season: all
     tags:
-      - gluten
-
+    - gluten
+    season: all
 - beer:
     description: the world's most loved alcoholic beverage
-    season: all
     tags:
-      - alcohol
-
-- bamboo: 
-    description: the largest members of the grass family, and some of the fastest growing plants in the world
+    - alcohol
     season: all
+- bamboo:
+    description: the largest members of the grass family, and some of the fastest
+      growing plants in the world
     tags:
-      - Asian
-      - vegetable
-
+    - Asian
+    - vegetable
+    season: all
 - beans:
     description: large plant seeds of several genera of the family Leguminosae
-    season: summer
     tags:
-      - pulse
-
+    - pulse
+    season: summer
 - lentils:
     description: an edible pulse
-    season: summer
     tags:
-      - pulse
-    
+    - pulse
+    season: summer
 - peas:
     description: an edible pulse
-    season: summer
     tags:
-      - pulse
-
+    - pulse
+    season: summer
 - beef:
     description: meat from domestic cattle
-    season: all
     tags:
-      - meat
-      - red meat
-
+    - meat
+    - red meat
+    season: all
 - veal:
     description: meat from infant domestic cattle
-    season: all
     tags:
-      - meat
-      - red meat
-
+    - meat
+    - red meat
+    season: all
 - pork:
     description: meat from domestic pigs
-    season: all
     tags:
-      - meat
-      - white meat
-
+    - meat
+    - white meat
+    season: all
 - mushrooms:
     description: the fleshy body of a fungus
-    season: all
     tags:
-      - fungus
-      - vegetarian
-
+    - fungus
+    - vegetarian
+    season: all
 - cod:
     description: salt water fish with a mild flavour and a dense, flaky white flesh
-    season: all
     tags:
-      - fish
-
+    - fish
+    season: all
 - vinegar:
     description: acetic acid diluted in water
-    season: all
     tags:
-      - acid
-      - slow cooking
-
+    - acid
+    - slow cooking
+    season: all
 - bok choy:
     description: Chinese cabbage
-    season: all
     tags:
-      - green
-      - Chinese
-      - vegetable
-
+    - green
+    - Chinese
+    - vegetable
+    season: all
 - garlic:
     description: pungent flavored bulb related to onions
-    season: all
     tags:
-      - vegetable
-      - smelly
-
+    - vegetable
+    - smelly
+    season: all
 - onions:
     description: the most widely cultivated species of the genus Allium
-    season: all
     tags:
-      - vegetable
-
+    - vegetable
+    season: all
 - chicken:
-    description:  the most common type of poultry in the world
+    description: the most common type of poultry in the world
     energy: 916000
-    season: all
     tags:
-      - poultry
-      - meat
-      - white meat
-
+    - poultry
+    - meat
+    - white meat
+    season: all
 - icecream:
     description: Cold, creamy and delicious.  Comes in various flavours
-    season: all
     tags:
-      - cold
-      - sweet
-      - dessert
-
+    - cold
+    - sweet
+    - dessert
+    season: all
 - pastry:
     description: The dough from which baked products are made
-    season: all
     tags:
-      - gluten
-      - baking
-
+    - gluten
+    - baking
+    season: all
 - sugar:
     description: a sweet carbohydrate
-    season: all
     tags:
-      - sweet
-      - carbohydrate
-      - glucose
-      - fructose
-      - galactose
-
+    - sweet
+    - carbohydrate
+    - glucose
+    - fructose
+    - galactose
+    season: all
 - honey:
     description: A sweet food made by bees using nectar from flowers
-    season: all
     tags:
-      - sweet
-      - fructose
-      - glucose
-
+    - sweet
+    - fructose
+    - glucose
+    season: all
 - maple syrup:
     description: A syrup usually made from the xylem sap of Maple trees
-    season: all
     tags:
-      - maple
-      - sap
-      - syrup
-      - sweet
-
+    - maple
+    - sap
+    - syrup
+    - sweet
+    season: all
 - molasses:
-    description: Sweet, viscous by-product of the beating of sugarcane, grapes or sugar beets into sugar
-    season: all
+    description: Sweet, viscous by-product of the beating of sugarcane, grapes or
+      sugar beets into sugar
     tags:
-      - sweet
-
+    - sweet
+    season: all
 - toffee:
-    description: Sweet confenction made by caramelizing sugar or molasses (creating inverted sugar) along with butter, and occasionally flour
-    season: all
+    description: Sweet confenction made by caramelizing sugar or molasses (creating
+      inverted sugar) along with butter, and occasionally flour
     tags:
-      - sweet
-      - carbohydrate
-      - glucose
-      - fructose
-      - galactose
-
+    - sweet
+    - carbohydrate
+    - glucose
+    - fructose
+    - galactose
+    season: all
 - cinnamon:
-    description: A spice obtained from the inner bark of several trees from the genus Cinnamomum, native to Sri Lanka, that is used in both sweet and savoury foods.
-    season: all
+    description: A spice obtained from the inner bark of several trees from the genus
+      Cinnamomum, native to Sri Lanka, that is used in both sweet and savoury foods.
     tags:
-      - Sri Lanka
-      - spice
-
+    - Sri Lanka
+    - spice
+    season: all
 - ginger:
-    description:  The rhizome of the plant Zingiber officinale, consumed as a delicacy, medicine, or spice.
-    season: all
+    description: The rhizome of the plant Zingiber officinale, consumed as a delicacy,
+      medicine, or spice.
     tags:
-      - spice
-      - Asian
-
+    - spice
+    - Asian
+    season: all
 - cardamom:
-    description: Several plants of the similar genera Elettaria and Amomum in the ginger family Zingiberaceae
-    season: all
+    description: Several plants of the similar genera Elettaria and Amomum in the
+      ginger family Zingiberaceae
     tags:
-      - India
-      - Bhutan
-      - Nepal
-      - spice
-
+    - India
+    - Bhutan
+    - Nepal
+    - spice
+    season: all
 - nutmeg:
-    description: A spice made from Myristica fragrans, an evergreen tree indigenous to the Banda Islands in the Moluccas (or Spice Islands) of Indonesia.
-    season: all
+    description: A spice made from Myristica fragrans, an evergreen tree indigenous
+      to the Banda Islands in the Moluccas (or Spice Islands) of Indonesia.
     tags:
-      - spice
-      - Indonesia
-
+    - spice
+    - Indonesia
+    season: all
 - salt:
-    description:
+    description: 
+    tags: []
     season: all
-    tags:
-      - 
-
 - cocoa:
     description: A low-fat component of chocolate, extracted from cocoa beans
-    season: all
     tags:
-      - chocolate
-
+    - chocolate
+    season: all
 - milk:
     description: A white liquid produced by the mammary glands of mammals
-    season: all
     tags:
-      - white
-      - liquid
-      - dairy
-
+    - white
+    - liquid
+    - dairy
+    season: all
 - butter:
     description: A dairy product made by churning fresh or fermented cream or milk
-    season: all
     tags:
-      - dairy
-      - spread
-      - oil
-
+    - dairy
+    - spread
+    - oil
+    season: all
 - oil:
     description: A fat obtained from animals or vegetables, or from drilling for oil
-    season: all
     tags:
-      - oil
-
+    - oil
+    season: all
 - nuts:
     description: Hard-shelled indehiscent fruits of some plants
-    season: all
     tags:
-      - seed
-
+    - seed
+    season: all
 - walnuts:
-    description: An edible seed of any tree of the genus Juglans, especially the Persian walnut, Juglans regia
-    season: all
+    description: An edible seed of any tree of the genus Juglans, especially the Persian
+      walnut, Juglans regia
     tags:
-      - nut
-      - seed
-
+    - nut
+    - seed
+    season: all
 - pecans:
-    description: Carya illinoinensis, is a species of hickory, native to south-central North America, in Mexico from Coahuila south to Jalisco and Veracruz
-    season: all
+    description: Carya illinoinensis, is a species of hickory, native to south-central
+      North America, in Mexico from Coahuila south to Jalisco and Veracruz
     tags:
-      - America
-      - USA
-      - Mexico
-      - nut
-
+    - America
+    - USA
+    - Mexico
+    - nut
+    season: all
 - almonds:
     description: The edible and widely cultivated seed of the Prunus dulcis tree
-    season: all
     tags:
-      - Middle East
-      - nut
-
+    - Middle East
+    - nut
+    season: all
 - pistachios:
     description: Seeds from the Pistacia vera tree
-    season: all
     tags:
-      - Middle East
-      - USA
-      - Turkey
-      - nut
-
+    - Middle East
+    - USA
+    - Turkey
+    - nut
+    season: all
 - dried fruit:
-    description: Fruit where the majority of the original water content has been removed either naturally, through sun drying, or through the use of specialized dryers or dehydrators
-    season: all
+    description: Fruit where the majority of the original water content has been removed
+      either naturally, through sun drying, or through the use of specialized dryers
+      or dehydrators
     tags:
-      - fruit
-      - dried
-      - dehydrated
-
+    - fruit
+    - dried
+    - dehydrated
+    season: all
 - oats:
     description: Oats are a cerial
-    season: all
     tags:
-      - oat
-      - cerial
-      - grain
-
+    - oat
+    - cerial
+    - grain
+    season: all
 - sultanas:
     description: A delicious dried grape
-    season: all
     tags:
-      - grape
-      - fruit
-
+    - grape
+    - fruit
+    season: all
 - figs:
     description: A delicious fruit
-    season: all
     tags:
-      - fig
-      - fruit
-
+    - fig
+    - fruit
+    season: all
 - seeds:
     description: Edible seeds from various plants
-    season: all
     tags:
-      - seed
-
+    - seed
+    season: all
 - zucchini:
-    description: The zucchini or courgette is a dark o rlight green summer squash which can reach nearly a meter in length, but which is usually harvested at half that size or less
-    season: all
+    description: The zucchini or courgette is a dark o rlight green summer squash
+      which can reach nearly a meter in length, but which is usually harvested at
+      half that size or less
     tags:
-      - green
-      - vegetable
-      - squash
-
+    - green
+    - vegetable
+    - squash
+    season: all
 - eggs:
-    description: Typically refers to Chicken Eggs which and have been eaten by humans for millennia
-    season: all
+    description: Typically refers to Chicken Eggs which and have been eaten by humans
+      for millennia
     tags:
-      - egg
-      - chicken
-
+    - egg
+    - chicken
+    season: all
 - duck eggs:
     description: Eggs laid by ducks. Larger and fattier than chicken eggs
-    season: all
     tags:
-      - egg
-      - duck
-
+    - egg
+    - duck
+    season: all
 - pepper:
     description: The genus Piper (genus) of the pepper family (Piperaceae)
-    season: all
     tags:
-      - spice
+    - spice
+    season: all

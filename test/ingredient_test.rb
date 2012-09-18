@@ -26,7 +26,7 @@ class IngredientTest < HandlerTestBase
       i = Ingredient.create(:name => 'spam', :core_ingredients => [ci],
                             :description => 'a tin of spam')
       assert i.tags.include?(tt), "Expected Ingredient '#{i.name}' to have tag '#{tt.name}. Our tags #{i.tags.inspect}, CoreIngredient.tags #{ci.tags.inspect}"
-
+      assert i.core_ingredients.first == ci, "Expected Ingredient #{i.name} to have core ingredient #{ci.name} but found #{i.core_ingredients.inspect}"
       ai = ActiveIngredient.create(:ingredient => i)
 
       ai.destroy

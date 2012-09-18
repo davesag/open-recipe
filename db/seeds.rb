@@ -94,7 +94,7 @@ ActiveRecord::Base.transaction do |tran|
     puts "m['name'] = #{m['name']}"
     mt = MealType.where(:name => m['meal_type']).first
     puts "mt = #{mt}"
-    meal = Meal.where(:name => m['name']).first_or_create(:meal_type => mt)
+    meal = Meal.where(:name => m['name']).first_or_create(:meal_type => mt, :description => m['description'])
     # read in the tags
     tags = m['tags']
     tags.each do |t|
@@ -129,6 +129,8 @@ ActiveRecord::Base.transaction do |tran|
       end
     end
     ingredient.save
+    puts "ingredient #{ingredient.name} has core #{ingredient.core_ingredients.first.name}" unless ingredient.core_ingredients.empty?
+    puts "ingredient #{ingredient.name} has no core" if ingredient.core_ingredients.empty?
   end
   puts "Ingredients seeded."
 end

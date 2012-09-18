@@ -16,13 +16,13 @@ namespace :db do
     Time.zone = 'UTC'
     ActiveRecord::Base.time_zone_aware_attributes = true
     ActiveRecord::Base.default_timezone = :utc
+    ActiveRecord::Base.logger = Logger.new(STDOUT)
   end
 
   desc "Migrate the database by walking through the migrations in db/migrate"
   task(:migrate => :environment) do
     raise "No models folder found." unless File.directory? './models'
     Dir.glob("./models/**.rb").sort.each { |m| require m }
-    ActiveRecord::Base.logger = Logger.new(STDOUT)
     ActiveRecord::Migration.verbose = true
     ActiveRecord::Migrator.migrate("./db/migrate", ENV["VERSION"] ? ENV[VERSION].to_i : nil)
   end
@@ -38,6 +38,23 @@ namespace :db do
         load(seed_file)
       else
         puts "WARNING -- NO DATABASE SEED DATA FOUND."
+      end
+    end
+  end
+
+  desc 'Extract the seed data via db/extract.rb'
+  task(:extract => :environment) do
+    raise "No models folder found." unless File.directory? './models'
+    Dir.glob("./models/**.rb").sort.each { |m| require m }
+    extract_file = File.join('./db', "#{ENV['RACK_ENV'] || 'development'}_extract.rb")
+    if File.exists?(extract_file)
+      load(extract_file)
+    else
+      extract_file = File.join('./db', 'extract.rb')
+      if File.exists?(extract_file)
+        load(extract_file)
+      else
+        puts "WARNING -- NO DATABASE EXTRACTION RULES FOUND."
       end
     end
   end
