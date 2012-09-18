@@ -37,8 +37,8 @@
                 %td< #{r.name}
                 %td< #{r.serves}
                 %td< #{r.description}
-                %td< #{r.preparation_time}
-                %td< #{r.cooking_time}
+                %td<= Unit("#{r.preparation_time} seconds").convert_to('minutes')
+                %td<= Unit("#{r.cooking_time} seconds").convert_to('minutes')
           %tfoot
       %button#add-recipe< Add a recipe.
     #my-favourite-recipes
@@ -60,8 +60,8 @@
                 %td< #{fr.recipe.name}
                 %td< #{fr.recipe.serves}
                 %td< #{fr.recipe.description}
-                %td< #{fr.recipe.preparation_time}
-                %td< #{fr.recipe.cooking_time}
+                %td<= Unit("#{fr.recipe.preparation_time} seconds").convert_to('minutes')
+                %td<= Unit("#{fr.recipe.cooking_time} seconds").convert_to('minutes')
                 %td< #{fr.recipe.rating}
           %tfoot
   #new-recipe
@@ -74,14 +74,14 @@
       / %input#meal.ui-corner-all.ui-state-disabled{:disabled => 'disabled', :placeholder => 'not set'}
       %label(for='description')< Description:
       %textarea#description.ui-corner-all
-      %label(for='cooking-time')< Cooking Time:
-      %input#cooking-time-days.ui-corner-all{:style=>'width:2em;margin-right:1em;', :placeholder => 'dd'}
-      %input#cooking-time-hours.ui-corner-all{:style=>'width:2em;margin-right:1em;', :placeholder => 'hh'}
-      %input#cooking-time-minutes.ui-corner-all{:style=>'width:2em;', :placeholder => 'mm'}
       %label(for='prep-time')< Preparation Time:
       %input#prep-time-days.ui-corner-all{:style=>'width:2em;margin-right:1em;', :placeholder => 'dd'}
       %input#prep-time-hours.ui-corner-all{:style=>'width:2em;margin-right:1em;', :placeholder => 'hh'}
       %input#prep-time-minutes.ui-corner-all{:style=>'width:2em;', :placeholder => 'mm'}
+      %label(for='cooking-time')< Cooking Time:
+      %input#cooking-time-days.ui-corner-all{:style=>'width:2em;margin-right:1em;', :placeholder => 'dd'}
+      %input#cooking-time-hours.ui-corner-all{:style=>'width:2em;margin-right:1em;', :placeholder => 'hh'}
+      %input#cooking-time-minutes.ui-corner-all{:style=>'width:2em;', :placeholder => 'mm'}
       %label(for='requirements')< Requirements
       %textarea#requirements.ui-corner-all
       %label(for='ingredients')< Ingredients
