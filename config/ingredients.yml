@@ -340,3 +340,15 @@
 - duck eggs:
     description: Eggs laid by ducks. Larger and fattier than chicken eggs
     core_ingredient: duck eggs
+- cream:
+    description: Cream is a dairy product that is composed of the higher-butterfat layer skimmed from the top of milk before homogenization.
+    core_ingredient: cream
+- liquid nitrogen:
+    description: Liquid nitrogen is nitrogen in a liquid state at an extremely low temperature.
+    core_ingredient: liquid nitrogen
+- a pinch of salt:
+    description: A small amount of salt
+    core_ingredient: salt
+- yoghurt:
+    description: A dairy product produced by bacterial fermentation of milk.
+    core_ingredient: yoghurt

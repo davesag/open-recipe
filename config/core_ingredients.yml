@@ -309,3 +309,18 @@
     tags:
     - spice
     season: all
+- cream:
+    description: Cream is a dairy product that is composed of the higher-butterfat layer skimmed from the top of milk before homogenization.
+    tags:
+    - dairy
+    season: all
+- liquid nitrogen:
+    description: Liquid nitrogen is nitrogen in a liquid state at an extremely low temperature.
+    season: all
+    tags:
+    - cold
+- yoghurt:
+    description: A dairy product produced by bacterial fermentation of milk.
+    season: all
+    tags:
+    - diary

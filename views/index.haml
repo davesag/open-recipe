@@ -187,9 +187,9 @@
             }
             // merge cooking and prep time fields into a nice time string
             // in dd:hh:mm format
-            ct = $('#cooking-time-days').val() + ':' + $('#cooking-time-hours').val() + ':' + $('#cooking-time-minutes').val();
-            pt = $('#prep-time-days').val() + ':' + $('#prep-time-hours').val() + ':' + $('#prep-time-minutes').val();
-            r = new Recipe(0, $('#recipe-name').val(), $('#serves').val(), ct, pt, $('#description').val(),
+            ct = parseInt($('#cooking-time-days').val()) + ':' + parseInt($('#cooking-time-hours').val()) + ':' + parseInt($('#cooking-time-minutes').val());
+            pt = parseInt($('#prep-time-days').val()) + ':' + parseInt($('#prep-time-hours').val()) + ':' + parseInt($('#prep-time-minutes').val());
+            r = new Recipe(0, $('#recipe-name').val(), parseInt($('#serves').val()), ct, pt, $('#description').val(),
                 $('#method').val(), $('#requirements').val(), ingredients, null, null); // ignore tags and meal for now.
             req = new Recipe_Request(r);
             console.log('created recipe request object', req);

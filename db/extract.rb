@@ -97,14 +97,10 @@ Ingredient.all.each do |i|
   end
   puts "Extracting Ingredient named '#{i.name}'"
   puts "Which has core ingredients #{i.core_ingredients.inspect}"
-  if tag_names.empty?
-    result << { i.name => { 'description' => i.description,
-                            'core_ingredient' => i.core_ingredients.first.name }}
-  else
-    result << { i.name => { 'description' => i.description,
-                            'core_ingredient' => i.core_ingredients.first.name,
-                            'tags' => tag_names }}
-  end
+  r = { 'description' => i.description }
+  r['core_ingredient'] = i.core_ingredients.first.name unless i.core_ingredients.empty?
+  r['tags'] = tag_names unless tag_names.empty?
+  result << { i.name => r }
 end
 file = File.open('./extracts/ingredients.yml', 'w')
 file.write(result.to_yaml)
