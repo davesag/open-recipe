@@ -225,6 +225,18 @@ class OpenRecipeApp < Sinatra::Application
       return ActiveRecord::Base.connection.select_values('SELECT name FROM ingredients ORDER BY name COLLATE NOCASE ASC').to_json;
     end
 
+    def human_readable_time(seconds)
+      minutes = seconds / 60
+      hours = seconds % 60
+      days = hours / 24
+      hours = hours % 24
+      result = ''
+      result << "#{t.units.days days} " if days > 0
+      result << "#{t.units.hours hours} " if hours > 0
+      result << "#{t.units.minutes minutes}" if minutes > 0
+      return result
+    end
+
     def parse_time(a_time)
       # comes in as 'dd:hh:mm'
       times = a_time.split(':')

@@ -35,6 +35,89 @@ units:
   tbs: tablespoons
   tsp: teaspoons
   cu: cups
+  days: !!pl
+    0: 0 days
+    1: 1 day
+    n: "%1 days"
+  hours: !!pl
+    0: 0 hours
+    1: 1 hour
+    n: "%1 hours"
+  minutes: !!pl
+    0: 0 minutes
+    1: 1 minute
+    n: "%1 minutes"
+  mls: !!pl
+    1: 1 ml
+    n: "%1 mls"
+  milliliters: !!pl
+    1: 1 millilitre
+    n: "%1 millilitres"
+  dls: !!pl
+    1: 1 dl
+    n: "%1 dls"
+  deciliters: !!pl
+    1: 1 decilitre
+    n: "%1 decilitres"
+  ls: !!pl
+    1: 1 l
+    n: "%1 ls"
+  liters: !!pl
+    1: 1 litre
+    n: "%1 litres"
+  gs: !!pl
+    1: 1 g
+    n: "%1 gs"
+  grams: !!pl
+    1: 1 gram
+    n: "%1 grams"
+  kgs: !!pl
+    1: 1 kg
+    n: "%1 kgs"
+  kilograms: !!pl
+    1: 1 kilogram
+    n: "%1 kilograms"
+  ozs: !!pl
+    1: 1 oz
+    n: "%1 ozs"
+  ounces: !!pl
+    1: 1 ounce
+    n: "%1 ounces"
+  flozs: !!pl
+    1: 1 floz
+    n: "%1 flozs"
+  fluid-ounces: !!pl
+    1: 1 fluid ounce
+    n: "%1 fluid ounces"
+  pts: !!pl
+    1: 1 pt
+    n: "%1 pts"
+  pints: !!pl
+    1: 1 pint
+    n: "%1 pints"
+  qts: !!pl
+    1: 1 qt
+    n: "%1 qts"
+  quarts: !!pl
+    1: 1 quart
+    n: "%1 quarts"
+  tbss: !!pl
+    n: "%1 tbs"
+  tablespoons: !!pl
+    1: 1 tablespoon
+    n: "%1 tablespoons"
+  tsps: !!pl
+    1: 1 tsp
+    n: "%1 tsps"
+  teaspoons: !!pl
+    1: 1 teaspoon
+    n: "%1 teaspoons"
+  cus: !!pl
+    1: 1 cu
+    n: "%1 cups"
+  cups: !!pl
+    1: 1 cup
+    n: "%1 cups"
 
 season:
   summer: summer
@@ -57,76 +140,3 @@ preparation:
   sliced: sliced
   soaked: soaked
   whole: whole
-
-#phrase:
-#  ml: !!pl
-#    1: 1 ml
-#    n: %1 mls
-#  milliliter: !!pl
-#    1: 1 millilitre
-#    n: %1 millilitres
-#  dl: !!pl
-#    1: 1 dl
-#    n: %1 dls
-#  deciliter: !!pl
-#    1: 1 decilitre
-#    n: %1 decilitres
-#  l: !!pl
-#    1: 1 l
-#    n: %1 ls
-#  liter: !!pl
-#    1: 1 litre
-#    n: %1 litres
-#  g: !!pl
-#    1: 1 g
-#    n: %1 gs
-#  gram: !!pl
-#    1: 1 gram
-#    n: %1 grams
-#  kg: !!pl
-#    1: 1 kg
-#    n: %1 kgs
-#  kilogram: !!pl
-#    1: 1 kilogram
-#    n: %1 kilograms
-#  oz: !!pl
-#    1: 1 oz
-#    n: %1 ozs
-#  ounce: !!pl
-#    1: 1 ounce
-#    n: %1 ounces
-#  floz: !!pl
-#    1: 1 floz
-#    n: %1 flozs
-#  fluid-ounce: !!pl
-#    1: 1 fluid ounce
-#    n: %1 fluid ounces
-#  pt: !!pl
-#    1: 1 pt
-#    n: %1 pts
-#  pint: !!pl
-#    1: 1 pint
-#    n: %1 pints
-#  qt: !!pl
-#    1: 1 qt
-#    n: %1 qts
-#  quart: !!pl
-#    1: 1 quart
-#    n: %1 quarts
-#  tbs: !!pl
-#    n: %1 tbs
-#  tablespoon: !!pl
-#    1: 1 tablespoon
-#    n: %1 tablespoons
-#  tsp: !!pl
-#    1: 1 tsp
-#    n: %1 tsps
-#  teaspoon: !!pl
-#    1: 1 teaspoon
-#    n: %1 teaspoons
-#  cu: !!pl
-#    1: 1 cu
-#    n: %1 cups
-#  cup: !!pl
-#    1: 1 cup
-#    n: %1 cups

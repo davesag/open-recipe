@@ -37,8 +37,8 @@
                 %td< #{r.name}
                 %td< #{r.serves}
                 %td< #{r.description}
-                %td<= Unit("#{r.preparation_time} seconds").convert_to('minutes')
-                %td<= Unit("#{r.cooking_time} seconds").convert_to('minutes')
+                %td<= human_readable_time(r.preparation_time)
+                %td<= human_readable_time(r.cooking_time)
           %tfoot
       %button#add-recipe< Add a recipe.
     #my-favourite-recipes
@@ -60,8 +60,8 @@
                 %td< #{fr.recipe.name}
                 %td< #{fr.recipe.serves}
                 %td< #{fr.recipe.description}
-                %td<= Unit("#{fr.recipe.preparation_time} seconds").convert_to('minutes')
-                %td<= Unit("#{fr.recipe.cooking_time} seconds").convert_to('minutes')
+                %td<= human_readable_time(fr.recipe.preparation_time)
+                %td<= human_readable_time(fr.recipe.cooking_time)
                 %td< #{fr.recipe.rating}
           %tfoot
   #new-recipe
