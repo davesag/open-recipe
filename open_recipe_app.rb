@@ -235,10 +235,7 @@ class OpenRecipeApp < Sinatra::Application
       # look for common fractions
       # like 0.33, 0.5, 0.25, 0.125
       whole = a.to_i unless a == nil
-      frac = (a % 1).to_f unless a == nil
-      
-      logger.debug "whole = #{whole.inspect} and frac = #{frac.inspect}"
-      
+      frac = (a % 1).to_f unless a == nil      
       f = nil
       f = '' if frac == 0.0                           # no fraction.
       f = '&#xbd;' if frac == 0.5                     # 1 half
@@ -271,10 +268,9 @@ class OpenRecipeApp < Sinatra::Application
     end
 
     def human_readable_time(seconds)
-      minutes = seconds / 60
-      hours = seconds % 60
-      days = hours / 24
-      hours = hours % 24
+      minutes = seconds.divmod(60)[0] # discard seconds.
+      hours, minutes = minutes.divmod(60)
+      days, hours= hours.divmod(24)
       result = ''
       result << "#{t.n_units.day days} " if days > 0
       result << "#{t.n_units.hour hours} " if hours > 0
