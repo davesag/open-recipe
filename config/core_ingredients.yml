@@ -66,6 +66,11 @@
     - fungus
     - vegetarian
     season: all
+- fish:
+    description: an animal that lives in water
+    tags:
+    - fish
+    season: all
 - cod:
     description: salt water fish with a mild flavour and a dense, flaky white flesh
     tags:
@@ -310,17 +315,82 @@
     - spice
     season: all
 - cream:
-    description: Cream is a dairy product that is composed of the higher-butterfat layer skimmed from the top of milk before homogenization.
+    description: Cream is a dairy product that is composed of the higher-butterfat
+      layer skimmed from the top of milk before homogenization.
     tags:
     - dairy
     season: all
 - liquid nitrogen:
-    description: Liquid nitrogen is nitrogen in a liquid state at an extremely low temperature.
-    season: all
+    description: Liquid nitrogen is nitrogen in a liquid state at an extremely low
+      temperature.
     tags:
     - cold
+    season: all
 - yoghurt:
     description: A dairy product produced by bacterial fermentation of milk.
-    season: all
     tags:
     - diary
+    season: all
+- chicken stock:
+    description: a stock made from rendering down parts of a chicken with vegetables
+    tags:
+      - chicken
+      - stock
+    season: all
+- beef stock:
+    description: a stock made from rendering down parts of a cow with vegetables
+    tags:
+      - beef
+      - stock
+    season: all
+- vegetable stock:
+    description: a stock made from rendering down vegetables
+    tags:
+      - vegetarian
+      - vegan
+      - vegetable
+      - stock
+    season: all
+- stock:
+    description: a liquid made from rendering down other ingredients. Used as a base for soups and so forth
+    tags:
+      - stock
+    season: all
+- rosemary:
+    description: a flavoursome herb
+    tags:
+      - herb
+    season: all
+- parsley:
+    description: a flavoursome herb
+    tags:
+      - herb
+    season: all
+- sage:
+    description: a flavoursome herb
+    tags:
+      - herb
+    season: all
+- thyme:
+    description: a flavoursome herb
+    tags:
+      - herb
+    season: all
+- spring onion:
+    description: a delicious relative of the traditional onion
+    tags:
+      - onion
+      - herb
+    season: summer, spring
+- berries:
+    description: foresty fruits
+    tags:
+      - fruit
+      - berry
+    season: summer, spring
+- wine:
+    description: An ancient alcoholic recipe
+    tags:
+      - alcohol
+      - wine
+    season: all

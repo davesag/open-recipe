@@ -1,0 +1,46 @@
+%h2<= recipe.name
+#recipe.ui-helper-reset.ui-widget.ui-widget-content.ui-corner-all
+  #recipe-serves
+    %h3< Serves:
+    %p<= t.people recipe.serves
+  #recipe-description
+    %h3< Description:
+    %p<= recipe.description
+    %h3< Preparation Time:
+    %p<= human_readable_time recipe.preparation_time
+    %h3< Cooking Time:
+    %p<= human_readable_time recipe.cooking_time
+    %h3< Requirements
+    %p<= recipe.requirements
+  #recipe-ingredients
+    %h3< Ingredients
+    - for i in recipe.active_ingredients
+      %ul
+        -if i.quantity != nil
+          - q = human_readable_quantity i.quantity
+          %li< #{i.ingredient.name} #{q == '' ? '' : ' : ' << q}
+        -else
+          %li<= i.ingredient.name
+  #recipe-method
+    %h3< Method
+    %p<= recipe.method
+:css
+  #recipe h3 {
+    font-size: 0.85em;
+    clear: both;
+    float: left;
+    width: 120px
+  }
+  #recipe p {
+    font-size: 0.9em;
+    float: left;
+    clear: right;
+  }
+  #recipe-ingredients h3 {
+    clear: both;
+    float: none;
+  }
+  #recipe-method h3, p {
+    clear: both;
+    float: none;
+  }

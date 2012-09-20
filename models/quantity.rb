@@ -6,4 +6,5 @@ class Quantity < ActiveRecord::Base
 
   # Decimal :amount
   belongs_to :unit, :class_name => "AllowedUnit" # the unit of this quantity.
+  has_one :active_ingredient
 end

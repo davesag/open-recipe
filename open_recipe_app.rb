@@ -225,15 +225,60 @@ class OpenRecipeApp < Sinatra::Application
       return ActiveRecord::Base.connection.select_values('SELECT name FROM ingredients ORDER BY name COLLATE NOCASE ASC').to_json;
     end
 
+    def human_readable_quantity(a_quantity)
+      a = a_quantity.amount
+      u = a_quantity.unit
+      
+      pu = ''
+      whole = 0
+      frac = 0.0
+      # look for common fractions
+      # like 0.33, 0.5, 0.25, 0.125
+      whole = a.to_i unless a == nil
+      frac = (a % 1).to_f unless a == nil
+      
+      logger.debug "whole = #{whole.inspect} and frac = #{frac.inspect}"
+      
+      f = nil
+      f = '' if frac == 0.0                           # no fraction.
+      f = '&#xbd;' if frac == 0.5                     # 1 half
+      f = '&#xbc;' if frac == 0.25                    # 1 quarter
+      f = '&#xbe;' if frac == 0.75                    # 3 quarter
+      f = '&#x215b;' if frac == 0.125                 # 1 eighth
+      f = '&#x215c;' if frac == 0.375                 # 3 eighths
+      f = '&#x215d;' if frac == 0.625                 # 5 eighths
+      f = '&#x215e;' if frac == 0.875                 # 7 eighths
+      f = '&#x2153;' if (frac >= 0.3 && frac < 0.36)  # 1 third
+      f = '&#x2154;' if (frac >= 0.65 && frac < 0.7)  # 2 thirds
+      f = '&#x2155;' if frac == 0.2                   # 1 fifth
+      f = '&#x2156;' if frac == 0.4                   # 2 fifths
+      f = '&#x2157;' if frac == 0.6                   # 3 fifths
+      f = '&#x2158;' if frac == 0.8                   # 4 fifths
+      f = "#{sprintf('%d', frac)}" if f == nil
+      if '' == f
+        pu = "#{whole} #{t.unit[u.name]}" if u!= nil && 1 == whole
+        pu = "#{whole} #{t.units[u.name]}" if u!= nil && 1 != whole
+        pu = "#{whole}" if u == nil && 0 != whole
+      elsif 0 == whole
+        pu = "#{f} #{t.units[u.name]}" if u!= nil
+        pu = f if u == nil
+      else
+        pu = "#{whole} #{f} #{t.units[u.name]}" if u != nil
+        pu = "#{whole} #{f}" if u == nil
+      end
+      logger.debug "pu = #{pu.inspect}"
+      return "#{pu}"
+    end
+
     def human_readable_time(seconds)
       minutes = seconds / 60
       hours = seconds % 60
       days = hours / 24
       hours = hours % 24
       result = ''
-      result << "#{t.units.days days} " if days > 0
-      result << "#{t.units.hours hours} " if hours > 0
-      result << "#{t.units.minutes minutes}" if minutes > 0
+      result << "#{t.n_units.day days} " if days > 0
+      result << "#{t.n_units.hour hours} " if hours > 0
+      result << "#{t.n_units.minute minutes}" if minutes > 0
       return result
     end
 
@@ -257,12 +302,13 @@ class OpenRecipeApp < Sinatra::Application
       ais = recipe_json['active_ingredients']
       result = []
       ais.each do |ai|
+        logger.debug ai.inspect
         i = ai['ingredient']
         ingredient = Ingredient.where(:name => i).first_or_create
-        uid = ai['unit_id']
         q = ai['quantity']
-        quantity = Quantity.create(:amount => q['amount'],
-                                    :unit => AllowedUnit.find_by_id(uid))
+        uid = q['unit_id']
+        u = AllowedUnit.find_by_id(uid)
+        quantity = Quantity.create(:amount => q['amount'], :unit => u)
         result << ActiveIngredient.create(:ingredient => ingredient,
                                                     :quantity => quantity)
       end
@@ -318,17 +364,8 @@ class OpenRecipeApp < Sinatra::Application
     end
 
     def logged_in?
-      logger.debug "logged_in?"
-      if session['access_token'] != nil && session['access_token'].empty?
-        logger.debug "session['access_token'] is non-nil but empty, so reset it to nil"
-        session['access_token'] = nil
-      end
-      if session['access_token'] == nil
-        logger.debug "Not Logged In."
-        return false
-      end
-      logger.debug "Logged In with access token #{session['access_token']}."
-      return true
+      session['access_token'] = nil if (session['access_token'] != nil && session['access_token'].empty?)
+      return session['access_token'] != nil
     end
 
     def active_user
@@ -356,34 +393,22 @@ class OpenRecipeApp < Sinatra::Application
   end
 
   def load_active_user
-    logger.debug "Loading active User into @active_user"
     return if @active_user != nil # active_user is already loaded.
     if !logged_in?
       logger.debug "@active_user is nil and so is session['access_token']"
-      return nil
+      return
     end
-    if session['user_id'] == nil
-      logger.debug "There is no saved user_id in this session."
-    else
-      logger.debug "session['user_id'] = #{session['user_id']}"
-      logger.debug "Looking in the database for a user with id #{session['user_id']}"
-      @active_user = User.find_by_id(session['user_id'])
-    end
+    @active_user = User.find_by_id(session['user_id']) unless session['user_id'] == nil
     if (@active_user == nil)
-      logger.debug "There was no user with id = #{session['user_id']}"
       me = graph.get_object('me')
-      logger.debug "me = #{me.inspect}"
       @active_user = User.where(:username => me['username']).first_or_create(:remote_id => me['id'].to_i)
-      logger.debug "@active_user = #{@active_user.inspect}"
       @active_user.update_from_facebook me
-      logger.debug "@active_user = #{@active_user.inspect}"      
       @active_user.save
       session['user_id'] = @active_user.id
-      logger.debug "session['user_id'] = #{session['user_id']}"
+      logger.debug "Loaded @active_user = #{@active_user.inspect} from Facebook."
     else
       logger.debug "Found @active_user.id = #{@active_user.id} in the database."
     end
-    return @active_user
   end
 
   before do
@@ -507,6 +532,19 @@ class OpenRecipeApp < Sinatra::Application
       result << {:value => tag.id, :label => "Tag: #{tag.name}"}
     end
     return result.to_json
+  end
+
+  get '/recipe/:id' do
+    recipe = Recipe.find_by_id(params[:id])
+    if request.xhr?
+    	content_type :json
+      # handle as AJAX
+      return {:success => false, :error => 'unauthorised_access'}.to_json unless logged_in?
+      return recipe.to_json
+    else
+      redirect '/' unless logged_in?
+	    haml :recipe, :locals => {:recipe => recipe}
+    end
   end
 
   # receive a recipe create or update request via JSON.

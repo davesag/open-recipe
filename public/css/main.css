@@ -113,6 +113,7 @@ img {
 .like_site { font-size: 0.8em }
 
 #tag-cloud {
+  clear:both;
   background: #fff;
 }
 

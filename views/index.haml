@@ -34,11 +34,12 @@
           %tbody
             - for r in active_user.recipes
               %tr
-                %td< #{r.name}
-                %td< #{r.serves}
+                %td<
+                  %a.recipe-name{:href => "/recipe/#{r.id}", :title => "Display Recipe '#{r.name}'"}<= r.name
+                %td< #{t.people r.serves}
                 %td< #{r.description}
-                %td<= human_readable_time(r.preparation_time)
-                %td<= human_readable_time(r.cooking_time)
+                %td<= human_readable_time r.preparation_time
+                %td<= human_readable_time r.cooking_time
           %tfoot
       %button#add-recipe< Add a recipe.
     #my-favourite-recipes
@@ -53,16 +54,18 @@
               %th< Description
               %th< Prep Time
               %th< Cooking Time
-              %th< Rating
+              %th< Your Rating
           %tbody
             - for fr in active_user.favourite_recipes
+              -r = fr.recipe
               %tr
-                %td< #{fr.recipe.name}
-                %td< #{fr.recipe.serves}
-                %td< #{fr.recipe.description}
-                %td<= human_readable_time(fr.recipe.preparation_time)
-                %td<= human_readable_time(fr.recipe.cooking_time)
-                %td< #{fr.recipe.rating}
+                %td<
+                  %a.recipe-name{:href => "/recipe/#{r.id}", :title => "Display Recipe '#{r.name}'"}<= r.name
+                %td< #{t.people r.serves}
+                %td< #{r.description[0..25]}...
+                %td<= human_readable_time r.preparation_time
+                %td<= human_readable_time r.cooking_time
+                %td< #{fr.rating}
           %tfoot
   #new-recipe
     %form

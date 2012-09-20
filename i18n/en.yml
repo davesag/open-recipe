@@ -20,6 +20,18 @@ unit:
   tbs: tablespoon
   tsp: teaspoon
   cu: cup
+  milliliter: millilitre
+  deciliter: decilitre
+  liter: litre
+  gram: gram
+  kilogram: kilogram
+  ounce: ounce
+  fluid-ounce: fluid ounce
+  pint: pint
+  quart: quart
+  tablespoon: tablespoon
+  teaspoon: teaspoon
+  cup: cup
   
 units:
   none: none
@@ -35,87 +47,101 @@ units:
   tbs: tablespoons
   tsp: teaspoons
   cu: cups
-  days: !!pl
+  milliliter: millilitres
+  deciliter: decilitres
+  liter: litres
+  gram: grams
+  kilogram: kilograms
+  ounce: ounces
+  fluid-ounce: fluid ounces
+  pint: pints
+  quart: quarts
+  tablespoon: tablespoons
+  teaspoon: teaspoons
+  cup: cups
+
+n_units:
+  day: !!pl
     0: 0 days
     1: 1 day
     n: "%1 days"
-  hours: !!pl
+  hour: !!pl
     0: 0 hours
     1: 1 hour
     n: "%1 hours"
-  minutes: !!pl
+  minute: !!pl
     0: 0 minutes
     1: 1 minute
     n: "%1 minutes"
-  mls: !!pl
+  ml: !!pl
     1: 1 ml
     n: "%1 mls"
-  milliliters: !!pl
+  milliliter: !!pl
     1: 1 millilitre
     n: "%1 millilitres"
-  dls: !!pl
+  dl: !!pl
     1: 1 dl
     n: "%1 dls"
-  deciliters: !!pl
+  deciliter: !!pl
     1: 1 decilitre
     n: "%1 decilitres"
-  ls: !!pl
+  l: !!pl
     1: 1 l
     n: "%1 ls"
-  liters: !!pl
+  liter: !!pl
     1: 1 litre
     n: "%1 litres"
-  gs: !!pl
+  g: !!pl
     1: 1 g
     n: "%1 gs"
-  grams: !!pl
+  gram: !!pl
     1: 1 gram
     n: "%1 grams"
-  kgs: !!pl
+  kg: !!pl
     1: 1 kg
     n: "%1 kgs"
-  kilograms: !!pl
+  kilogram: !!pl
     1: 1 kilogram
     n: "%1 kilograms"
-  ozs: !!pl
+  oz: !!pl
     1: 1 oz
     n: "%1 ozs"
-  ounces: !!pl
+  ounce: !!pl
     1: 1 ounce
     n: "%1 ounces"
-  flozs: !!pl
+  floz: !!pl
     1: 1 floz
     n: "%1 flozs"
-  fluid-ounces: !!pl
+  fluid-ounce: !!pl
     1: 1 fluid ounce
     n: "%1 fluid ounces"
-  pts: !!pl
+  pt: !!pl
     1: 1 pt
     n: "%1 pts"
-  pints: !!pl
+  pint: !!pl
     1: 1 pint
     n: "%1 pints"
-  qts: !!pl
+  qt: !!pl
     1: 1 qt
     n: "%1 qts"
-  quarts: !!pl
+  quart: !!pl
     1: 1 quart
     n: "%1 quarts"
-  tbss: !!pl
+  tbs: !!pl
     n: "%1 tbs"
-  tablespoons: !!pl
+  tablespoon: !!pl
     1: 1 tablespoon
     n: "%1 tablespoons"
-  tsps: !!pl
+  tsp: !!pl
     1: 1 tsp
     n: "%1 tsps"
-  teaspoons: !!pl
+  teaspoon: !!pl
     1: 1 teaspoon
     n: "%1 teaspoons"
-  cus: !!pl
+  cu: !!pl
     1: 1 cu
     n: "%1 cups"
-  cups: !!pl
+  cup: !!pl
     1: 1 cup
     n: "%1 cups"
 
@@ -140,3 +166,13 @@ preparation:
   sliced: sliced
   soaked: soaked
   whole: whole
+
+people: !!pl
+  0: no people
+  1: one person
+  n: "%1 people"
+
+is_are_people: !!pl
+  0: are no people
+  1: is one person
+  n: "are %1 people"
