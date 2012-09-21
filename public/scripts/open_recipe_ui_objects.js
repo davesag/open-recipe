@@ -19,12 +19,6 @@ function ActiveIngredient(an_ingredient, a_quantity) {
   this.quantity = a_quantity;
 }
 
-function Ingredient() {
-  this.name = a_name;
-  this.description = a_description;
-  this.tags = some_tags;
-}
-
 function Recipe(an_id, a_name, a_serves, a_cooking_time, a_prep_time, a_description,
                 a_method, a_requirements, some_active_ingredients, some_tags, a_meal) {
   this.id = an_id;
@@ -67,3 +61,48 @@ function Recipe_Request(a_recipe) {
 	this.path = '/recipe-request';
 }
 copy_prototype(Recipe_Request, Request_Base);
+
+// other miscellaneous interface bits
+
+function convert_to_options_html(a_map_of_options) {
+  result = '';
+  group_count = 0;
+  for (i in a_map_of_options) {
+    io = a_map_of_options[i];
+    if (io['kind'] == 'option') {
+      result += '<option value = "' + io['value'] + '">' + io['label'] + '</option>';
+    } else {
+      if (group_count > 0) {
+        result += '</optgroup>';
+        group_count--;
+      }
+      result += '<optgroup label = "' + io['label'] + '">';
+      group_count++;
+    }
+  };
+  if (group_count > 0) {
+    result += '</optgroup>';
+    group_count--;
+  }
+  return result;
+};
+
+function create_blank_ingredients_row(a_row_number) {
+  return "<tr><td><input class='ingredient ui-corner-all' id='ingredient" + a_row_number + "'></td>" +
+           "<td><input class='amount ui-corner-all' id='amount" + a_row_number + "'></td>" +
+           "<td><select class='unit-menu' id='unit" + a_row_number + "'></select></td></tr>";
+};
+
+function to_seconds(dd,hh,mm) {
+  d = parseInt(dd);
+  h = parseInt(hh);
+  m = parseInt(mm);
+  if (isNaN(d)) d = 0;
+  if (isNaN(h)) h = 0;
+  if (isNaN(m)) m = 0;
+  
+  t = d * 24 * 60 * 60 +
+      h * 60 * 60 +
+      m * 60;
+  return t;
+}

@@ -8,8 +8,8 @@ class RecipeTest < HandlerTestBase
   
     ne = 'test name'
     se = '6'
-    cte =  "1:2:3"
-    pte = "4:5:6"
+    cte = 120 * 60
+    pte = 30 * 60
     de = "test description"
     me = "test method"
     re = "test req"
@@ -65,9 +65,7 @@ class RecipeTest < HandlerTestBase
                   :unit => AllowedUnit.where(:id => q_u.to_i).first_or_create(:name => 'test unit' << q_u.to_s))
       active_ingredient = ActiveIngredient.create(:ingredient => ingredient,
                                                   :quantity => quantity)
-      ct_parsed = parse_time(ct)
-      pt_parsed = parse_time(pt)
-      recipe = Recipe.create(:owner => user, :name => n, :cooking_time => ct_parsed, :preparation_time => pt_parsed,
+      recipe = Recipe.create(:owner => user, :name => n, :cooking_time => ct, :preparation_time => pt,
                               :serves => s.to_i, :description => d, :method => m, :active_ingredients => [active_ingredient],
                               :requirements => r)
 
@@ -88,12 +86,6 @@ class RecipeTest < HandlerTestBase
     assert Preparation.count == 0, "There #{Preparation.count == 1 ? 'is' : 'are'} #{Preparation.count} Preparation#{Preparation.count == 1 ? '' : 's'} left over."
     assert Season.count == 0, "There #{Season.count == 1 ? 'is' : 'are'} #{Season.count} Season#{Season.count == 1 ? '' : 's'} left over."
     assert Tag.count == 0, "There #{Tag.count == 1 ? 'is' : 'are'} #{Tag.count} Tag#{Tag.count == 1 ? '' : 's'} left over."
-  end
-
-  def parse_time(a_time)
-    # comes in as 'dd:hh:mm'
-    times = a_time.split(':')
-    return times[0].to_i * 24 * 60 * 60 + 60 * 60 * times[1].to_i + 60 * times[2].to_i
   end
 
   def check_param_not_nil(a_map, a_param)

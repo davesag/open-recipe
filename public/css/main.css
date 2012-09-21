@@ -166,6 +166,39 @@ img {
 	font-weight: lighter;
 }
 
+.edit-or-create-recipe label {
+  clear: left;
+  float: left;
+  width: 120px;
+  font-weight: bold;
+}
+.edit-or-create-recipe input, textarea {
+  float: left;
+  width: 550px;
+  margin-bottom: .5em;
+}
+.edit-or-create-recipe textarea {
+  height: 200px;
+}
+.edit-or-create-recipe table {
+  width: 550px;
+}
+.edit-or-create-recipe td {
+  vertical-align:top;
+}
+.edit-or-create-recipe td input.ingredient {
+  width:26em;
+}
+.edit-or-create-recipe td input.amount {
+  width:4em;
+}
+.edit-or-create-recipe td select {
+  width:8em;
+}
+.edit-or-create-recipe th {
+  text-align:left;
+}
+
 /* jQuery UI overrides */
 .ui-autocomplete-loading {
   background: white url('../images/ui-anim_basic_16x16.gif') right center no-repeat;

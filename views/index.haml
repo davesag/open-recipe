@@ -67,7 +67,7 @@
                 %td<= human_readable_time r.cooking_time
                 %td< #{fr.rating}
           %tfoot
-  #new-recipe
+  #new-recipe.edit-or-create-recipe
     %form
       %label(for = 'recipe-name')< Recipe Name:
       %input#recipe-name.ui-corner-all(placeholder = 'What do you call your recipe?')
@@ -98,36 +98,6 @@
       %label(for='method')< Method
       %textarea#method.ui-corner-all
   :javascript
-    // move this to an external file when happy with it.
-    function convert_to_options_html(a_map_of_options) {
-      result = '';
-      group_count = 0;
-      for (i in a_map_of_options) {
-        io = a_map_of_options[i];
-        if (io['kind'] == 'option') {
-          result += '<option value = "' + io['value'] + '">' + io['label'] + '</option>';
-        } else {
-          if (group_count > 0) {
-            result += '</optgroup>';
-            group_count--;
-          }
-          result += '<optgroup label = "' + io['label'] + '">';
-          group_count++;
-        }
-      };
-      if (group_count > 0) {
-        result += '</optgroup>';
-        group_count--;
-      }
-      return result;
-    };
-    
-    function create_blank_ingredients_row(a_row_number) {
-      return "<tr><td><input class='ingredient ui-corner-all' id='ingredient" + a_row_number + "'></td>" +
-               "<td><input class='amount ui-corner-all' id='amount" + a_row_number + "'></td>" +
-               "<td><select class='unit-menu' id='unit" + a_row_number + "'></select></td></tr>";
-    };
-
     $(function() {
       // first turn on the tabs.
       $('#recipes').tabs();
@@ -140,12 +110,10 @@
       var allowed_unit_options = #{allowed_units};
       var all_ingredient_names = #{ingredient_names}
       var default_allowed_unit_options = convert_to_options_html(allowed_unit_options);
-      $(default_allowed_unit_options).appendTo('#ingredients .unit-menu');
       var ingredient_name_autocompleter = {
         source: all_ingredient_names,
         change: function(){
           var this_row = $(this).parent().parent();
-          console.log("this row is one of", this_row.siblings('tr').length + 1);
           if (this_row.is(':last-child')) {
             // add another row.
             var new_row_number = this_row.siblings('tr').length + 1;
@@ -156,6 +124,8 @@
           }
         }
       };
+
+      $(default_allowed_unit_options).appendTo('#ingredients .unit-menu');
       $('#ingredients .ingredient').autocomplete(ingredient_name_autocompleter);
       // now make the new-recipe form only appear within a modal dialog.
       $('#new-recipe').dialog({
@@ -188,18 +158,25 @@
                 ingredients.push(new ActiveIngredient(n,q));
               }
             }
-            // merge cooking and prep time fields into a nice time string
-            // in dd:hh:mm format
-            ct = parseInt($('#cooking-time-days').val()) + ':' + parseInt($('#cooking-time-hours').val()) + ':' + parseInt($('#cooking-time-minutes').val());
-            pt = parseInt($('#prep-time-days').val()) + ':' + parseInt($('#prep-time-hours').val()) + ':' + parseInt($('#prep-time-minutes').val());
-            r = new Recipe(0, $('#recipe-name').val(), parseInt($('#serves').val()), ct, pt, $('#description').val(),
-                $('#method').val(), $('#requirements').val(), ingredients, null, null); // ignore tags and meal for now.
-            req = new Recipe_Request(r);
-            console.log('created recipe request object', req);
+            var ct = to_seconds($('#cooking-time-days').val(),
+                                $('#cooking-time-hours').val(),
+                                $('#cooking-time-minutes').val());
+            var pt = to_seconds($('#cooking-time-days').val(),
+                                $('#cooking-time-hours').val(),
+                                $('#cooking-time-minutes').val());
+            var r = new Recipe(0, $('#recipe-name').val(),
+                                  parseInt($('#serves').val()),
+                                  ct, pt,
+                                  $('#description').val(),
+                                  $('#method').val(),
+                                  $('#requirements').val(),
+                                  ingredients, null, null); // ignore tags and meal for now.
+            var req = new Recipe_Request(r);
+            console.log('created recipe request object to post to ' + req.post_path(), req);
             
             // now fire off an AJAX post to the server.
             $.post(req.post_path(), req.post_data(), function(data){
-              console.log('debug', data)
+              console.log('received response data', data)
               if (!data['success']) {
                 // there was an error.
                 console.log('error', data['error']);
@@ -229,43 +206,11 @@
       $('#add-recipe').button({icons: {primary:'ui-icon-circle-plus'}}).click(function() {
         $("#new-recipe").dialog("open");
       });
+      // now make sure the tables of recipes are nicely formatted and interactive.
+      $('.recipe-list').dataTable( {
+        "bJQueryUI": true,
+        "sPaginationType": "full_numbers"
+      });
+
     });
     
-    // now make sure the tables of recipes are nicely formatted and interactive.
-    $('.recipe-list').dataTable( {
-      "bJQueryUI": true,
-      "sPaginationType": "full_numbers"
-    });
-  :css
-    #new-recipe label {
-      clear: left;
-      float: left;
-      width: 120px;
-      font-weight: bold;
-    }
-    #new-recipe input, textarea {
-      float: left;
-      width: 550px;
-      margin-bottom: .5em;
-    }
-    #new-recipe textarea {
-      height: 200px;
-    }
-    #new-recipe table {
-      width: 550px;
-    }
-    #new-recipe td {
-      vertical-align:top;
-    }
-    #new-recipe td input.ingredient {
-      width:26em;
-    }
-    #new-recipe td input.amount {
-      width:4em;
-    }
-    #new-recipe td select {
-      width:8em;
-    }
-    #new-recipe th {
-      text-align:left;
-    }

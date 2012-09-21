@@ -5,6 +5,7 @@ ui:
   save: save
   cancel: cancel
   preview: preview
+  edit_this_recipe: edit this recipe
 
 unit:
   none: none

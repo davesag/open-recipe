@@ -263,7 +263,7 @@ class OpenRecipeApp < Sinatra::Application
         pu = "#{whole} #{f} #{t.units[u.name]}" if u != nil
         pu = "#{whole} #{f}" if u == nil
       end
-      logger.debug "pu = #{pu.inspect}"
+      # logger.debug "pu = #{pu.inspect}"
       return "#{pu}"
     end
 
@@ -316,8 +316,8 @@ class OpenRecipeApp < Sinatra::Application
       n = recipe_json['name']
       d = recipe_json['description']
       s = recipe_json['serves'].to_i
-      ct = parse_time recipe_json['cooking_time']
-      pt = parse_time recipe_json['prep_time']
+      ct = recipe_json['cooking_time'].to_i
+      pt = recipe_json['prep_time'].to_i
       m = recipe_json['method']
       r = recipe_json['requirements']
       mn = recipe_json['meal']
@@ -549,7 +549,7 @@ class OpenRecipeApp < Sinatra::Application
   	logger.debug 'Login Request Received.'
     req = JSON.parse request.body.read
     parse_recipe_from_json req['recipe']
-    # logger.debug "Recieved Recipe Request: #{req.inspect}"
+    logger.debug "Recieved Recipe Request: #{req.inspect}"
 
     return {:success => true, :message => 'Recipe Saved.'}.to_json
   end
