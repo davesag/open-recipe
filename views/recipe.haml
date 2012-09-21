@@ -1,5 +1,5 @@
 %button#change-recipe(style="float:right;")<= Unicode::capitalize(t.ui.edit_this_recipe)
-%h2<= recipe.name
+%h2< Recipe &#8220;#{Unicode::capitalize(recipe.name)}&#8221;
 #recipe
   #recipe-serves
     %h3< Serves:
@@ -36,13 +36,15 @@
     %label(for='description')< Description:
     %textarea#description.ui-corner-all<= recipe.description
     %label(for='prep-time')< Preparation Time:
-    %input#prep-time-days.ui-corner-all{:style=>'width:2em;margin-right:1em;', :placeholder => 'dd'}
-    %input#prep-time-hours.ui-corner-all{:style=>'width:2em;margin-right:1em;', :placeholder => 'hh'}
-    %input#prep-time-minutes.ui-corner-all{:style=>'width:2em;', :placeholder => 'mm', :value => (recipe.preparation_time / 60).to_i}
+    - pt = mmhhdd_from_seconds recipe.preparation_time
+    %input#prep-time-days.ui-corner-all{:style=>'width:2em;margin-right:1em;', :value => pt[:days]}
+    %input#prep-time-hours.ui-corner-all{:style=>'width:2em;margin-right:1em;', :value => pt[:hours]}
+    %input#prep-time-minutes.ui-corner-all{:style=>'width:2em;', :value => pt[:minutes]}
     %label(for='cooking-time')< Cooking Time:
-    %input#cooking-time-days.ui-corner-all{:style=>'width:2em;margin-right:1em;', :placeholder => 'dd'}
-    %input#cooking-time-hours.ui-corner-all{:style=>'width:2em;margin-right:1em;', :placeholder => 'hh'}
-    %input#cooking-time-minutes.ui-corner-all{:style=>'width:2em;', :placeholder => 'mm', :value => (recipe.cooking_time / 60).to_i}
+    - ct = mmhhdd_from_seconds recipe.cooking_time
+    %input#cooking-time-days.ui-corner-all{:style=>'width:2em;margin-right:1em;', :value => ct[:days]}
+    %input#cooking-time-hours.ui-corner-all{:style=>'width:2em;margin-right:1em;', :value => ct[:hours]}
+    %input#cooking-time-minutes.ui-corner-all{:style=>'width:2em;', :value => ct[:minutes]}
     %label(for='requirements')< Requirements
     %textarea#requirements.ui-corner-all<= recipe.requirements
     %label(for='ingredients')< Ingredients
@@ -85,13 +87,13 @@
     %textarea#method.ui-corner-all<= recipe.method
 :css
   #recipe h3 {
-    font-size: 0.85em;
+    font-size: .95em;
     clear: both;
     float: left;
     width: 120px
   }
   #recipe p {
-    font-size: 0.9em;
+    font-size: 0.95em;
     float: left;
     clear: right;
   }

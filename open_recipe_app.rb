@@ -278,10 +278,12 @@ class OpenRecipeApp < Sinatra::Application
       return result
     end
 
-    def parse_time(a_time)
-      # comes in as 'dd:hh:mm'
-      times = a_time.split(':')
-      return times[0].to_i * 24 * 60 * 60 + 60 * 60 * times[1].to_i + 60 * times[2].to_i
+    # return a hash map of days, hours, and minutes
+    def mmhhdd_from_seconds(seconds)
+      minutes = seconds.divmod(60)[0] # discard seconds.
+      hours, minutes = minutes.divmod(60)
+      days, hours= hours.divmod(24)
+      return {:days => days, :hours => hours, :minutes => minutes}
     end
 
     def parse_tags_from_json(recipe_json)
