@@ -84,8 +84,8 @@ task(:test => 'db:environment') do
   SimpleCov.start
   SimpleCov.command_name 'Unit Tests'
   # load all models to save having to do it in the tests themselves.
-  raise "No models folder found." unless File.directory? './models'
-  Dir.glob("./models/**.rb").sort.each { |m| require m }
+#  raise "No models folder found." unless File.directory? './models'
+#  Dir.glob("./models/**.rb").sort.each { |m| require m }
   Rake::TestTask.new do |t|
     t.libs << "test"
     t.test_files = FileList['./test/*_test.rb']

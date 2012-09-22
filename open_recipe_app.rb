@@ -82,6 +82,10 @@ class OpenRecipeApp < Sinatra::Application
 
     ActiveRecord::Base.establish_connection (ENV['DATABASE_URL'] || "sqlite3:///#{Dir.pwd}/db/test.sqlite3")
 
+#    require 'simplecov'
+#    SimpleCov.start
+#    SimpleCov.command_name 'Unit Tests'
+
     @models_are_loaded = false
     load_models
 
