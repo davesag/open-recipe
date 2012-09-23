@@ -161,9 +161,9 @@
             var ct = to_seconds($('#cooking-time-days').val(),
                                 $('#cooking-time-hours').val(),
                                 $('#cooking-time-minutes').val());
-            var pt = to_seconds($('#cooking-time-days').val(),
-                                $('#cooking-time-hours').val(),
-                                $('#cooking-time-minutes').val());
+            var pt = to_seconds($('#prep-time-days').val(),
+                                $('#prep-time-hours').val(),
+                                $('#prep-time-minutes').val());
             var r = new Recipe(0, $('#recipe-name').val(),
                                   parseInt($('#serves').val()),
                                   ct, pt,
