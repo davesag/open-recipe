@@ -257,8 +257,7 @@ class OpenRecipeApp < Sinatra::Application
       f = '&#x2158;' if frac == 0.8                   # 4 fifths
       f = "#{sprintf('%d', frac)}" if f == nil
       if '' == f
-        pu = "#{whole} #{t.unit[u.name]}" if u!= nil && 1 == whole
-        pu = "#{whole} #{t.units[u.name]}" if u!= nil && 1 != whole
+        pu = "#{t.n_units[u.name, whole]}" if u!= nil && 0 != whole
         pu = "#{whole}" if u == nil && 0 != whole
       elsif 0 == whole
         pu = "#{f} #{t.units[u.name]}" if u!= nil
