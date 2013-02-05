@@ -1,65 +1,87 @@
 # only very limited i18n support so far.
 
 ui:
-  choose: choose...
-  save: save
+  add_a_recipe: add a recipe.
   cancel: cancel
-  preview: preview
+  choose_photo: choose photo
+  choose_this_photo: choose this photo
+  choose: choose...
+  cooking_time: cooking time
+  create_recipe: create recipe
+  description: description
+  edit_recipe: edit recipe
   edit_this_recipe: edit this recipe
+  favourites: favourites
+  greeting: hello #1, welcome to Open Recipe.
+  my_recipes: my recipies
+  name: name
+  preparation_time: prep time
+  preview: preview
+  save_recipe: save recipe
+  save: save
+  serves: serves
+
+warnings:
+  not_added_any_recipes: you have not added any recipes yet.
+  not_favourited_any_recipes: you have not favourited any recipes yet.
+
+errors:
+  server: Your request failed due to a server error.
+  create_recipe: an error occured while creating your recipe.
 
 unit:
-  none: none
-  ml: millilitre
+  cu: cup
+  cup: cup
+  deciliter: decilitre
   dl: decilitre
-  l: litre
-  g: gram
-  kg: kilogram
-  oz: ounce
   floz: fluid ounce
+  fluid-ounce: fluid ounce
+  g: gram
+  gram: gram
+  kg: kilogram
+  kilogram: kilogram
+  l: litre
+  liter: litre
+  milliliter: millilitre
+  ml: millilitre
+  none: none
+  ounce: ounce
+  oz: ounce
+  pint: pint
   pt: pint
   qt: quart
-  tbs: tablespoon
-  tsp: teaspoon
-  cu: cup
-  milliliter: millilitre
-  deciliter: decilitre
-  liter: litre
-  gram: gram
-  kilogram: kilogram
-  ounce: ounce
-  fluid-ounce: fluid ounce
-  pint: pint
   quart: quart
   tablespoon: tablespoon
+  tbs: tablespoon
   teaspoon: teaspoon
-  cup: cup
+  tsp: teaspoon
   
 units:
-  none: none
-  ml: millilitres
+  cu: cups
+  cup: cups
+  deciliter: decilitres
   dl: decilitres
-  l: litres
-  g: grams
-  kg: kilograms
-  oz: ounces
   floz: fluid ounces
+  fluid-ounce: fluid ounces
+  g: grams
+  gram: grams
+  kg: kilograms
+  kilogram: kilograms
+  l: litres
+  liter: litres
+  milliliter: millilitres
+  ml: millilitres
+  none: none
+  ounce: ounces
+  oz: ounces
+  pint: pints
   pt: pints
   qt: quarts
-  tbs: tablespoons
-  tsp: teaspoons
-  cu: cups
-  milliliter: millilitres
-  deciliter: decilitres
-  liter: litres
-  gram: grams
-  kilogram: kilograms
-  ounce: ounces
-  fluid-ounce: fluid ounces
-  pint: pints
   quart: quarts
   tablespoon: tablespoons
+  tbs: tablespoons
   teaspoon: teaspoons
-  cup: cups
+  tsp: teaspoons
 
 n_units:
   day: !!pl

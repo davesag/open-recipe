@@ -32,11 +32,11 @@ class OpenRecipeApp < Sinatra::Application
   set :name, 'Open Recipe'
   set :tagline, 'Food with Friends'
   set :short_name, 'open-recipe'
-  set :owner, 'Amy and Dave'
-  set :owner_website, 'http://open-recipe.heroku.com'
-  set :notification_email, 'davesag@gmail.com'
+  set :owner, 'Open Recipe Pty Ltd'
+  set :owner_website, SITE_URL
+  set :notification_email, 'dave.sag@openrecipe.com.au'
   set :no_reply_email, 'davesag+no_reply@gmail.com'
-  set :no_reply_identity, 'OR Bot'
+  set :no_reply_identity, 'Open Recipe Robot'
   set :author, 'Dave Sag'
   set :author_email, 'davesag@gmail.com'
   set :description, 'Open Recipe is a Facebook app for sharing and discovering recipes with your friends.'
@@ -190,13 +190,19 @@ class OpenRecipeApp < Sinatra::Application
                                                           :ingredients => ic}}
     end
 
-    def popular_tags
+    # active tags are determined as follows.
+    # first, does the user have any favourite tags? If so then display those tags and also
+    # then, what recipes are being displayed on the page? If any then what tags are used in those recipes?
+    # otherwise just show all the tags that are in use in the system.
+    def active_tags
       tags = []
       if logged_in? && !active_user.favourite_tags.empty?
         active_user.favourite_tags.sort_by(&:name).each do |tag|
           ts = summarise_tag(tag)
           tags << ts unless ts == nil
         end
+        #what recipe or recipes are being shown right now?
+        
       else
         used_tags = Tag.in_use  # returns sorted list by default.
         used_tags = Tag.find(:all, :order => 'name collate nocase ASC') if used_tags.empty?
@@ -364,6 +370,30 @@ class OpenRecipeApp < Sinatra::Application
       end
     end
 
+    def recipe_datatable_json(recipes, echo, table_name)
+      result = {
+        'sEcho' => echo,
+        'iTotalRecords' => recipes.count,
+        'iTotalDisplayRecords' => recipes.count
+      }
+      aaData = []
+      recipes.each do |r|
+        aaData << {
+          'DT_RowId' => "#{table_name}-id-#{r.id}",
+          '0' => r.name,
+          '1' => t.people(r.serves),
+          '2' => r.description,
+          '3' => human_readable_time(r.preparation_time),
+          '4' => human_readable_time(r.cooking_time),
+          '5' => r.serves,
+          '6' => r.preparation_time,
+          '7' => r.cooking_time
+        }
+      end
+      result['aaData'] = aaData
+      return result.to_json
+    end
+
     def logged_in?
       session['access_token'] = nil if (session['access_token'] != nil && session['access_token'].empty?)
       return session['access_token'] != nil
@@ -409,6 +439,7 @@ class OpenRecipeApp < Sinatra::Application
       logger.debug "Loaded @active_user = #{@active_user.inspect} from Facebook."
     else
       logger.debug "Found @active_user.id = #{@active_user.id} in the database."
+      logger.debug "@active_user.name = #{@active_user.name}."
     end
   end
 
@@ -432,6 +463,10 @@ class OpenRecipeApp < Sinatra::Application
     logger.debug "Completed request from host #{request.env['REMOTE_HOST']}"
     logger.debug "---------------------------------------------------------"
     logger.debug "========================================================="
+  end
+
+  not_found do
+    haml :'404'
   end
 
 	post '/' do
@@ -507,13 +542,21 @@ class OpenRecipeApp < Sinatra::Application
   end
 
   get '/browse' do
-    redirect '/' unless logged_in?
-    haml :browse
+    if logged_in?
+      haml :browse
+    else
+      status 403
+      haml :'403'
+    end
   end
 
   get '/settings' do
-    redirect '/' unless logged_in?
-    haml :settings
+    if logged_in?
+      haml :settings
+    else
+      status 403
+      haml :'403'
+    end
   end
 
   get '/faqs' do
@@ -523,40 +566,145 @@ class OpenRecipeApp < Sinatra::Application
   # search request comes from jQuery UI component.
   # user must be logged in for this to return a sensible result.
   get '/search' do
-    return [].to_json unless logged_in?
-    term = params[:term]
-    logger.debug "Got search request #{params[:term]}."
+    if request.xhr? && logged_in?
+      content_type :json
+      term = params[:term]
+      logger.debug "Got search request #{params[:term]}."
     
-    # find tags, ingredients, recipes, meals.
-    result = []
-    Tag.name_contains(term).each do |tag|
-      result << {:value => tag.id, :label => "Tag: #{tag.name}"}
+      # find tags, ingredients, recipes, meals.
+      result = []
+      Tag.name_contains(term).each do |tag|
+        result << {:value => tag.id, :label => "Tag: #{tag.name}"}
+      end
+      return result.to_json
+    else
+      status 403
+      haml :'403'
     end
-    return result.to_json
+  end
+
+  # return an array of the active user's own recipes,
+  # with 'active_ingredient" details.
+  # todo: forcing AJAX is off while I test this.
+  get '/recipes/with_ingredients' do
+    # if request.xhr? && logged_in?
+      content_type :json
+      return [].to_json unless logged_in?
+      return active_user.recipes.to_json(:include => :active_ingredients)   
+#     else
+#       status 403
+#       haml :'403'
+#     end
+  end
+  
+  # return an array of the active user's own recipes in summary form,
+  # localised and formatted for use by a dataTable object.
+  # see http://datatables.net/usage/server-side and also
+  # see http://www.datatables.net/release-datatables/examples/server_side/ids.html
+  # todo: forcing AJAX is off while I test this.
+  get '/recipes/datatable\??*' do
+    if request.xhr? && logged_in?
+      content_type :json
+      return recipe_datatable_json(active_user.recipes, params[:sEcho].to_i, params['tName'])
+    else
+      status 403
+      haml :'403'
+    end
+  end
+
+  # return an array of the active user's own recipes in summary form,
+  # localised and formatted for use by a dataTable object.
+  # see http://datatables.net/usage/server-side and also
+  # see http://www.datatables.net/release-datatables/examples/server_side/ids.html
+  # todo: forcing AJAX is off while I test this.
+  get '/favourite-recipes/datatable\??*' do
+    if request.xhr? && logged_in?
+      return recipe_datatable_json(active_user.favourite_recipes, params[:sEcho].to_i, params['tName'])
+    else
+      status 403
+      haml :'403'
+    end
+  end
+  
+  # return an array of the active user's own recipes in raw summary form.
+  # todo: forcing AJAX is off while I test this.
+  get '/recipes' do
+    # if request.xhr? && logged_in?
+      content_type :json
+      return active_user.recipes.to_json(:include => :active_ingredients)   
+#     else
+#       status 403
+#       haml :'403'
+#     end
+  end
+
+  get '/create-recipe' do
+    if logged_in?
+      haml :recipe_create
+    else
+      status 403
+      haml :'403'
+    end
   end
 
   get '/recipe/:id' do
-    recipe = Recipe.find_by_id(params[:id])
+    recipe = Recipe.find_by_id(params[:id].to_i)
     if request.xhr?
     	content_type :json
       # handle as AJAX
-      return {:success => false, :error => 'unauthorised_access'}.to_json unless logged_in?
-      return recipe.to_json
+      if !logged_in?
+        status 403
+        return {:success => false, :error => 'unauthorised_access'}.to_json
+      end
+      return recipe.to_json unless recipe == nil
+      status 404
+      return {:success => false, :error => 'recipe_not_found'}.to_json
     else
-      redirect '/' unless logged_in?
-	    haml :recipe, :locals => {:recipe => recipe}
+      if logged_in?
+	      if recipe != nil
+          haml :recipe_display, :locals => {:recipe => recipe} 
+        else
+          status 404
+          haml :'404'
+        end
+	    else
+  	    status 403
+	      haml :'403'
+      end
+    end
+  end
+
+  get '/edit-recipe/:id' do
+    if logged_in?
+      recipe = Recipe.find_by_id(params[:id].to_i)
+      if recipe != nil
+        haml :recipe_update, :locals => {:recipe => recipe}
+      else
+        status 404
+        haml :'404'
+      end
+    else
+      status 403
+      haml :'403'
     end
   end
 
   # receive a recipe create or update request via JSON.
   post "/recipe-request" do
-  	content_type :json
-  	logger.debug 'Login Request Received.'
-    req = JSON.parse request.body.read
-    parse_recipe_from_json req['recipe']
-    logger.debug "Recieved Recipe Request: #{req.inspect}"
+    if request.xhr?
+      content_type :json
+      logger.debug 'Login Request Received.'
+      return {:success => false, :error => 'unauthorised_access'}.to_json unless logged_in?
 
-    return {:success => true, :message => 'Recipe Saved.'}.to_json
+      req = JSON.parse request.body.read
+      parse_recipe_from_json req['recipe']
+      logger.debug "Recieved Recipe Request: #{req.inspect}"
+
+      return {:success => true, :message => 'Recipe Saved.'}.to_json
+    else
+      status 403
+      haml :'403'
+    end
   end
 
 end

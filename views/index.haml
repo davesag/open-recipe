@@ -3,7 +3,7 @@
     %div.ui-state-error.ui-corner-all{:style => 'padding: .7em; font-size:1.2em;'}
       %p<
         %span.ui-icon.ui-icon-alert{:style => 'float: left; margin-right: .3em'}
-        %strong< Alert. You are not logged in.
+        %strong< You are not logged in.
       %p<
         You will need to <a href="/login">log in via facebook</a> and authorise us so we may
         access the data we need to operate this site for you.
@@ -12,205 +12,64 @@
         %a{:href => '/privacy', :title => "Privacy Policy"}Privacy Policy
         for more details concerning the information we pull from Facebook and how we use it.
 -else
-  %h2 Hello #{active_user.first_name}, welcome to Open Recipe.
-  #recipes
-    %ul
-      %li<
-        %a{:href => '#my-recipes'}< My Recipes
-      %li<
-        %a{:href => '#my-favourite-recipes'}< Favourites
-    #my-recipes
-      - if active_user.recipes.empty?
-        %p< You have not added any recipes yet.
-      - else
-        %table#recipe-list.recipe-list
-          %thead
-            %tr
-              %th< Name
-              %th< Serves
-              %th< Description
-              %th< Prep Time
-              %th< Cooking Time
-          %tbody
-            - for r in active_user.recipes
-              %tr
-                %td<
-                  %a.recipe-name{:href => "/recipe/#{r.id}", :title => "Display Recipe '#{r.name}'"}<= r.name
-                %td< #{t.people r.serves}
-                %td< #{r.description}
-                %td<= human_readable_time r.preparation_time
-                %td<= human_readable_time r.cooking_time
-          %tfoot
-      %button#add-recipe< Add a recipe.
-    #my-favourite-recipes
-      - if active_user.favourite_recipes.empty?
-        %p< You have not favourited any recipes yet.
-      - else
-        %table#recipe-list.recipe-list
-          %thead
-            %tr
-              %th< Name
-              %th< Serves
-              %th< Description
-              %th< Prep Time
-              %th< Cooking Time
-              %th< Your Rating
-          %tbody
-            - for fr in active_user.favourite_recipes
-              -r = fr.recipe
-              %tr
-                %td<
-                  %a.recipe-name{:href => "/recipe/#{r.id}", :title => "Display Recipe '#{r.name}'"}<= r.name
-                %td< #{t.people r.serves}
-                %td< #{r.description[0..25]}...
-                %td<= human_readable_time r.preparation_time
-                %td<= human_readable_time r.cooking_time
-                %td< #{fr.rating}
-          %tfoot
-  #new-recipe.edit-or-create-recipe
-    %form
-      %label(for = 'recipe-name')< Recipe Name:
-      %input#recipe-name.ui-corner-all(placeholder = 'What do you call your recipe?')
-      %label(for = "serves")< Serves:
-      %input#serves.ui-corner-all(style='width:3em;')
-      / %label.ui-state-disabled(for = "meal")< Meal Name:
-      / %input#meal.ui-corner-all.ui-state-disabled{:disabled => 'disabled', :placeholder => 'not set'}
-      %label(for='description')< Description:
-      %textarea#description.ui-corner-all
-      %label(for='prep-time')< Preparation Time:
-      %input#prep-time-days.ui-corner-all{:style=>'width:2em;margin-right:1em;', :placeholder => 'dd'}
-      %input#prep-time-hours.ui-corner-all{:style=>'width:2em;margin-right:1em;', :placeholder => 'hh'}
-      %input#prep-time-minutes.ui-corner-all{:style=>'width:2em;', :placeholder => 'mm'}
-      %label(for='cooking-time')< Cooking Time:
-      %input#cooking-time-days.ui-corner-all{:style=>'width:2em;margin-right:1em;', :placeholder => 'dd'}
-      %input#cooking-time-hours.ui-corner-all{:style=>'width:2em;margin-right:1em;', :placeholder => 'hh'}
-      %input#cooking-time-minutes.ui-corner-all{:style=>'width:2em;', :placeholder => 'mm'}
-      %label(for='requirements')< Requirements
-      %textarea#requirements.ui-corner-all
-      %label(for='ingredients')< Ingredients
-      %table#ingredients
-        %thead
-          %tr
-            %th< Ingredient Name
-            %th< Amount
-            %th< Unit
-        %tbody
-      %label(for='method')< Method
-      %textarea#method.ui-corner-all
   :javascript
+    var recipe_list_table_data = [];
+    
     $(function() {
       // first turn on the tabs.
       $('#recipes').tabs();
-      // next set up three ingredient rows, with appropriate menus and autocomplete handlers
-      for (i = 0; i < 3; i++) {
-        var i_row = create_blank_ingredients_row(i)
-        // console.log(i_row);
-        $(i_row).appendTo('#ingredients tbody');
-      }
-      var allowed_unit_options = #{allowed_units};
-      var all_ingredient_names = #{ingredient_names}
-      var default_allowed_unit_options = convert_to_options_html(allowed_unit_options);
-      var ingredient_name_autocompleter = {
-        source: all_ingredient_names,
-        change: function(){
-          var this_row = $(this).parent().parent();
-          if (this_row.is(':last-child')) {
-            // add another row.
-            var new_row_number = this_row.siblings('tr').length + 1;
-            $(create_blank_ingredients_row(new_row_number)).appendTo(this_row.parent());
-            var new_row = this_row.next();
-            $(default_allowed_unit_options).appendTo(new_row.find('.unit-menu'));
-            new_row.find('.ingredient').autocomplete(ingredient_name_autocompleter);
-          }
-        }
-      };
-
-      $(default_allowed_unit_options).appendTo('#ingredients .unit-menu');
-      $('#ingredients .ingredient').autocomplete(ingredient_name_autocompleter);
-      // now make the new-recipe form only appear within a modal dialog.
-      $('#new-recipe').dialog({
-        title: 'Add a new Recipe',
-        autoOpen: false,
-        height: 750,
-        width: 750,
-        modal: true,
-        buttons: {
-          "Choose a Photo" : function () {
-            console.log('choose a recipe photo from your facebook photos.');  // enhance this later
-            // see example at http://code.google.com/p/facebook-photo-picker/
-            // and a jQuery one at https://github.com/seanhellwig/jQuery-Facebook-Multi-Photo-Selector
-          },
-          "Preview" : function () {
-            console.log('preview recipe');  // enhance this later
-          },
-          "Create Recipe" : function () {
-            console.log("saving recipe.");
-            // go through the form and collect all the fields into a
-            // recipe object.
-            var ingredients = new Array();
-            var number_of_ingredients = $('#ingredients .ingredient').length
-            for (i = 0; i < number_of_ingredients ; i++ ) {
-              var n = $('#ingredient'+i).val();
-              var a = $('#amount'+i).val();
-              var u = $('#unit'+i).val();
-              if (n != '') {
-                q = new Quantity(a, u);
-                ingredients.push(new ActiveIngredient(n,q));
-              }
-            }
-            var ct = to_seconds($('#cooking-time-days').val(),
-                                $('#cooking-time-hours').val(),
-                                $('#cooking-time-minutes').val());
-            var pt = to_seconds($('#prep-time-days').val(),
-                                $('#prep-time-hours').val(),
-                                $('#prep-time-minutes').val());
-            var r = new Recipe(0, $('#recipe-name').val(),
-                                  parseInt($('#serves').val()),
-                                  ct, pt,
-                                  $('#description').val(),
-                                  $('#method').val(),
-                                  $('#requirements').val(),
-                                  ingredients, null, null); // ignore tags and meal for now.
-            var req = new Recipe_Request(r);
-            console.log('created recipe request object to post to ' + req.post_path(), req);
-            
-            // now fire off an AJAX post to the server.
-            $.post(req.post_path(), req.post_data(), function(data){
-              console.log('received response data', data)
-              if (!data['success']) {
-                // there was an error.
-                console.log('error', data['error']);
-                // do something to tell the user about this error.
-              } else {
-                // there is a message
-                console.log('message', data['message']);
-                // perhaps do something with this message.
-                $('#new-recipe').dialog("close");
-                location.reload();
-              }
-            }).error(function() {
-                alert('Request failed due to a server error.');
-            });
-            // then close the dialog.
-          },
-          "Cancel" : function () {
-            $(this).dialog("close");
-          }
-        },
-        close: function () {
-          // do something on close if needs be.
-          // ie choose friends to share this recipe with
-          // or post to your timeline.
-        }
-      });
+      // add a 'new recipe' button.
       $('#add-recipe').button({icons: {primary:'ui-icon-circle-plus'}}).click(function() {
-        $("#new-recipe").dialog("open");
+        //  see http://stackoverflow.com/questions/1865837/whats-the-difference-between-window-location-and-window-location-replace?lq=1
+        location.href = '/create-recipe';
       });
-      // now make sure the tables of recipes are nicely formatted and interactive.
-      $('.recipe-list').dataTable( {
+      // use the data in a dataTable.
+      // the server will assign an ID to each row
+      // using a tName param in the form {tName}-id-{recipe.id}
+      // making it simple to parse out into the associated recipe's ID.
+      $('#recipe-list').dataTable( {
         "bJQueryUI": true,
-        "sPaginationType": "full_numbers"
+        "sPaginationType": "full_numbers",
+        "sAjaxSource":"/recipes/datatable",
+        "bProcessing":true,
+        "bServerSide":false,
+        'aaSorting': [[0, 'asc']],
+        "aoColumns": [
+          {"sTitle": "#{Unicode::capitalize(t.ui.name)}", "sType": 'string'},
+          {"sTitle": "#{Unicode::capitalize(t.ui.serves)}", "sType": 'string', 'bSearchable': false, 'iDataSort': 5},
+          {"sTitle": "#{Unicode::capitalize(t.ui.description)}", "sType": 'string', 'bSortable': false},
+          {"sTitle": "#{Unicode::capitalize(t.ui.preparation_time)}", "sType": 'string', 'bSearchable': false, 'iDataSort': 6},
+          {"sTitle": "#{Unicode::capitalize(t.ui.cooking_time)}", "sType": 'numeric', 'bSearchable': false, 'iDataSort': 7},
+          {"sType": 'numeric', 'bSearchable': false, 'bVisible': false},
+          {"sType": 'numeric', 'bSearchable': false, 'bVisible': false},
+          {"sType": 'numeric', 'bSearchable': false, 'bVisible': false},
+        ],
+        'fnServerParams': function (aoData) {
+          aoData.push({'name':'tName', 'value':'recipe-list'});
+        },
+        'fnDrawCallback': function () {
+          $(this.fnGetNodes()).click(function() {
+            location.href = '/recipe/' + $(this).attr('id').substring('recipe-list-id-'.length);
+          });
+        }
       });
-
+      // now load the user's favourite recipes into a table.
     });
-    
+  %h2 #{t.ui.greeting(Unicode::capitalize(active_user.name))} 
+  #recipes
+    %ul
+      %li<
+        %a{:href => '#my-recipes'}< #{Unicode::capitalize(t.ui.my_recipes)}
+      %li<
+        %a{:href => '#my-favourite-recipes'}< #{Unicode::capitalize(t.ui.favourites)}
+    #my-recipes
+      - if active_user.recipes.empty?
+        %p< #{Unicode::capitalize(t.warnings.not_added_any_recipies)}
+      - else
+        %table#recipe-list
+      %button#add-recipe< #{Unicode::capitalize(t.ui.add_a_recipe)}
+    #my-favourite-recipes
+      - if active_user.favourite_recipes.empty?
+        %p< #{Unicode::capitalize(t.warnings.not_favourited_any_recipes)}
+      - else
+        %table#favourite-recipe-list

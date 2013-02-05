@@ -1,0 +1,169 @@
+%h2< Edit Recipe &#8220;#{Unicode::capitalize(recipe.name)}&#8221;
+#edit-recipe.edit-or-create-recipe
+  %form
+    %label(for = 'recipe-name')< Recipe Name:
+    %input#recipe-name.ui-corner-all{:value => recipe.name}
+    %label(for = "serves")< Serves:
+    %input#serves.ui-corner-all{:style=>'width:3em;', :value=>recipe.serves}
+    / %label.ui-state-disabled(for = "meal")< Meal Name:
+    / %input#meal.ui-corner-all.ui-state-disabled{:disabled => 'disabled', :placeholder => 'not set'}
+    %label(for='description')< Description:
+    %textarea#description.ui-corner-all<= recipe.description
+    %label(for='prep-time')< Preparation Time:
+    - pt = mmhhdd_from_seconds recipe.preparation_time
+    %input#prep-time-days.ui-corner-all{:style=>'width:2em;margin-right:1em;', :value => pt[:days]}
+    %input#prep-time-hours.ui-corner-all{:style=>'width:2em;margin-right:1em;', :value => pt[:hours]}
+    %input#prep-time-minutes.ui-corner-all{:style=>'width:2em;', :value => pt[:minutes]}
+    %label(for='cooking-time')< Cooking Time:
+    - ct = mmhhdd_from_seconds recipe.cooking_time
+    %input#cooking-time-days.ui-corner-all{:style=>'width:2em;margin-right:1em;', :value => ct[:days]}
+    %input#cooking-time-hours.ui-corner-all{:style=>'width:2em;margin-right:1em;', :value => ct[:hours]}
+    %input#cooking-time-minutes.ui-corner-all{:style=>'width:2em;', :value => ct[:minutes]}
+    %label(for='requirements')< Requirements
+    %textarea#requirements.ui-corner-all<= recipe.requirements
+    %label(for='ingredients')< Ingredients
+    %table#ingredients
+      %thead
+        %tr
+          %th< Ingredient Name
+          %th< Amount
+          %th< Unit
+      %tbody
+        -count = -1
+        -for i in recipe.active_ingredients
+          -count = count + 1
+          %tr
+            %td<
+              %input.ingredient.ui-corner-all{:id => "ingredient#{count}", :value => i.ingredient.name}
+            %td<
+              %input.amount.ui-corner-all{:id => "amount#{count}", :value =>  i.quantity.amount}
+            %td<
+              %select.unit-menu{:id => "unit#{count}"}
+                %option{:value => '', :label => Unicode::capitalize(t.unit.none), :selected => (i.quantity.unit == nil)}
+                -for ut in UnitType.all
+                  %optgroup{:label => Unicode::capitalize(ut.name)}
+                    -for u in ut.allowed_units
+                      %option{:value => u.id, :label => Unicode::capitalize(t.units[u.name]), :selected => (i.quantity.unit != nil && i.quantity.unit.id == u.id)}
+        -count = count + 1
+        %tr
+          %td<
+            %input.ingredient.ui-corner-all{:id => "ingredient#{count}"}
+          %td<
+            %input.amount.ui-corner-all{:id => "amount#{count}"}
+          %td<
+            %select.unit-menu{:id => "unit#{count}"}
+              %option{:value => '', :label => Unicode::capitalize(t.unit.none), :selected => true}
+              -for ut in UnitType.all
+                %optgroup{:label => Unicode::capitalize(ut.name)}
+                  -for u in ut.allowed_units
+                    %option{:value => u.id, :label => Unicode::capitalize(t.units[u.name])}
+    %label(for='method')< Method
+    %textarea#method.ui-corner-all<= recipe.method
+    %label(for='action-bar')< &nbsp;
+    %span#action-bar.edit-or-create-recipe
+      %input(type='submit' id='choose-photo')
+      %input(type='submit' id='preview')
+      %input(type='submit' id='save-recipe')
+      %input(type='submit' id='cancel')
+:javascript
+  $(function() {
+    var allowed_unit_options = #{allowed_units};
+    var all_ingredient_names = #{ingredient_names}
+    var default_allowed_unit_options = convert_to_options_html(allowed_unit_options);
+
+    var ingredient_name_autocompleter = {
+      source: all_ingredient_names,
+      change: function(){
+        var this_row = $(this).parent().parent();
+        if (this_row.is(':last-child')) {
+          // add another row.
+          var new_row_number = this_row.siblings('tr').length + 1;
+          $(create_blank_ingredients_row(new_row_number)).appendTo(this_row.parent());
+          var new_row = this_row.next();
+          $(default_allowed_unit_options).appendTo(new_row.find('.unit-menu'));
+          new_row.find('.ingredient').autocomplete(ingredient_name_autocompleter);
+        }
+      }
+    };
+
+    $('#ingredients .ingredient').autocomplete(ingredient_name_autocompleter);
+    // now make the new-recipe form only appear within a modal dialog.
+    var button_names = {
+      'choose-photo': "#{Unicode::capitalize(t.ui.choose_photo)}",
+      'preview': "#{Unicode::capitalize(t.ui.preview)}",
+      'save-recipe': "#{Unicode::capitalize(t.ui.save_recipe)}",
+      'cancel': "#{Unicode::capitalize(t.ui.cancel)}"
+    }
+    var button_handlers = {
+      "choose-photo" : function () {
+        console.log('choose a recipe photo from your facebook photos.');  // enhance this later
+        // see example at http://code.google.com/p/facebook-photo-picker/
+        // and a jQuery one at https://github.com/seanhellwig/jQuery-Facebook-Multi-Photo-Selector
+      },
+      "preview" : function () {
+        console.log('preview recipe');  // enhance this later
+      },
+      "save-recipe" : function () {
+        console.log("saving recipe.");
+        // go through the form and collect all the fields into a
+        // recipe object.
+        var ingredients = new Array();
+        var number_of_ingredients = $('#ingredients .ingredient').length
+        for (i = 0; i < number_of_ingredients ; i++ ) {
+          var n = $('#ingredient'+i).val();
+          var a = $('#amount'+i).val();
+          var u = $('#unit'+i).val();
+          console.log ("ingredient = " + n + ", amount = " + a + ", unit = " + u);
+          if (n != '') {
+            q = new Quantity(a, u);
+            ingredients.push(new ActiveIngredient(n,q));
+          }
+        }
+        // merge cooking and prep time fields into a nice time string
+        // in dd:hh:mm format
+        var ct = to_seconds($('#cooking-time-days').val(),
+                            $('#cooking-time-hours').val(),
+                            $('#cooking-time-minutes').val());
+        var pt = to_seconds($('#prep-time-days').val(),
+                            $('#prep-time-hours').val(),
+                            $('#prep-time-minutes').val());
+        var r = new Recipe(#{recipe.id}, $('#recipe-name').val(), parseInt($('#serves').val()), ct, pt, $('#description').val(),
+            $('#method').val(), $('#requirements').val(), ingredients, null, null); // ignore tags and meal for now.
+        var req = new Recipe_Request(r);
+        console.log('created recipe request object', req);
+
+        // now fire off an AJAX post to the server.
+        $.post(req.post_path(), req.post_data(), function(data){
+          console.log('debug', data)
+          if (!data['success']) {
+            // there was an error.
+            console.log('error', data['error']);
+            // do something to tell the user about this error.
+          } else {
+            // there is a message
+            console.log('message', data['message']);
+            // perhaps do something with this message.
+            location.href = '/';
+          }
+        }).error(function() {
+            alert("#{t.errors.server}");
+        });
+      },
+      "cancel" : function () {
+        // check if there have been any changes.
+        console.log("Cancel clicked");
+        location.href = '/';
+      }
+    }
+    $("input:submit").button({
+      create: function(event, ui) {
+        $(this).val(button_names[$(this).attr('id')]);
+      }
+    }).click(function(event) {
+      event.preventDefault();
+      console.log("click event");
+      console.log("event =", event);
+      console.log("$(this) =", $(this));
+      button_handlers[$(this).attr('id')]();
+    });
+  });

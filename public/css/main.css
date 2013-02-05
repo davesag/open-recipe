@@ -211,3 +211,8 @@ img {
 }
 
 #nav-bar.ui-tabs .ui-tabs-nav li.ui-tabs-selected { padding: .5em 1em !important;}
+
+tbody tr:hover {
+  font-weight: bolder;
+  cursor: pointer;
+}

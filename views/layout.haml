@@ -4,10 +4,12 @@
     %meta{ :'http-equiv' => "Content-Type", :content => "text/html; charset=UTF-8"}
     %meta{ :property => "og:title", :content => settings.name}
     %meta{ :property => "og:type", :content => "website"}
-    %meta{ :property => "og:image", :content => "#{settings.owner_website}/images/openrecipe_logo.png"}
-    %meta{ :property => "og:url", :content => settings.owner_website}
+    %meta{ :property => "og:image", :content => "#{settings.owner_website}/images/Open_Recipe_Logo_Square_210x210.png"}
+    %meta{ :property => "og:url", :content => 'http://apps.facebook.com/open-recipe/'}
     %meta{ :property => "og:site_name", :content => "#{settings.name} - #{settings.tagline}."}
     %meta{ :property => "fb:admins", :content => "davesag"}
+    %meta{ :property => "fb:admins", :content => "amyjeeves"}
+    %meta{ :property => "fb:admins", :content => "1578116633"}
 
     %meta{ :name => "author", :content => "davesag"}
     %meta{ :name => "robots", :content => "none"}
@@ -18,14 +20,14 @@
     %meta{ :name => "description", :content => settings.description}
     %meta{ :name => "keywords", :content => settings.keywords}
     %link{ :rel => "Shortcut Icon", :type => "image/x-icon", :href => "favicon.ico"}
-    %link{ :rel => "canonical", :href => settings.owner_website}
+    %link{ :rel => "canonical", :href => 'http://apps.facebook.com/open-recipe/'}
     %link{ :rel =>"stylesheet", :type => "text/css",
            :href => "/css/main.css"}
     %link{ :rel =>"stylesheet", :type => "text/css",
            :href => "/css/themes/open-recipe-theme/jquery-ui-1.8.23.custom.css"}
     %link{ :rel =>"stylesheet", :type => "text/css",
            :href => "/css/jquery.dataTables_themeroller.css"}
-    %script{ :src => "/scripts/jquery-1.8.0.min.js" }
+    %script{ :src => "/scripts/jquery-1.9.0.min.js" }
     %script{ :src => "/scripts/jquery-ui-1.8.23.custom.min.js" }
     %script{ :src => "/scripts/jquery.dataTables.min.js" }
     %script{ :src => "/scripts/open_recipe_ui_objects.js" }
@@ -100,7 +102,7 @@
       #page-content.ui-helper-reset.ui-widget.ui-widget-content.ui-corner-all
         = yield
       - if logged_in?
-        - tags = popular_tags
+        - tags = active_tags
         - if tags.count > 0
           #tag-cloud.ui-helper-reset.ui-widget.ui-widget-content.ui-corner-all
             %h2 Tags
@@ -119,7 +121,7 @@
                     #{t[:name]}
                     %span.tag-count #{t[:count]}
       #page-bottom.ui-helper-reset.ui-widget.ui-widget-content.ui-corner-all
-        #copyright< ©2012 #{settings.owner}
+        #copyright< ©2013 #{settings.owner}
         - if logged_in?
           %p <a href='/logout'>Logout</a>
           %hr
