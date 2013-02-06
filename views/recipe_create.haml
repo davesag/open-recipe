@@ -30,9 +30,9 @@
     %textarea#method.ui-corner-all
     %label(for='action-bar')< &nbsp;
     %span#action-bar.edit-or-create-recipe
-      %input(type='submit' id='choose-photo')
-      %input(type='submit' id='save-recipe')
-      %input(type='submit' id='cancel')
+      %input#choose-photo.action-button(type='submit')
+      %input#save-recipe.action-button(type='submit')
+      %input#cancel.action-button(type='submit')
 :javascript
   var allowed_unit_options = #{allowed_units};
   var all_ingredient_names = #{ingredient_names}

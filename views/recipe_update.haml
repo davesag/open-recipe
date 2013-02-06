@@ -61,17 +61,17 @@
     %textarea#method.ui-corner-all<= recipe.method
     %label(for='action-bar')< &nbsp;
     %span#action-bar.edit-or-create-recipe
-      %input(type='submit' id='choose-photo')
-      %input(type='submit' id='save-recipe')
-      %input(type='submit' id='cancel')
+      %input#choose-photo.action-button(type='submit')
+      %input#save-recipe.action-button(type='submit')
+      %input#cancel.action-button(type='submit')
 :javascript
   var allowed_unit_options = #{allowed_units};
   var all_ingredient_names = #{ingredient_names}
   var default_allowed_unit_options = convert_to_options_html(allowed_unit_options);
   var recipe_id = #{recipe.id};
   var button_names = {
-    'choose-photo': "#{Unicode::capitalize(t.ui.choose_photo)}",
-    'save-recipe': "#{Unicode::capitalize(t.ui.save_recipe)}",
-    'cancel': "#{Unicode::capitalize(t.ui.cancel)}"
+    'choose-photo': "#{UnicodeUtils::titlecase(t.ui.choose_photo)}",
+    'save-recipe': "#{UnicodeUtils::titlecase(t.ui.save_recipe)}",
+    'cancel': "#{UnicodeUtils::titlecase(t.ui.cancel)}"
   }
 %script(src='/scripts/recipe_form_handlers.js')

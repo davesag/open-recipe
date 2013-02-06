@@ -29,7 +29,7 @@
 }
 
 body {
-	font-family: Georgia, Palatino, Times, "Times New Roman", serif;
+	font-family: Tahoma, Helvetica, Arial, sans-serif;
 	font-size: 76%; /* as recommended in CSS guide */
 	color:#333333;
 	word-wrap:break-word;
@@ -93,6 +93,7 @@ img {
 
 #page {
 	width: 99%;
+	height: auto;
 	margin: 0px auto 0px auto;
 	padding: 5px;
 	background: #fff;
@@ -132,9 +133,6 @@ img {
   text-decoration: none;
   line-height: 1.6em;
   color: #fff;
-  -webkit-border-radius: 1px;
-  -moz-border-radius: 1px;
-  border-radius: 1px;
   background-color: #004276;
   padding-right: 3px;
   padding-left: 3px;
@@ -174,14 +172,21 @@ img {
   width: 120px;
   font-weight: bold;
 }
-.edit-or-create-recipe input, textarea {
+.edit-or-create-recipe input, textarea, table {
   float: left;
   width: 550px;
   margin-bottom: .5em;
 }
+
+.edit-or-create-recipe input.action-button {
+  width: auto;
+  margin-right: 2em;
+}
+
 .edit-or-create-recipe textarea {
   height: 200px;
 }
+
 .edit-or-create-recipe table {
   width: 550px;
 }
