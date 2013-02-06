@@ -11,6 +11,7 @@ require 'logger'
 require 'active_record'
 require 'active_support/all'  # added for Time.zone support below
 require 'unicode'
+require 'unicode_utils'
 require 'ruby-units'
 
 # register your app at facebook to get these codes
@@ -277,6 +278,7 @@ class OpenRecipeApp < Sinatra::Application
     end
 
     def human_readable_time(seconds)
+      return t.ui.none if seconds === 0
       minutes = seconds.divmod(60)[0] # discard seconds.
       hours, minutes = minutes.divmod(60)
       days, hours= hours.divmod(24)
@@ -380,8 +382,8 @@ class OpenRecipeApp < Sinatra::Application
       recipes.each do |r|
         aaData << {
           'DT_RowId' => "#{table_name}-id-#{r.id}",
-          '0' => r.name,
-          '1' => t.people(r.serves),
+          '0' => UnicodeUtils::titlecase(r.name),
+          '1' => UnicodeUtils::titlecase(t.people(r.serves)),
           '2' => r.description,
           '3' => human_readable_time(r.preparation_time),
           '4' => human_readable_time(r.cooking_time),

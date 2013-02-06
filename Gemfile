@@ -9,6 +9,7 @@ gem 'activerecord'
 gem "rake"
 gem 'unicode'
 gem 'ruby-units'
+gem 'unicode_utils'
 
 group :development do
 	gem 'sqlite3'

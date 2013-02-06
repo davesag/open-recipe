@@ -1,7 +1,11 @@
 # only very limited i18n support so far.
+# all stand alone phrases are all lower case.
+# phrases that accept params should be in the specific case required for display.
+# note the term 'method' is keyed as 'the_method' because 'method' is a reserved word.
 
 ui:
-  add_a_recipe: add a recipe.
+  add_a_recipe: add a recipe
+  amount: amount
   cancel: cancel
   choose_photo: choose photo
   choose_this_photo: choose this photo
@@ -12,14 +16,24 @@ ui:
   edit_recipe: edit recipe
   edit_this_recipe: edit this recipe
   favourites: favourites
-  greeting: hello #1, welcome to Open Recipe.
+  ingredients: ingredients
+  ingredient_name: ingredient name
+  greeting: Hello %1, welcome to Open Recipe.
+  logged_in_as: You are logged in as %1
+  log_out: logout
+  the_method: method
   my_recipes: my recipies
   name: name
+  none: none
   preparation_time: prep time
   preview: preview
+  recipe_name: recipe name
+  requirements: requirements
   save_recipe: save recipe
   save: save
+  search_text: search text
   serves: serves
+  unit: unit
 
 warnings:
   not_added_any_recipes: you have not added any recipes yet.
@@ -173,22 +187,6 @@ season:
   autumn: autumn
   winter: winter
   spring: spring
-
-preparation:
-  chopped: chopped
-  crushed: crushed
-  cubed: cubed
-  diced: diced
-  finely-chopped: finely chopped
-  finely-sliced: finely sliced
-  grated: grated
-  julienned: julienned
-  melted: melted
-  powdered: powdered
-  rinsed: rinsed
-  sliced: sliced
-  soaked: soaked
-  whole: whole
 
 people: !!pl
   0: no people

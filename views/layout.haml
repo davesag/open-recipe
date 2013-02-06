@@ -30,6 +30,8 @@
     %script{ :src => "/scripts/jquery-1.9.0.min.js" }
     %script{ :src => "/scripts/jquery-ui-1.8.23.custom.min.js" }
     %script{ :src => "/scripts/jquery.dataTables.min.js" }
+    :javascript
+      var SERVER_ERROR = "#{t.errors.server}"
     %script{ :src => "/scripts/open_recipe_ui_objects.js" }
     :javascript
       $(function () {
@@ -51,17 +53,17 @@
             });
           },
           select: function (event, ui) {
-            console.log (ui.item ?
-            "Selected: " + ui.item.value + " aka " + ui.item.label :
-            "Nothing selected, input was " + this.value, event);
+            / console.log (ui.item ?
+            / "Selected: " + ui.item.value + " aka " + ui.item.label :
+            / "Nothing selected, input was " + this.value, event);
             return false; // don't update the search field.
           },
           response: function (event, ui) {
-            console.log ('do we ever get here?', event);
+            / console.log ('do we ever get here?', event);
           }
-          // note the spinner sometimes doesn't stop spinning
-          // see http://stackoverflow.com/questions/2519513/spinner-with-jquery-ui-1-8-autocomplete
-          // and http://stackoverflow.com/questions/4316071/remove-spinner-from-jquery-ui-autocomplete-if-nothing-found
+          / note the spinner sometimes doesn't stop spinning
+          / see http://stackoverflow.com/questions/2519513/spinner-with-jquery-ui-1-8-autocomplete
+          / and http://stackoverflow.com/questions/4316071/remove-spinner-from-jquery-ui-autocomplete-if-nothing-found
         });
       });
     %title #{settings.name}
@@ -75,13 +77,13 @@
                 %div.ui-state-highlight.ui-corner-all{:style => 'padding:0 .7em'}
                   %p<
                     %span.ui-icon.ui-icon-info{:style => 'float: left; margin-right: .3em'}<
-                    You are logged in as #{active_user.name}
+                    #{t.ui.logged_in_as(active_user.name)}
               %div.ui-widget{:style => 'margin-top: 1em'}
                 %div.ui-state-highlight.ui-corner-all{:style => 'padding:0 .7em'}
                   %p<
                     %span.ui-icon.ui-icon-search{:style => 'float: left; margin-right: .3em'}<
                       %form#search-form
-                        %input#search-field{:type => 'text', :name => 'search', :placeholder => 'search text', :style => 'width:80%;'}
+                        %input#search-field{:type => 'text', :name => 'search', :placeholder => t.ui.search_text, :style => 'width:80%;'}
             -else
               %a{:href => "/login"}<
                 %img.fb-login{:src => '/images/fb_login_button.png'}
@@ -107,9 +109,9 @@
           #tag-cloud.ui-helper-reset.ui-widget.ui-widget-content.ui-corner-all
             %h2 Tags
             %ul
-              - for t in tags
+              - for tag in tags
                 %li
-                  - tcs = t[:counts]
+                  - tcs = tag[:counts]
                   - c_recipe = tcs[:recipes]
                   - c_meal = tcs[:meals]
                   - c_ingredient = tcs[:ingredients]
@@ -118,17 +120,10 @@
                   - hover_text << "#{c_meal == 0 ? 'No' : c_meal} meal#{c_meal == 1 ? '' : 's'}, "
                   - hover_text << "#{c_ingredient == 0 ? 'No' : c_ingredient} ingredient#{c_ingredient == 1 ? '' : 's'}."
                   %a.tag{:href => "#", :title => hover_text}<
-                    #{t[:name]}
-                    %span.tag-count #{t[:count]}
+                    #{tag[:name]}
+                    %span.tag-count #{tag[:count]}
       #page-bottom.ui-helper-reset.ui-widget.ui-widget-content.ui-corner-all
         #copyright< ©2013 #{settings.owner}
         - if logged_in?
-          %p <a href='/logout'>Logout</a>
+          %p <a href='/logout'>#{UnicodeUtils::titlecase(t.ui.log_out)}</a>
           %hr
-          %p{:class=>'like_site'} Do you like this site?
-          %p
-            %iframe{:src => "http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fopen-recipe.herokuapp.com%2F&amp;layout=standard&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=80",
-                    :scrolling => "no",
-                    :frameborder => "0",
-                    :style => "border:none; overflow:hidden; width:450px; height:30px;",
-                    :allowTransparency => "true"}

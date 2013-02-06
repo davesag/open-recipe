@@ -64,6 +64,20 @@ copy_prototype(Recipe_Request, Request_Base);
 
 // other miscellaneous interface bits
 
+function to_seconds(dd,hh,mm) {
+  d = parseInt(dd);
+  h = parseInt(hh);
+  m = parseInt(mm);
+  if (isNaN(d)) d = 0;
+  if (isNaN(h)) h = 0;
+  if (isNaN(m)) m = 0;
+  
+  t = d * 24 * 60 * 60 +
+      h * 60 * 60 +
+      m * 60;
+  return t;
+}
+
 function convert_to_options_html(a_map_of_options) {
   result = '';
   group_count = 0;
@@ -93,16 +107,3 @@ function create_blank_ingredients_row(a_row_number) {
            "<td><select class='unit-menu' id='unit" + a_row_number + "'></select></td></tr>";
 };
 
-function to_seconds(dd,hh,mm) {
-  d = parseInt(dd);
-  h = parseInt(hh);
-  m = parseInt(mm);
-  if (isNaN(d)) d = 0;
-  if (isNaN(h)) h = 0;
-  if (isNaN(m)) m = 0;
-  
-  t = d * 24 * 60 * 60 +
-      h * 60 * 60 +
-      m * 60;
-  return t;
-}

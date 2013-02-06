@@ -20,7 +20,6 @@
       $('#recipes').tabs();
       // add a 'new recipe' button.
       $('#add-recipe').button({icons: {primary:'ui-icon-circle-plus'}}).click(function() {
-        //  see http://stackoverflow.com/questions/1865837/whats-the-difference-between-window-location-and-window-location-replace?lq=1
         location.href = '/create-recipe';
       });
       // use the data in a dataTable.
@@ -35,11 +34,11 @@
         "bServerSide":false,
         'aaSorting': [[0, 'asc']],
         "aoColumns": [
-          {"sTitle": "#{Unicode::capitalize(t.ui.name)}", "sType": 'string'},
-          {"sTitle": "#{Unicode::capitalize(t.ui.serves)}", "sType": 'string', 'bSearchable': false, 'iDataSort': 5},
-          {"sTitle": "#{Unicode::capitalize(t.ui.description)}", "sType": 'string', 'bSortable': false},
-          {"sTitle": "#{Unicode::capitalize(t.ui.preparation_time)}", "sType": 'string', 'bSearchable': false, 'iDataSort': 6},
-          {"sTitle": "#{Unicode::capitalize(t.ui.cooking_time)}", "sType": 'numeric', 'bSearchable': false, 'iDataSort': 7},
+          {"sTitle": "#{UnicodeUtils::titlecase(t.ui.name)}", "sType": 'string'},
+          {"sTitle": "#{UnicodeUtils::titlecase(t.ui.serves)}", "sType": 'string', 'bSearchable': false, 'iDataSort': 5},
+          {"sTitle": "#{UnicodeUtils::titlecase(t.ui.description)}", "sType": 'string', 'bSortable': false},
+          {"sTitle": "#{UnicodeUtils::titlecase(t.ui.preparation_time)}", "sType": 'string', 'bSearchable': false, 'iDataSort': 6},
+          {"sTitle": "#{UnicodeUtils::titlecase(t.ui.cooking_time)}", "sType": 'numeric', 'bSearchable': false, 'iDataSort': 7},
           {"sType": 'numeric', 'bSearchable': false, 'bVisible': false},
           {"sType": 'numeric', 'bSearchable': false, 'bVisible': false},
           {"sType": 'numeric', 'bSearchable': false, 'bVisible': false},
@@ -55,19 +54,19 @@
       });
       // now load the user's favourite recipes into a table.
     });
-  %h2 #{t.ui.greeting(Unicode::capitalize(active_user.name))} 
+  %h2 #{t.ui.greeting(UnicodeUtils::titlecase(active_user.name))}
   #recipes
     %ul
       %li<
-        %a{:href => '#my-recipes'}< #{Unicode::capitalize(t.ui.my_recipes)}
+        %a{:href => '#my-recipes'}< #{UnicodeUtils::titlecase(t.ui.my_recipes)}
       %li<
-        %a{:href => '#my-favourite-recipes'}< #{Unicode::capitalize(t.ui.favourites)}
+        %a{:href => '#my-favourite-recipes'}< #{UnicodeUtils::titlecase(t.ui.favourites)}
     #my-recipes
       - if active_user.recipes.empty?
         %p< #{Unicode::capitalize(t.warnings.not_added_any_recipies)}
       - else
         %table#recipe-list
-      %button#add-recipe< #{Unicode::capitalize(t.ui.add_a_recipe)}
+      %button#add-recipe< #{UnicodeUtils::titlecase(t.ui.add_a_recipe)}
     #my-favourite-recipes
       - if active_user.favourite_recipes.empty?
         %p< #{Unicode::capitalize(t.warnings.not_favourited_any_recipes)}
