@@ -57,8 +57,8 @@
                 %optgroup{:label => Unicode::capitalize(ut.name)}
                   -for u in ut.allowed_units
                     %option{:value => u.id, :label => Unicode::capitalize(t.units[u.name])}
-    %label(for='method')< Method
-    %textarea#method.ui-corner-all<= recipe.method
+    %label(for='the-method')< Method
+    %textarea#the-method.ui-corner-all<= recipe.method
     %label(for='action-bar')< &nbsp;
     %span#action-bar.edit-or-create-recipe
       %input#choose-photo.action-button(type='submit')

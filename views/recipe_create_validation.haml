@@ -1,32 +1,11 @@
 #new-recipe.edit-or-create-recipe
   %form#recipe-form
-    %label(for='recipe-name')< #{UnicodeUtils::titlecase(t.ui.recipe_name)}:
-    %input#recipe-name.ui-corner-all(placeholder = 'What do you call your recipe?')
-    %label.error(for='recipe-name' generated = 'true')
-    %label(for="serves")< #{UnicodeUtils::titlecase(t.ui.serves)}:
-    %input#serves.ui-corner-all(style='width:3em;')
-    %label.error(for = 'serves' generated = 'true')
-    / %label.ui-state-disabled(for = "meal")< Meal Name:
-    / %input#meal.ui-corner-all.ui-state-disabled{:disabled => 'disabled', :placeholder => 'not set'}
-    / %label.error(for = 'meal' generated = 'true')
-    %label(for='description')< #{UnicodeUtils::titlecase(t.ui.description)}:
-    %textarea#description.ui-corner-all
-    %label.error(for = 'description' generated = 'true')
-    %label(for='prep-time')< #{UnicodeUtils::titlecase(t.ui.preparation_time)}:
-    %span#prep-time
-      %input#prep-time-days.ui-corner-all{:style=>'width:2em;margin-right:1em;', :placeholder => 'dd'}
-      %input#prep-time-hours.ui-corner-all{:style=>'width:2em;margin-right:1em;', :placeholder => 'hh'}
-      %input#prep-time-minutes.ui-corner-all{:style=>'width:2em;', :placeholder => 'mm'}
-    %label.error(for = 'prep-time' generated = 'true')
-    %label(for='cooking-time')< #{UnicodeUtils::titlecase(t.ui.cooking_time)}:
-    %span#cooking-time
-      %input#cooking-time-days.ui-corner-all{:style=>'width:2em;margin-right:1em;', :placeholder => 'dd'}
-      %input#cooking-time-hours.ui-corner-all{:style=>'width:2em;margin-right:1em;', :placeholder => 'hh'}
-      %input#cooking-time-minutes.ui-corner-all{:style=>'width:2em;', :placeholder => 'mm'}
-    %label.error(for = 'cooking-time' generated = 'true')
-    %label(for='requirements')< #{UnicodeUtils::titlecase(t.ui.requirements)}
-    %textarea#requirements.ui-corner-all
-    %label.error(for = 'requirements' generated = 'true')
+    %input#recipe-name(placeholder = 'What do you call your recipe?')
+    %input#serves(style='width:3em;')
+    %textarea#description
+    %input#prep-time{:size => "10", :maxlength => "10", :placeholder => '1d 11m 11m'}
+    %input#cooking-time{:size => "10", :maxlength => "10", :placeholder => '1d 11h 11m'}
+    %textarea#requirements
     %label(for='ingredients')< #{UnicodeUtils::titlecase(t.ui.ingredients)}
     %table#ingredients
       %thead
@@ -35,9 +14,7 @@
           %th< #{UnicodeUtils::titlecase(t.ui.amount)}
           %th< #{UnicodeUtils::titlecase(t.ui.unit)}
       %tbody
-    %label(for='method')< #{UnicodeUtils::titlecase(t.ui.the_method)}
-    %textarea#method.ui-corner-all
-    %label.error(for = 'method' generated = 'true')
+    %textarea#the-method
     %label(for='action-bar')< &nbsp;
     %span#action-bar.edit-or-create-recipe
       %input#choose-photo.action-button(type='submit')
@@ -53,7 +30,7 @@
     'save-recipe': "#{UnicodeUtils::titlecase(t.ui.create_recipe)}",
     'cancel': "#{Unicode::capitalize(t.ui.cancel)}"
   }
-:javascript
+
   var ingredient_name_autocompleter = {
     source: all_ingredient_names,
     change: function(){
@@ -69,6 +46,17 @@
     }
   };
 
+  var field_names = {
+    'recipe-name': "#{UnicodeUtils::titlecase(t.ui.recipe_name)}",
+    'serves': "#{UnicodeUtils::titlecase(t.ui.serves)}",
+    'description': "#{UnicodeUtils::titlecase(t.ui.description)}",
+    'prep-time': "#{UnicodeUtils::titlecase(t.ui.preparation_time)}",
+    'cooking-time': "#{UnicodeUtils::titlecase(t.ui.cooking_time)}",
+    'ingredients': "#{UnicodeUtils::titlecase(t.ui.ingredients)}",
+    'the-method': "#{UnicodeUtils::titlecase(t.ui.the_method)}",
+    'ingredients': "#{UnicodeUtils::titlecase(t.ui.ingredients)}"
+  }
+:javascript
   $(function() {
     $.validator.setDefaults({
       submitHandler: function() { alert("submitted!"); },
@@ -82,25 +70,11 @@
     $(default_allowed_unit_options).appendTo('#ingredients .unit-menu');
     $('#ingredients .ingredient').autocomplete(ingredient_name_autocompleter);
 
-    $("input:submit").button({
-      create: function(event, ui) {
-        $(this).val(button_names[$(this).attr('id')]);
-      }
-    });
-    // console.log("form:",$("form#recipe-form"));
-    
-    // testing jQuery Validation plugin.
-    $("form#recipe-form").validate({
-      onkeyup: false,
-      rules: {
-        serves: {
-          required: true,
-          number: true
-        }
-      },
-      messages: {
-        serves: 'You must specify the number of people this recipe serves.'
-      }
-    });
+  });
+%script{:src => "/scripts/form_to_jquery_ui.js"}
+%script{:src => "/scripts/recipe_form_handlers.js"}
+:javascript
+  $(function() {
+    $("form#recipe-form").form();
     console.log("form:",$("form#recipe-form"));
   });

@@ -45,7 +45,7 @@ var button_handlers = {
                           $('#prep-time-hours').val(),
                           $('#prep-time-minutes').val());
       var r = new Recipe(recipe_id, $('#recipe-name').val(), parseInt($('#serves').val()), ct, pt, $('#description').val(),
-          $('#method').val(), $('#requirements').val(), ingredients, null, null); // ignore tags and meal for now.
+          $('#the_method').val(), $('#requirements').val(), ingredients, null, null); // ignore tags and meal for now.
       var req = new Recipe_Request(r);
       console.log('created recipe request object', req);
 

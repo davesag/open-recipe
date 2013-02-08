@@ -35,9 +35,9 @@
           %th< #{UnicodeUtils::titlecase(t.ui.amount)}
           %th< #{UnicodeUtils::titlecase(t.ui.unit)}
       %tbody
-    %label(for='method')< #{UnicodeUtils::titlecase(t.ui.the_method)}
-    %textarea#method.ui-corner-all
-    %label.error(for = 'method' generated = 'true')
+    %label(for='the-method')< #{UnicodeUtils::titlecase(t.ui.the_method)}
+    %textarea#the-method.ui-corner-all
+    %label.error(for = 'the-method' generated = 'true')
     %label(for='action-bar')< &nbsp;
     %span#action-bar.edit-or-create-recipe
       %input#choose-photo.action-button(type='submit')
