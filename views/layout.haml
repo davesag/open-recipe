@@ -30,8 +30,13 @@
     %script{ :src => "/scripts/jquery-1.9.0.min.js" }
     %script{ :src => "/scripts/jquery-ui-1.8.23.custom.min.js" }
     %script{ :src => "/scripts/jquery.dataTables.min.js" }
+    %script{ :src => "/scripts/jquery.validate.min.js" }
     :javascript
-      var SERVER_ERROR = "#{t.errors.server}"
+      var ERROR_MESSAGES = {
+        'server':"#{t.errors.server}",
+        'field-required':"#{t.errors.field.required}",
+        'field-integer':"#{t.errors.field.integer}"
+      };
     %script{ :src => "/scripts/open_recipe_ui_objects.js" }
     :javascript
       $(function () {

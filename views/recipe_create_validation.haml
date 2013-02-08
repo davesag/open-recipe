@@ -53,4 +53,54 @@
     'save-recipe': "#{UnicodeUtils::titlecase(t.ui.create_recipe)}",
     'cancel': "#{Unicode::capitalize(t.ui.cancel)}"
   }
-%script(src='/scripts/recipe_form_handlers.js')
+:javascript
+  var ingredient_name_autocompleter = {
+    source: all_ingredient_names,
+    change: function(){
+      var this_row = $(this).parent().parent();
+      if (this_row.is(':last-child')) {
+        // add another row.
+        var new_row_number = this_row.siblings('tr').length + 1;
+        $(create_blank_ingredients_row(new_row_number)).appendTo(this_row.parent());
+        var new_row = this_row.next();
+        $(default_allowed_unit_options).appendTo(new_row.find('.unit-menu'));
+        new_row.find('.ingredient').autocomplete(ingredient_name_autocompleter);
+      }
+    }
+  };
+
+  $(function() {
+    $.validator.setDefaults({
+      submitHandler: function() { alert("submitted!"); },
+      debug: true
+    });
+    // set up three ingredient rows, with appropriate Unit menus
+    for (i = 0; i < 3; i++) {
+      var i_row = $(create_blank_ingredients_row(i));
+      i_row.appendTo('#ingredients tbody');
+    }
+    $(default_allowed_unit_options).appendTo('#ingredients .unit-menu');
+    $('#ingredients .ingredient').autocomplete(ingredient_name_autocompleter);
+
+    $("input:submit").button({
+      create: function(event, ui) {
+        $(this).val(button_names[$(this).attr('id')]);
+      }
+    });
+    // console.log("form:",$("form#recipe-form"));
+    
+    // testing jQuery Validation plugin.
+    $("form#recipe-form").validate({
+      onkeyup: false,
+      rules: {
+        serves: {
+          required: true,
+          number: true
+        }
+      },
+      messages: {
+        serves: 'You must specify the number of people this recipe serves.'
+      }
+    });
+    console.log("form:",$("form#recipe-form"));
+  });

@@ -565,6 +565,18 @@ class OpenRecipeApp < Sinatra::Application
     haml :faqs
   end
 
+  get '*.html\??*' do
+    #only use while testing.
+    filename = "#{params[:splat][0]}.html"
+    file = File.join(settings.public_folder, filename)
+    if File.exists? file
+      File.read file
+    else
+      status 404
+      haml :'404'
+    end
+  end
+  
   # search request comes from jQuery UI component.
   # user must be logged in for this to return a sensible result.
   get '/search' do
@@ -638,6 +650,15 @@ class OpenRecipeApp < Sinatra::Application
 #       status 403
 #       haml :'403'
 #     end
+  end
+
+  get '/vt' do
+    if logged_in?
+      haml :recipe_create_validation
+    else
+      status 403
+      haml :'403'
+    end
   end
 
   get '/create-recipe' do

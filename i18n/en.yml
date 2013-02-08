@@ -41,7 +41,10 @@ warnings:
 
 errors:
   server: Your request failed due to a server error.
-  create_recipe: an error occured while creating your recipe.
+  create_recipe: An error occured while creating your recipe.
+  field:
+    required: This field is required.
+    integer: This field must be a whole number.
 
 unit:
   cu: cup
