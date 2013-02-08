@@ -69,15 +69,17 @@
     }
 
     $(function() {
-      $("form input:submit").click(function(event, ui) {
+      $("form input.duration").change(function(event, ui) {
+        console.log("hey", $(this));
         event.preventDefault();
-        var field = $(this).prev().prev();
+        var field = $(this);
         var sd = field.val();
-        seconds = parseDuration(sd);
-        if (sd !== '' && seconds === 0) {
+        var secs = parseDuration(sd);
+        if (sd !== '' && secs === 0) {
           field.css('background-color','red');
+          field.focus();
         } else {
-          field.val(toDurationString(seconds));
+          field.val(toDurationString(secs));
           field.css('background-color', 'green');
         }
       });
@@ -91,8 +93,8 @@
   <form>
     <label for="duration">Duration: </label>
     <input type="text" size="10" maxlength="10" placeholder = '1d 11h 11m' class="duration"/>
-    <label for="action-bar"></label>
-    <input type="submit" value="parse"/>
+    <label for="something">Next: </label>
+    <input type="text" size="10" maxlength="10" placeholder = "wo'eva"/>
   </form>
 </body>
 </html>
