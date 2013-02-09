@@ -3,8 +3,8 @@
     %input#recipe-name(placeholder = 'What do you call your recipe?')
     %input#serves(style='width:3em;')
     %textarea#description
-    %input#prep-time{:size => "10", :maxlength => "10", :placeholder => '1d 11m 11m'}
-    %input#cooking-time{:size => "10", :maxlength => "10", :placeholder => '1d 11h 11m'}
+    %input#prep-time{:size => "10", :maxlength => "10", :placeholder => '1d 11m 11m', :style=>"width: auto;"}
+    %input#cooking-time{:size => "10", :maxlength => "10", :placeholder => '1d 11h 11m', :style=>"width: auto;"}
     %textarea#requirements
     %label(for='ingredients')< #{UnicodeUtils::titlecase(t.ui.ingredients)}
     %table#ingredients
@@ -25,37 +25,7 @@
   var all_ingredient_names = #{ingredient_names}
   var default_allowed_unit_options = convert_to_options_html(allowed_unit_options);
   var recipe_id = 0;
-  var button_names = {
-    'choose-photo': "#{Unicode::capitalize(t.ui.choose_photo)}",
-    'save-recipe': "#{UnicodeUtils::titlecase(t.ui.create_recipe)}",
-    'cancel': "#{Unicode::capitalize(t.ui.cancel)}"
-  }
-
-  var ingredient_name_autocompleter = {
-    source: all_ingredient_names,
-    change: function(){
-      var this_row = $(this).parent().parent();
-      if (this_row.is(':last-child')) {
-        // add another row.
-        var new_row_number = this_row.siblings('tr').length + 1;
-        $(create_blank_ingredients_row(new_row_number)).appendTo(this_row.parent());
-        var new_row = this_row.next();
-        $(default_allowed_unit_options).appendTo(new_row.find('.unit-menu'));
-        new_row.find('.ingredient').autocomplete(ingredient_name_autocompleter);
-      }
-    }
-  };
-
-  var field_names = {
-    'recipe-name': "#{UnicodeUtils::titlecase(t.ui.recipe_name)}",
-    'serves': "#{UnicodeUtils::titlecase(t.ui.serves)}",
-    'description': "#{UnicodeUtils::titlecase(t.ui.description)}",
-    'prep-time': "#{UnicodeUtils::titlecase(t.ui.preparation_time)}",
-    'cooking-time': "#{UnicodeUtils::titlecase(t.ui.cooking_time)}",
-    'ingredients': "#{UnicodeUtils::titlecase(t.ui.ingredients)}",
-    'the-method': "#{UnicodeUtils::titlecase(t.ui.the_method)}",
-    'ingredients': "#{UnicodeUtils::titlecase(t.ui.ingredients)}"
-  }
+  
 :javascript
   $(function() {
     $.validator.setDefaults({
@@ -71,10 +41,43 @@
     $('#ingredients .ingredient').autocomplete(ingredient_name_autocompleter);
 
   });
-%script{:src => "/scripts/form_to_jquery_ui.js"}
 %script{:src => "/scripts/recipe_form_handlers.js"}
+%script{:src => "/scripts/form_to_jquery_ui.js"}
 :javascript
   $(function() {
-    $("form#recipe-form").form();
-    console.log("form:",$("form#recipe-form"));
+    var form = $("form#recipe-form").form_expander({
+      buttons: {
+        'choose-photo': {name: "#{Unicode::capitalize(t.ui.choose_photo)}", handler: button_handlers['choose-photo']},
+        'save-recipe': {name: "#{UnicodeUtils::titlecase(t.ui.create_recipe)}", handler: button_handlers['save-recipe']},
+        'cancel': {name: "#{Unicode::capitalize(t.ui.cancel)}", handler: button_handlers['cancel']}
+      },
+
+      fields: {
+        'recipe-name': {
+          name: "#{UnicodeUtils::titlecase(t.ui.recipe_name)}",
+          validation: {
+            required: true
+          },
+          messages: '#{t.errors.field.required}'
+        },
+        'serves': {
+          name: "#{UnicodeUtils::titlecase(t.ui.serves)}",
+          validation: {
+            required: true,
+            number: true
+          },
+          messages: {
+            required: '#{t.errors.field.required}',
+            number: '#{t.errors.field.integer}'
+          }
+        },
+        'description': {name: "#{UnicodeUtils::titlecase(t.ui.description)}"},
+        'prep-time': {name: "#{UnicodeUtils::titlecase(t.ui.preparation_time)}"},
+        'cooking-time': {name: "#{UnicodeUtils::titlecase(t.ui.cooking_time)}"},
+        'requirements': {name: "#{UnicodeUtils::titlecase(t.ui.requirements)}"},
+        'the-method': {name: "#{UnicodeUtils::titlecase(t.ui.the_method)}"},
+        'ingredients': {name: "#{UnicodeUtils::titlecase(t.ui.ingredients)}"}
+      }
+    });
+    // console.log("form:",form);
   });

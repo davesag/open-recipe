@@ -78,6 +78,15 @@ img {
 	margin-bottom: 0.8em;
 }
 
+label.error {
+  width: auto !important;
+  margin-bottom: 0.5em;
+}
+
+.error {
+  color: #f00;
+}
+
 #title {
 	overflow: hidden;
 	position: relative;
