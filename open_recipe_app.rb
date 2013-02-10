@@ -13,6 +13,7 @@ require 'active_support/all'  # added for Time.zone support below
 require 'unicode'
 require 'unicode_utils'
 require 'ruby-units'
+require 'rabl'
 
 # register your app at facebook to get these codes
 APP_ID = 435425809841072 # the app's id
@@ -27,6 +28,7 @@ CALLBACK_URL = SITE_URL + 'callback'
 
 class OpenRecipeApp < Sinatra::Application
   register Sinatra::R18n
+  Rabl.register!
 	include Koala
 
 	set :root, APP_ROOT
@@ -152,6 +154,11 @@ class OpenRecipeApp < Sinatra::Application
     # graph.put_wall_post("Checkout my new cool app!", {}, "someoneelse's id")
     def homepage
 
+    end
+
+    def rabl(template, options = {}, locals = {})
+      # Rabl.register!
+      render :rabl, template, options, locals
     end
 
     def menu_item(title, href)
@@ -658,7 +665,22 @@ class OpenRecipeApp < Sinatra::Application
 
   get '/vt' do
     if logged_in?
-      haml :recipe_create_validation
+      haml :recipe_create_or_edit
+    else
+      status 403
+      haml :'403'
+    end
+  end
+
+  get '/vt/:id' do
+    if logged_in?
+      recipe = Recipe.find_by_id(params[:id].to_i)
+      if recipe != nil
+        haml :recipe_create_or_edit, :locals => {:recipe => recipe}
+      else
+        status 404
+        haml :'404'
+      end
     else
       status 403
       haml :'403'
@@ -683,9 +705,11 @@ class OpenRecipeApp < Sinatra::Application
         status 403
         return {:success => false, :error => 'unauthorised_access'}.to_json
       end
-      return recipe.to_json unless recipe == nil
-      status 404
-      return {:success => false, :error => 'recipe_not_found'}.to_json
+      if recipe == nil
+        status 404
+        return {:success => false, :error => 'recipe_not_found'}.to_json
+      end
+      rabl :recipe, :locals => {:recipe => recipe}
     else
       if logged_in?
 	      if recipe != nil

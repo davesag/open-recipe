@@ -1,0 +1,146 @@
+#form-container.edit-or-create-recipe
+  %form#recipe-form
+    %input#recipe-name(placeholder = 'What do you call your recipe?')
+    %input#serves(style='width:3em;')
+    %textarea#description
+    %input#prep-time{:size => "10", :maxlength => "10", :placeholder => '1d 11m 11m', :style=>"width: auto;"}
+    %input#cooking-time{:size => "10", :maxlength => "10", :placeholder => '1d 11h 11m', :style=>"width: auto;"}
+    %textarea#requirements
+    %label(for='ingredients')< #{UnicodeUtils::titlecase(t.ui.ingredients)}
+    %table#ingredients
+      %thead
+        %tr
+          %th< #{UnicodeUtils::titlecase(t.ui.ingredient_name)}
+          %th< #{UnicodeUtils::titlecase(t.ui.amount)}
+          %th< #{UnicodeUtils::titlecase(t.ui.unit)}
+      %tbody
+    %textarea#the-method
+    %label(for='action-bar')< &nbsp;
+    %span#action-bar.edit-or-create-recipe
+      %input#choose-photo.action-button(type='submit')
+      %input#save-recipe.action-button(type='submit')
+      %input#cancel.action-button(type='reset')
+:javascript
+  // todo: make this an ajax call.
+  var allowed_unit_options = #{allowed_units};
+  // todo: make this an ajax call.
+  var all_ingredient_names = #{ingredient_names}
+  var default_allowed_unit_options = convert_to_options_html(allowed_unit_options);
+  var recipe_id = #{defined?(recipe) ? recipe.id : 0};
+%script{:src => "/scripts/recipe_form_handlers.js"}
+%script{:src => "/scripts/jquery.ui.form_sugar.js"}
+-if defined?(recipe)
+  :javascript
+    Recipe.prototype.toForm = function(form) {
+      // console.log("Writing this to form", [this, form]);
+      $("#recipe-name").val(this.name);
+      $("#description").val(this.description);
+      $("#serves").val(this.serves);
+      $("#prep-time").val(toDurationString(this.prep_time));  // todo: standardise this.
+      $("#cooking-time").val(toDurationString(this.cooking_time));
+      $("#the-method").val(this.method);
+      $("#requirements").val(this.requirements);
+      
+      // and of course the ingredients.
+      for (i in this.active_ingredients) {
+        var ai = this.active_ingredients[i];
+        console.log("ai = ", ai);
+        // add a blank row
+        var row = $(create_blank_ingredients_row(i));
+        row.appendTo('#ingredients tbody');
+        // add values.
+        row.find("#ingredient" + i).val(ai.ingredient);
+        row.find("#amount" + i).val(ai.quantity.amount);
+        var unit_menu = row.find("#unit" + i);
+        $(default_allowed_unit_options).appendTo(unit_menu);
+        unit_menu.val(ai.quantity.unit_id);
+      }
+      // add one blank one to the end.
+      var last_row = $(create_blank_ingredients_row(this.active_ingredients.length));
+      last_row.appendTo('#ingredients tbody');
+      $(default_allowed_unit_options).appendTo(last_row.find("select"));
+      $("input.ingredient").autocomplete(ingredient_name_autocompleter);
+    }
+
+    Recipe.populate = function(data_or_url) {
+      if (typeof data_or_url === 'string') return Recipe.populate_from_url(data_or_url, Recipe.populate_from_data);
+      return Recipe.populate_from_data(data_or_url);
+    }
+    Recipe.populate_from_data = function(data) {
+      console.log("incoming data", data);
+      // Recipe(an_id, a_name, a_serves, a_cooking_time, a_prep_time, a_description,
+      //        a_method, a_requirements, some_active_ingredients, some_tags, a_meal)
+      var active_ingredients = [];
+      for (i in data.active_ingredients) {
+        // active_ingredients.push(/* new active ingredient */);
+        var aid = data.active_ingredients[i].active_ingredient;
+        active_ingredients.push(new ActiveIngredient(aid.name, new Quantity(aid.quantity.amount, aid.quantity.unit_id)));
+      }
+      var result = new Recipe(data.id, data.name, data.serves, data.cooking_time, data.preparation_time,
+                              data.description, data.method, data.requirements, active_ingredients, null, data.meal_id);  // no tags yet.
+      console.log("returning recipe", result);
+      return result;
+    }
+    Recipe.populate_from_url = function(a_url, callback) {
+      $.get(a_url, function(data) {
+        console.log("got data", data.recipe);
+        this.recipe = callback(data.recipe);
+        this.recipe.toForm($("form:first"));
+      });
+    }
+
+    $(function() {
+      // ajax request to get the recipe with recipe_id
+      // then populate the form fields, and grow the ingredients list
+      // to suit the content of the returned JSON object.
+      Recipe.populate('/recipe/' + recipe_id);
+    });
+:javascript
+  $(function() {
+    $("form#recipe-form").form_sugar({
+      buttons: {
+        'choose-photo': {label: "#{Unicode::capitalize(t.ui.choose_photo)}", handler: button_handlers['choose-photo']},
+        'save-recipe': {label: "#{UnicodeUtils::titlecase(t.ui.create_recipe)}", handler: button_handlers['save-recipe']},
+        'cancel': {label: "#{Unicode::capitalize(t.ui.cancel)}", handler: button_handlers['cancel']}
+      },
+
+      fields: {
+        'recipe-name': {
+          label: "#{UnicodeUtils::titlecase(t.ui.recipe_name)}",
+          validation: {
+            required: true
+          },
+          messages: '#{t.errors.field.required}'
+        },
+        'serves': {
+          label: "#{UnicodeUtils::titlecase(t.ui.serves)}",
+          validation: {
+            required: true,
+            digits: true
+          },
+          messages: {
+            required: '#{t.errors.field.required}',
+            digits: '#{t.errors.field.integer}'
+          }
+        },
+        'description': {label: "#{UnicodeUtils::titlecase(t.ui.description)}"},
+        'prep-time': {
+          label: "#{UnicodeUtils::titlecase(t.ui.preparation_time)}",
+          validation: {
+            duration: true
+          },
+          messages: "Invalid duration format."
+        },
+        'cooking-time': {
+          label: "#{UnicodeUtils::titlecase(t.ui.cooking_time)}",
+          validation: {
+            duration: true
+          },
+          messages: "Invalid duration format."
+        },
+        'requirements': {label: "#{UnicodeUtils::titlecase(t.ui.requirements)}"},
+        'the-method': {label: "#{UnicodeUtils::titlecase(t.ui.the_method)}"},
+        'ingredients': {label: "#{UnicodeUtils::titlecase(t.ui.ingredients)}"}
+      }
+    });
+  });

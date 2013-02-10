@@ -52,10 +52,10 @@ function Request_Base() {
 }
 Request_Base.prototype.post_path = function() {
 	return this.path;
-};
+}
 Request_Base.prototype.post_data = function() {
 	return JSON.stringify(this, null, 2);
-};
+}
 
 function Recipe_Request(a_recipe) {
 	this.recipe = a_recipe;
@@ -80,17 +80,19 @@ function convert_to_options_html(a_map_of_options) {
       result += '<optgroup label = "' + io['label'] + '">';
       group_count++;
     }
-  };
+  }
   if (group_count > 0) {
     result += '</optgroup>';
     group_count--;
   }
   return result;
-};
+}
 
 function create_blank_ingredients_row(a_row_number) {
-  return "<tr><td><input class='ingredient ui-corner-all' id='ingredient" + a_row_number + "'></td>" +
-           "<td><input class='amount ui-corner-all' id='amount" + a_row_number + "'></td>" +
-           "<td><select class='unit-menu' id='unit" + a_row_number + "'></select></td></tr>";
-};
-
+  return "<tr><td><input class='ingredient ui-state-default ui-corner-all' id='ingredient" + 
+              a_row_number + "' name='ingredient" + a_row_number + "'></td>" +
+           "<td><input class='amount ui-state-default ui-corner-all' id='amount" + 
+              a_row_number + "' name='ingredient" + a_row_number + "'></td>" +
+           "<td><select class='unit-menu ui-state-default ui-corner-all' id='unit" +
+            a_row_number + "' name='ingredient" + a_row_number + "'></select></td></tr>";
+}
