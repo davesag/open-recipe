@@ -122,10 +122,9 @@ $(function() {
     },
     buttons:function(element) {
       var elm = $(element).button();
-      if (elm.is(":submit")) {
-        elm.val(this.option().buttons[elm.attr('id')].label);
-        elm.click(this.option().buttons[elm.attr('id')].handler);
-      } else if (elm.is(":reset")) elm.addClass("cancel ui-priority-secondary ui-corner-all hover");
+      elm.click(this.option().buttons[elm.attr('id')].handler);
+      elm.val(this.option().buttons[elm.attr('id')].label);
+      if (elm.is(":reset")) elm.addClass("cancel ui-priority-secondary ui-corner-all hover");
       if (elm.is(":disabled")) elm.addClass('ui-state-disabled');
     },
     checkboxes: function(element){
