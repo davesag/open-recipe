@@ -341,10 +341,12 @@
     description: Eggs laid by ducks. Larger and fattier than chicken eggs
     core_ingredient: duck eggs
 - cream:
-    description: Cream is a dairy product that is composed of the higher-butterfat layer skimmed from the top of milk before homogenization.
+    description: Cream is a dairy product that is composed of the higher-butterfat
+      layer skimmed from the top of milk before homogenization.
     core_ingredient: cream
 - liquid nitrogen:
-    description: Liquid nitrogen is nitrogen in a liquid state at an extremely low temperature.
+    description: Liquid nitrogen is nitrogen in a liquid state at an extremely low
+      temperature.
     core_ingredient: liquid nitrogen
 - a pinch of salt:
     description: A small amount of salt
@@ -352,3 +354,53 @@
 - yoghurt:
     description: A dairy product produced by bacterial fermentation of milk.
     core_ingredient: yoghurt
+- chicken stock:
+    description: 
+    core_ingredient: chicken stock
+    tags:
+    - poultry
+    - meat
+    - white meat
+- wine:
+    description: A moderate strength alcoholic drink.
+    core_ingredient: wine
+- fish:
+    description: A creature that lives in water, with fins and so forth.
+    core_ingredient: fish
+- rosemary:
+    description: A very nice herb that goes well with lamb.
+    core_ingredient: rosemary
+- sage:
+    description: A very nice herb that goes well with lamb.
+    core_ingredient: sage
+- water:
+    description: The stuff of life.
+- kangaroo:
+    description: 
+    core_ingredient: kangaroo
+- wine (red):
+    description: A moderate strength alcoholic drink.
+    core_ingredient: wine
+- a whole fish:
+    description: A whole fish.
+    core_ingredient: fish
+- tumeric:
+    description: A red spice
+    core_ingredient: tumeric
+- lettuce:
+    description: 
+- tomato:
+    description: 
+- diced carrots:
+    description: 
+- sliced red onions:
+    description: 
+    core_ingredient: onions
+- cheese:
+    description: 
+- slice of bread:
+    description: A slice of bread
+    core_ingredient: bread
+- bacon rashers:
+    description: The world's favourite food.
+    core_ingredient: bacon

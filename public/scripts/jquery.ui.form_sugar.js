@@ -1,39 +1,49 @@
-// the ui.form_expander plugin is applied to a jQuery form object.
-// It wraps all input fields in a label to name the field, and a label to carry any validation errors.
+// the query.ui.form_sugar plugin is applied to a jQuery form object.
+// It wraps all input fields in a label to identify the field, and a matching label to carry any validation errors.
 // It does not do this for input fields within a span or td cell however.
 // It adds a hover handler to all fields with the 'hover' class attached.
-// It accepts optional init options as follows:
-//     {buttons: {
-//     'choose-photo': {name: "Choose Photo", handler: 'choose-photo'},
-//     'save-recipe': {name: "Save Recipe", handler: 'save-recipe'},
-//     'cancel': {name: "Cancel", handler: 'cancel'}
+// It adds all of the appropriate CSS classes to conform the form with the
+// jQuery UI ThemeRoller.
+//
+// To add custom submit actions and form validation, using the jQuery Validation plugin
+// provide init options according to the following object graph.
+// {
+//    buttons: {'button-id': {label: "My Button", handler: function(event) {} [,…]},
+//    fields {'field-id': {label: "My Field"[, validation: {/*jQuery Validation Rules*/}, messages: {/*jQuery Validation Messages*/}]} [,…]}
+// }
+// 
+// An example:
+//   {buttons: {
+//    'choose-photo': {label: "Choose Photo", handler: 'choose-photo'},
+//    'save-recipe': {label: "Save Recipe", handler: 'save-recipe'},
+//    'cancel': {label: "Cancel", handler: 'cancel'}
+//   },
+//   fields: {
+//     'recipe-name': {label: "Name", validation: {
+//       required: true
+//      },
+//      messages: 'You must provide a name.'
 //     },
-//     fields: {
-//       'recipe-name': {name: "Name", validation: {
-//         required: true
-//        },
-//        messages: 'You must provide a name.'
-//       },
-//       'serves': {name: "Serves", validation: {
-//         required: true,
-//         number: true
-//        },
-//        messages: {
-//          required: 'You must say how many people this recipe serves.',
-//          number: 'The serving suggestion must be a number.'
-//        }
-//       },
-//       'description': {name: "Description"},
-//       'prep-time': {name: "Prep Time"},
-//       'cooking-time': {name: "Cooking Time"},
-//       'requirements': {name: "Requirements"},
-//       'the-method': {name: "Method"},
-//       'ingredients': {name: "Ingredients"}
-//     }}
+//     'serves': {label: "Serves", validation: {
+//       required: true,
+//       number: true
+//      },
+//      messages: {
+//        required: 'You must say how many people this recipe serves.',
+//        number: 'The serving suggestion must be a number.'
+//      }
+//     },
+//     'description': {label: "Description"},
+//     'prep-time': {label: "Prep Time"},
+//     'cooking-time': {label: "Cooking Time"},
+//     'requirements': {label: "Requirements"},
+//     'the-method': {label: "Method"},
+//     'ingredients': {label: "Ingredients"}
+//   }}
 $(function() {
-  $.widget("ui.form_expander",{
+  $.widget("ui.form_sugar",{
     _init: function(){
-      console.log ('form_expander init.', this.option());
+      // console.log ('form_sugar init.', this.option());
       var options = this.option();  // might want to do ome checking of this now.
       var object = this;
       var form = this.element;
@@ -57,10 +67,10 @@ $(function() {
         // console.log("field name = ", field.attr('name'));
         var fModel = options.fields[field.attr('name')];
         if (!(field.parent().is("span") || field.parent().is("td"))) {
-          $('<label for="'+ field_id +'">' + fModel.name + '</label>').insertBefore(field);
+          $('<label for="'+ field_id +'">' + fModel.label + '</label>').insertBefore(field);
           $('<label for="'+ field_id +'" generated="true" class="error"></label>').insertAfter(field);
         }
-        if(field.is(":reset ,:submit")) object.buttons(this);
+        if(field.is(":reset, :submit")) object.buttons(this);
         else if(field.is(":checkbox")) object.checkboxes(this);
         else if(field.is("input[type='text']")||field.is("textarea")||field.is("input[type='password']")) object.textelements(this);
         else if(field.is(":radio")) object.radio(this);
@@ -76,16 +86,17 @@ $(function() {
       });
 
       var vr = {
-        debug: true,
-        submitHandler: function(f) {
+        debug: true,  // todo: turn this off.
+        submitHandler: function(f) {  // todo: review the need for this.
           // do nothing
           console.log("form submit called for ", f);
+          return false;
         },
         rules: validation_rules,
         messages: validation_messages
       }
-      console.log("setting validation rules:", vr);
-      form.validate(vr);  // activate the validation handler.  Add rules below.
+      // console.log("setting validation rules:", vr);
+      form.validate(vr);  // activate the validation handler.
 
       $(".hover").hover(function(){
         $(this).addClass("ui-state-hover");
@@ -106,11 +117,11 @@ $(function() {
 
     },
     buttons:function(element) {
-      var elm = $(element);
+      var elm = $(element).button();
       if (elm.is(":submit")) {
-        elm.val(this.option().buttons[elm.attr('id')].name);
-        elm.button().click(this.option().buttons[elm.attr('id')].handler);
-      } else if (elm.is(":reset")) elm.addClass("ui-priority-secondary ui-corner-all hover");
+        elm.val(this.option().buttons[elm.attr('id')].label);
+        elm.click(this.option().buttons[elm.attr('id')].handler);
+      } else if (elm.is(":reset")) elm.addClass("cancel ui-priority-secondary ui-corner-all hover");
       if (elm.is(":disabled")) elm.addClass('ui-state-disabled');
     },
     checkboxes: function(element){

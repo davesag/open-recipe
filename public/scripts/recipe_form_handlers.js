@@ -22,60 +22,135 @@ var button_handlers = {
   },
   "save-recipe" : function (event) {
     event.preventDefault();
-    // console.log("saving recipe.");
-    // go through the form and collect all the fields into a
-    // recipe object.
-    var ingredients = new Array();
-    var number_of_ingredients = $('#ingredients .ingredient').length
-    for (i = 0; i < number_of_ingredients ; i++ ) {
-      var n = $('#ingredient'+i).val();
-      var a = $('#amount'+i).val();
-      var u = $('#unit'+i).val();
-      console.log ("ingredient = " + n + ", amount = " + a + ", unit = " + u);
-      if (n != '') {
-        q = new Quantity(a, u);
-        ingredients.push(new ActiveIngredient(n,q));
-      }
-    }
-    // merge cooking and prep time fields into a nice time string
-    // in dd:hh:mm format
-    var ct = to_seconds($('#cooking-time-days').val(),
-                        $('#cooking-time-hours').val(),
-                        $('#cooking-time-minutes').val());
-    var pt = to_seconds($('#prep-time-days').val(),
-                        $('#prep-time-hours').val(),
-                        $('#prep-time-minutes').val());
-    var r = new Recipe(recipe_id, $('#recipe-name').val(), parseInt($('#serves').val()), ct, pt, $('#description').val(),
-        $('#the_method').val(), $('#requirements').val(), ingredients, null, null); // ignore tags and meal for now.
-    var req = new Recipe_Request(r);
-    console.log('created recipe request object', req);
+    //console.log("saving recipe via event:", event);
+    var form = $(this).parents("form:first");
+    //console.log("target form: ", form);
+    if (form.valid()) {
+      var r = Recipe.fromForm(form);
+      console.log(r);
+      var req = new Recipe_Request(r);
+      console.log('created recipe request object', req);
 
-    // now fire off an AJAX post to the server.
-    $.post(req.post_path(), req.post_data(), function(data){
-      console.log('debug', data)
-      if (!data['success']) {
-        // there was an error.
-        console.log('error', data['error']);
-        // do something to tell the user about this error.
-      } else {
-        // there is a message
-        console.log('message', data['message']);
-        // perhaps do something with this message.
-        // location.href = '/';
-      }
-    }).error(function() {
-        alert(ERROR_MESSAGES['server']);
-    });
+      // now fire off an AJAX post to the server.
+      $.post(req.post_path(), req.post_data(), function(data){
+        //console.log('debug', data)
+        if (!data['success']) {
+          // there was an error.
+          console.log('error', data['error']);
+          // todo: tell the user about this error.
+        } else {
+          // there is a message
+          console.log('message', data['message']);
+          // todo: perhaps do something with this message.
+          location.href = '/';
+        }
+      }).error(function() {
+          alert(ERROR_MESSAGES['server']);
+      });
+    }
   },
   "cancel" : function (event) {
     event.preventDefault();
     // check if there have been any changes.
-    console.log("Cancel clicked");
+    // console.log("Cancel clicked");
     location.href = '/';
   }
 }
 
+// recipe mappings for a jQuery form object.
+Recipe.fromForm = function(form) {
+  // go through the form and collect all the fields into a
+  // recipe object.
+  var ingredients = new Array();
+  var number_of_ingredients = $('#ingredients .ingredient').length
+  for (i = 0; i < number_of_ingredients ; i++ ) {
+    var n = $('#ingredient'+i).val();
+    var a = $('#amount'+i).val();
+    var u = $('#unit'+i).val();
+    if (n !== '') {
+      console.log ("ingredient = " + n + ", amount = " + a + ", unit = " + u);
+      q = new Quantity(a, u);
+      ingredients.push(new ActiveIngredient(n,q));
+    }
+  }
+  var ct = parseDuration($('#cooking-time').val());
+  var pt = parseDuration($('#prep-time').val());
+  var r = new Recipe(recipe_id, $('#recipe-name').val(), parseInt($('#serves').val()), ct, pt, $('#description').val(),
+      $('#the-method').val(), $('#requirements').val(), ingredients, null, null); // ignore tags and meal for now.
+  return r;
+}
+
+function to_seconds(dd,hh,mm) {
+  d = parseInt(dd);
+  h = parseInt(hh);
+  m = parseInt(mm);
+  if (isNaN(d)) d = 0;
+  if (isNaN(h)) h = 0;
+  if (isNaN(m)) m = 0;
+  
+  t = d * 24 * 60 * 60 +
+      h * 60 * 60 +
+      m * 60;
+  return t;
+}
+
+// expects 1d 11h 11m, or 1d 11h, or 11h 11m, or 11h, or 11m, or 1d
+// returns a number of seconds.
+function parseDuration(sDuration) {
+  if (sDuration == null || sDuration === '') {
+    // console.log("sDuration was null or void.", sDuration);
+    return true;
+  }
+  mrx = new RegExp(/([0-9][0-9]?)[ ]?m/);
+  hrx = new RegExp(/([0-9][0-9]?)[ ]?h/);
+  drx = new RegExp(/([0-9])[ ]?d/);
+  days = 0;
+  hours = 0;
+  minutes = 0;
+  if (mrx.test(sDuration)) {
+    minutes = parseInt(mrx.exec(sDuration)[1]);
+    // console.log("minutes = ", minutes);
+  }
+  if (hrx.test(sDuration)) {
+    hours = parseInt(hrx.exec(sDuration)[1]);
+    // console.log("minutes = ", hours);
+  }
+  if (drx.test(sDuration)) {
+    days = parseInt(drx.exec(sDuration)[1]);
+    // console.log("days = ", days);
+  }
+  if (days + hours + minutes === 0 && sDuration !== '') {
+    // console.log(sd + " is an invalid duration.");
+    return 0;
+  }
+  // console.log(sDuration + " is a valid duration.", [days, hours, minutes]);
+  
+  return to_seconds(days, hours, minutes);
+}
+
+// outputs a duration string based on the number of seconds provided.
+// rounded off to the nearest 1 minute.
+function toDurationString(iDuration) {
+  if (iDuration <= 0) return '';
+  var m = Math.floor((iDuration/60)%60); // discard seconds.
+  var h = Math.floor((iDuration/3600)%24);
+  var d = Math.floor(iDuration/86400);
+  result = ''
+  if (d > 0) result = result + d + 'd ';
+  if (h > 0) result  = result + h + 'h ';
+  if (m > 0) result  = result + m + 'm ';
+  return result.substring(0, result.length - 1);
+}
+
 $(function(){
+  $.validator.addMethod("duration", function(value, element) {
+    var elm = $(element)
+    var v = elm.val();
+    var secs = parseDuration(v);
+    if (this.optional(element) || (secs !== 0 || (v === '0' || v === ''))) return true;
+    return false;
+  });
+
   if (recipe_id == 0) {
     // set up three ingredient rows, with appropriate Unit menus
     for (i = 0; i < 3; i++) {

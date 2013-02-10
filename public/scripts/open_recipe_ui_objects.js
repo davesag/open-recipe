@@ -32,6 +32,7 @@ function Recipe(an_id, a_name, a_serves, a_cooking_time, a_prep_time, a_descript
   this.active_ingredients = some_active_ingredients;
   this.tags = some_tags;
   this.meal = a_meal;
+  
 }
 
 function Quantity(an_amount,an_allowed_unit) {
@@ -63,20 +64,6 @@ function Recipe_Request(a_recipe) {
 copy_prototype(Recipe_Request, Request_Base);
 
 // other miscellaneous interface bits
-
-function to_seconds(dd,hh,mm) {
-  d = parseInt(dd);
-  h = parseInt(hh);
-  m = parseInt(mm);
-  if (isNaN(d)) d = 0;
-  if (isNaN(h)) h = 0;
-  if (isNaN(m)) m = 0;
-  
-  t = d * 24 * 60 * 60 +
-      h * 60 * 60 +
-      m * 60;
-  return t;
-}
 
 function convert_to_options_html(a_map_of_options) {
   result = '';

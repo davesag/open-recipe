@@ -19,65 +19,62 @@
     %span#action-bar.edit-or-create-recipe
       %input#choose-photo.action-button(type='submit')
       %input#save-recipe.action-button(type='submit')
-      %input#cancel.action-button.ui-priority-secondary(type='submit')
+      %input#cancel.action-button(type='reset')
 :javascript
+  // todo: make this an ajax call.
   var allowed_unit_options = #{allowed_units};
+  // todo: make this an ajax call.
   var all_ingredient_names = #{ingredient_names}
   var default_allowed_unit_options = convert_to_options_html(allowed_unit_options);
   var recipe_id = 0;
-  
-:javascript
-  $(function() {
-    $.validator.setDefaults({
-      submitHandler: function() { alert("submitted!"); },
-      debug: true
-    });
-    // set up three ingredient rows, with appropriate Unit menus
-    for (i = 0; i < 3; i++) {
-      var i_row = $(create_blank_ingredients_row(i));
-      i_row.appendTo('#ingredients tbody');
-    }
-    $(default_allowed_unit_options).appendTo('#ingredients .unit-menu');
-    $('#ingredients .ingredient').autocomplete(ingredient_name_autocompleter);
-
-  });
 %script{:src => "/scripts/recipe_form_handlers.js"}
-%script{:src => "/scripts/form_to_jquery_ui.js"}
+%script{:src => "/scripts/jquery.ui.form_sugar.js"}
 :javascript
   $(function() {
-    var form = $("form#recipe-form").form_expander({
+    $("form#recipe-form").form_sugar({
       buttons: {
-        'choose-photo': {name: "#{Unicode::capitalize(t.ui.choose_photo)}", handler: button_handlers['choose-photo']},
-        'save-recipe': {name: "#{UnicodeUtils::titlecase(t.ui.create_recipe)}", handler: button_handlers['save-recipe']},
-        'cancel': {name: "#{Unicode::capitalize(t.ui.cancel)}", handler: button_handlers['cancel']}
+        'choose-photo': {label: "#{Unicode::capitalize(t.ui.choose_photo)}", handler: button_handlers['choose-photo']},
+        'save-recipe': {label: "#{UnicodeUtils::titlecase(t.ui.create_recipe)}", handler: button_handlers['save-recipe']},
+        'cancel': {label: "#{Unicode::capitalize(t.ui.cancel)}", handler: button_handlers['cancel']}
       },
 
       fields: {
         'recipe-name': {
-          name: "#{UnicodeUtils::titlecase(t.ui.recipe_name)}",
+          label: "#{UnicodeUtils::titlecase(t.ui.recipe_name)}",
           validation: {
             required: true
           },
           messages: '#{t.errors.field.required}'
         },
         'serves': {
-          name: "#{UnicodeUtils::titlecase(t.ui.serves)}",
+          label: "#{UnicodeUtils::titlecase(t.ui.serves)}",
           validation: {
             required: true,
-            number: true
+            digits: true
           },
           messages: {
             required: '#{t.errors.field.required}',
-            number: '#{t.errors.field.integer}'
+            digits: '#{t.errors.field.integer}'
           }
         },
-        'description': {name: "#{UnicodeUtils::titlecase(t.ui.description)}"},
-        'prep-time': {name: "#{UnicodeUtils::titlecase(t.ui.preparation_time)}"},
-        'cooking-time': {name: "#{UnicodeUtils::titlecase(t.ui.cooking_time)}"},
-        'requirements': {name: "#{UnicodeUtils::titlecase(t.ui.requirements)}"},
-        'the-method': {name: "#{UnicodeUtils::titlecase(t.ui.the_method)}"},
-        'ingredients': {name: "#{UnicodeUtils::titlecase(t.ui.ingredients)}"}
+        'description': {label: "#{UnicodeUtils::titlecase(t.ui.description)}"},
+        'prep-time': {
+          label: "#{UnicodeUtils::titlecase(t.ui.preparation_time)}",
+          validation: {
+            duration: true
+          },
+          messages: "Invalid duration format."
+        },
+        'cooking-time': {
+          label: "#{UnicodeUtils::titlecase(t.ui.cooking_time)}",
+          validation: {
+            duration: true
+          },
+          messages: "Invalid duration format."
+        },
+        'requirements': {label: "#{UnicodeUtils::titlecase(t.ui.requirements)}"},
+        'the-method': {label: "#{UnicodeUtils::titlecase(t.ui.the_method)}"},
+        'ingredients': {label: "#{UnicodeUtils::titlecase(t.ui.ingredients)}"}
       }
     });
-    // console.log("form:",form);
   });
