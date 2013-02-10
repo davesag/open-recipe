@@ -1,32 +1,11 @@
 #new-recipe.edit-or-create-recipe
   %form#recipe-form
-    %label(for='recipe-name')< #{UnicodeUtils::titlecase(t.ui.recipe_name)}:
-    %input#recipe-name.ui-corner-all(placeholder = 'What do you call your recipe?')
-    %label.error(for='recipe-name' generated = 'true')
-    %label(for="serves")< #{UnicodeUtils::titlecase(t.ui.serves)}:
-    %input#serves.ui-corner-all(style='width:3em;')
-    %label.error(for = 'serves' generated = 'true')
-    / %label.ui-state-disabled(for = "meal")< Meal Name:
-    / %input#meal.ui-corner-all.ui-state-disabled{:disabled => 'disabled', :placeholder => 'not set'}
-    / %label.error(for = 'meal' generated = 'true')
-    %label(for='description')< #{UnicodeUtils::titlecase(t.ui.description)}:
-    %textarea#description.ui-corner-all
-    %label.error(for = 'description' generated = 'true')
-    %label(for='prep-time')< #{UnicodeUtils::titlecase(t.ui.preparation_time)}:
-    %span#prep-time
-      %input#prep-time-days.ui-corner-all{:style=>'width:2em;margin-right:1em;', :placeholder => 'dd'}
-      %input#prep-time-hours.ui-corner-all{:style=>'width:2em;margin-right:1em;', :placeholder => 'hh'}
-      %input#prep-time-minutes.ui-corner-all{:style=>'width:2em;', :placeholder => 'mm'}
-    %label.error(for = 'prep-time' generated = 'true')
-    %label(for='cooking-time')< #{UnicodeUtils::titlecase(t.ui.cooking_time)}:
-    %span#cooking-time
-      %input#cooking-time-days.ui-corner-all{:style=>'width:2em;margin-right:1em;', :placeholder => 'dd'}
-      %input#cooking-time-hours.ui-corner-all{:style=>'width:2em;margin-right:1em;', :placeholder => 'hh'}
-      %input#cooking-time-minutes.ui-corner-all{:style=>'width:2em;', :placeholder => 'mm'}
-    %label.error(for = 'cooking-time' generated = 'true')
-    %label(for='requirements')< #{UnicodeUtils::titlecase(t.ui.requirements)}
-    %textarea#requirements.ui-corner-all
-    %label.error(for = 'requirements' generated = 'true')
+    %input#recipe-name(placeholder = 'What do you call your recipe?')
+    %input#serves(style='width:3em;')
+    %textarea#description
+    %input#prep-time{:size => "10", :maxlength => "10", :placeholder => '1d 11m 11m', :style=>"width: auto;"}
+    %input#cooking-time{:size => "10", :maxlength => "10", :placeholder => '1d 11h 11m', :style=>"width: auto;"}
+    %textarea#requirements
     %label(for='ingredients')< #{UnicodeUtils::titlecase(t.ui.ingredients)}
     %table#ingredients
       %thead
@@ -35,22 +14,67 @@
           %th< #{UnicodeUtils::titlecase(t.ui.amount)}
           %th< #{UnicodeUtils::titlecase(t.ui.unit)}
       %tbody
-    %label(for='the-method')< #{UnicodeUtils::titlecase(t.ui.the_method)}
-    %textarea#the-method.ui-corner-all
-    %label.error(for = 'the-method' generated = 'true')
+    %textarea#the-method
     %label(for='action-bar')< &nbsp;
     %span#action-bar.edit-or-create-recipe
       %input#choose-photo.action-button(type='submit')
       %input#save-recipe.action-button(type='submit')
-      %input#cancel.action-button.ui-priority-secondary(type='submit')
+      %input#cancel.action-button(type='reset')
 :javascript
+  // todo: make this an ajax call.
   var allowed_unit_options = #{allowed_units};
+  // todo: make this an ajax call.
   var all_ingredient_names = #{ingredient_names}
   var default_allowed_unit_options = convert_to_options_html(allowed_unit_options);
   var recipe_id = 0;
-  var button_names = {
-    'choose-photo': "#{Unicode::capitalize(t.ui.choose_photo)}",
-    'save-recipe': "#{UnicodeUtils::titlecase(t.ui.create_recipe)}",
-    'cancel': "#{Unicode::capitalize(t.ui.cancel)}"
-  }
-%script(src='/scripts/recipe_form_handlers.js')
+%script{:src => "/scripts/recipe_form_handlers.js"}
+%script{:src => "/scripts/jquery.ui.form_sugar.js"}
+:javascript
+  $(function() {
+    $("form#recipe-form").form_sugar({
+      buttons: {
+        'choose-photo': {label: "#{Unicode::capitalize(t.ui.choose_photo)}", handler: button_handlers['choose-photo']},
+        'save-recipe': {label: "#{UnicodeUtils::titlecase(t.ui.create_recipe)}", handler: button_handlers['save-recipe']},
+        'cancel': {label: "#{Unicode::capitalize(t.ui.cancel)}", handler: button_handlers['cancel']}
+      },
+
+      fields: {
+        'recipe-name': {
+          label: "#{UnicodeUtils::titlecase(t.ui.recipe_name)}",
+          validation: {
+            required: true
+          },
+          messages: '#{t.errors.field.required}'
+        },
+        'serves': {
+          label: "#{UnicodeUtils::titlecase(t.ui.serves)}",
+          validation: {
+            required: true,
+            digits: true
+          },
+          messages: {
+            required: '#{t.errors.field.required}',
+            digits: '#{t.errors.field.integer}'
+          }
+        },
+        'description': {label: "#{UnicodeUtils::titlecase(t.ui.description)}"},
+        'prep-time': {
+          label: "#{UnicodeUtils::titlecase(t.ui.preparation_time)}",
+          validation: {
+            duration: true
+          },
+          messages: "Invalid duration format."
+        },
+        'cooking-time': {
+          label: "#{UnicodeUtils::titlecase(t.ui.cooking_time)}",
+          validation: {
+            duration: true
+          },
+          messages: "Invalid duration format."
+        },
+        'requirements': {label: "#{UnicodeUtils::titlecase(t.ui.requirements)}"},
+        'the-method': {label: "#{UnicodeUtils::titlecase(t.ui.the_method)}"},
+        'ingredients': {label: "#{UnicodeUtils::titlecase(t.ui.ingredients)}"}
+      }
+    });
+  });

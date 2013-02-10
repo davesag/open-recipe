@@ -66,9 +66,13 @@ $(function() {
         } else if (field.attr('name') !== field_id) field_id = field.attr('name');
         // console.log("field name = ", field.attr('name'));
         var fModel = options.fields[field.attr('name')];
-        if (!(field.parent().is("span") || field.parent().is("td"))) {
-          $('<label for="'+ field_id +'">' + fModel.label + '</label>').insertBefore(field);
-          $('<label for="'+ field_id +'" generated="true" class="error"></label>').insertAfter(field);
+        var has_fModel = (typeof fModel !== 'undefined' && fModel != null);
+        if (has_fModel) {
+          // console.log("fModel for " + field_id, fModel);
+          if (!(field.parent().is("span") || field.parent().is("td"))) {
+            $('<label for="'+ field_id +'">' + fModel.label + '</label>').insertBefore(field);
+            $('<label for="'+ field_id +'" generated="true" class="error"></label>').insertAfter(field);
+          }
         }
         if(field.is(":reset, :submit")) object.buttons(this);
         else if(field.is(":checkbox")) object.checkboxes(this);
@@ -79,7 +83,7 @@ $(function() {
         if(field.hasClass("date")) field.datepicker();
         
         // apply any validation rules here.
-        if (typeof fModel !== 'undefined' && fModel.validation != null) {
+        if (has_fModel && fModel.validation != null) {
           validation_rules[field.attr('name')] = fModel.validation;
           if (fModel.messages != null) validation_messages[field.attr('name')] = fModel.messages;
         }

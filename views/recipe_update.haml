@@ -1,26 +1,15 @@
 %h2< Edit Recipe &#8220;#{Unicode::capitalize(recipe.name)}&#8221;
 #edit-recipe.edit-or-create-recipe
-  %form
-    %label(for = 'recipe-name')< Recipe Name:
-    %input#recipe-name.ui-corner-all{:value => recipe.name}
-    %label(for = "serves")< Serves:
-    %input#serves.ui-corner-all{:style=>'width:3em;', :value=>recipe.serves}
-    / %label.ui-state-disabled(for = "meal")< Meal Name:
-    / %input#meal.ui-corner-all.ui-state-disabled{:disabled => 'disabled', :placeholder => 'not set'}
-    %label(for='description')< Description:
-    %textarea#description.ui-corner-all<= recipe.description
-    %label(for='prep-time')< Preparation Time:
-    - pt = mmhhdd_from_seconds recipe.preparation_time
-    %input#prep-time-days.ui-corner-all{:style=>'width:2em;margin-right:1em;', :value => pt[:days]}
-    %input#prep-time-hours.ui-corner-all{:style=>'width:2em;margin-right:1em;', :value => pt[:hours]}
-    %input#prep-time-minutes.ui-corner-all{:style=>'width:2em;', :value => pt[:minutes]}
+  %form#recipe-form
+    %input#recipe-name{:value => recipe.name}
+    %input#serves{:style=>'width:3em;', :value=>recipe.serves}
+    %textarea#description<= recipe.description
+    - pt = dhhmm_from_seconds recipe.preparation_time
+    %input#prep-time{:style=>'width:auto;margin-right:1em;', :value => pt}
     %label(for='cooking-time')< Cooking Time:
-    - ct = mmhhdd_from_seconds recipe.cooking_time
-    %input#cooking-time-days.ui-corner-all{:style=>'width:2em;margin-right:1em;', :value => ct[:days]}
-    %input#cooking-time-hours.ui-corner-all{:style=>'width:2em;margin-right:1em;', :value => ct[:hours]}
-    %input#cooking-time-minutes.ui-corner-all{:style=>'width:2em;', :value => ct[:minutes]}
-    %label(for='requirements')< Requirements
-    %textarea#requirements.ui-corner-all<= recipe.requirements
+    - ct = dhhmm_from_seconds recipe.cooking_time
+    %input#cooking-time{:style=>'width:auto;', :value => ct}
+    %textarea#requirements<= recipe.requirements
     %label(for='ingredients')< Ingredients
     %table#ingredients
       %thead
@@ -34,9 +23,9 @@
           -count = count + 1
           %tr
             %td<
-              %input.ingredient.ui-corner-all{:id => "ingredient#{count}", :value => i.ingredient.name}
+              %input.ingredient{:id => "ingredient#{count}", :value => i.ingredient.name}
             %td<
-              %input.amount.ui-corner-all{:id => "amount#{count}", :value =>  i.quantity.amount}
+              %input.amount{:id => "amount#{count}", :value =>  i.quantity.amount}
             %td<
               %select.unit-menu{:id => "unit#{count}"}
                 %option{:value => '', :label => Unicode::capitalize(t.unit.none), :selected => (i.quantity.unit == nil)}
@@ -47,9 +36,9 @@
         -count = count + 1
         %tr
           %td<
-            %input.ingredient.ui-corner-all{:id => "ingredient#{count}"}
+            %input.ingredient{:id => "ingredient#{count}"}
           %td<
-            %input.amount.ui-corner-all{:id => "amount#{count}"}
+            %input.amount{:id => "amount#{count}"}
           %td<
             %select.unit-menu{:id => "unit#{count}"}
               %option{:value => '', :label => Unicode::capitalize(t.unit.none), :selected => true}
@@ -57,13 +46,12 @@
                 %optgroup{:label => Unicode::capitalize(ut.name)}
                   -for u in ut.allowed_units
                     %option{:value => u.id, :label => Unicode::capitalize(t.units[u.name])}
-    %label(for='the-method')< Method
-    %textarea#the-method.ui-corner-all<= recipe.method
+    %textarea#the-method<= recipe.method
     %label(for='action-bar')< &nbsp;
     %span#action-bar.edit-or-create-recipe
       %input#choose-photo.action-button(type='submit')
       %input#save-recipe.action-button(type='submit')
-      %input#cancel.action-button(type='submit')
+      %input#cancel.action-button(type='reset')
 :javascript
   var allowed_unit_options = #{allowed_units};
   var all_ingredient_names = #{ingredient_names}
@@ -74,4 +62,54 @@
     'save-recipe': "#{UnicodeUtils::titlecase(t.ui.save_recipe)}",
     'cancel': "#{UnicodeUtils::titlecase(t.ui.cancel)}"
   }
-%script(src='/scripts/recipe_form_handlers.js')
+%script{:src => "/scripts/recipe_form_handlers.js"}
+%script{:src => "/scripts/jquery.ui.form_sugar.js"}
+:javascript
+  $(function() {
+    $("form#recipe-form").form_sugar({
+      buttons: {
+        'choose-photo': {label: "#{Unicode::capitalize(t.ui.choose_photo)}", handler: button_handlers['choose-photo']},
+        'save-recipe': {label: "#{UnicodeUtils::titlecase(t.ui.edit_recipe)}", handler: button_handlers['save-recipe']},
+        'cancel': {label: "#{Unicode::capitalize(t.ui.cancel)}", handler: button_handlers['cancel']}
+      },
+
+      fields: {
+        'recipe-name': {
+          label: "#{UnicodeUtils::titlecase(t.ui.recipe_name)}",
+          validation: {
+            required: true
+          },
+          messages: '#{t.errors.field.required}'
+        },
+        'serves': {
+          label: "#{UnicodeUtils::titlecase(t.ui.serves)}",
+          validation: {
+            required: true,
+            digits: true
+          },
+          messages: {
+            required: '#{t.errors.field.required}',
+            digits: '#{t.errors.field.integer}'
+          }
+        },
+        'description': {label: "#{UnicodeUtils::titlecase(t.ui.description)}"},
+        'prep-time': {
+          label: "#{UnicodeUtils::titlecase(t.ui.preparation_time)}",
+          validation: {
+            duration: true
+          },
+          messages: "Invalid duration format."
+        },
+        'cooking-time': {
+          label: "#{UnicodeUtils::titlecase(t.ui.cooking_time)}",
+          validation: {
+            duration: true
+          },
+          messages: "Invalid duration format."
+        },
+        'requirements': {label: "#{UnicodeUtils::titlecase(t.ui.requirements)}"},
+        'the-method': {label: "#{UnicodeUtils::titlecase(t.ui.the_method)}"},
+        'ingredients': {label: "#{UnicodeUtils::titlecase(t.ui.ingredients)}"}
+      }
+    });
+  });

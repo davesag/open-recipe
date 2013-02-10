@@ -80,17 +80,10 @@ Recipe.fromForm = function(form) {
   return r;
 }
 
-function to_seconds(dd,hh,mm) {
-  d = parseInt(dd);
-  h = parseInt(hh);
-  m = parseInt(mm);
-  if (isNaN(d)) d = 0;
-  if (isNaN(h)) h = 0;
-  if (isNaN(m)) m = 0;
-  
+function to_seconds(d,hh,mm) {
   t = d * 24 * 60 * 60 +
-      h * 60 * 60 +
-      m * 60;
+      hh * 60 * 60 +
+      mm * 60;
   return t;
 }
 
@@ -99,7 +92,7 @@ function to_seconds(dd,hh,mm) {
 function parseDuration(sDuration) {
   if (sDuration == null || sDuration === '') {
     // console.log("sDuration was null or void.", sDuration);
-    return true;
+    return 0;
   }
   mrx = new RegExp(/([0-9][0-9]?)[ ]?m/);
   hrx = new RegExp(/([0-9][0-9]?)[ ]?h/);
@@ -119,11 +112,6 @@ function parseDuration(sDuration) {
     days = parseInt(drx.exec(sDuration)[1]);
     // console.log("days = ", days);
   }
-  if (days + hours + minutes === 0 && sDuration !== '') {
-    // console.log(sd + " is an invalid duration.");
-    return 0;
-  }
-  // console.log(sDuration + " is a valid duration.", [days, hours, minutes]);
   
   return to_seconds(days, hours, minutes);
 }
