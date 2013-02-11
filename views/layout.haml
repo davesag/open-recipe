@@ -28,7 +28,7 @@
     %link{ :rel =>"stylesheet", :type => "text/css",
            :href => "/css/jquery.dataTables_themeroller.css"}
     %script{ :src => "/scripts/jquery-1.9.1.min.js" }
-    =# %script{ :src => "/scripts/jquery-migrate-1.1.0.min.js" }
+    -# %script{ :src => "/scripts/jquery-migrate-1.1.0.min.js" }
     %script{ :src => "/scripts/jquery-ui-1.10.0.custom.min.js" }
     %script{ :src => "/scripts/jquery.dataTables.min.js" }
     %script{ :src => "/scripts/jquery.validate.min.js" }
@@ -36,40 +36,31 @@
       var ERROR_MESSAGES = {
         'server':"#{t.errors.server}"
       };
-    %script{ :src => "/scripts/open_recipe_ui_objects.min.js" }
-    :javascript
-      $(function () {
-        var cache = {}, lastXhr;
-        $("#search-field").autocomplete({
-          minLength: 2,
-          source: function( request, response ) {
-            var term = request.term;
-            if ( term in cache ) {
-              response( cache[ term ] );
-              return;
+    -# %script{ :src => "/scripts/open_recipe_ui_objects.js" }
+    -# %script{ :src => "/scripts/open_recipe_core_jquery.js" }
+    %script{ :src => "/scripts/open_recipe_core.min.js" }
+    - if logged_in? && any_tags?
+      :javascript
+        $(function () {
+          $.get('/favourite-tags', function(data) {
+            // console.log("using data", data);
+            var tag, hover_text,
+                tag_data = data.tags,
+                tags_html = '<h2>#{UnicodeUtils::titlecase(t.ui.tags)}</h2><ul>';
+          
+            for (i in tag_data) {
+              tag = tag_data[i];
+              // todo: finish i18n.
+              hover_text = (tag.counts.recipes === 0 ? 'No' : tag.counts.recipes) + ' recipe' + (tag.counts.recipes === 1 ? '' : 's') + " " +
+                            (tag.counts.meals === 0 ? 'No' : tag.counts.meals) + ' meal' + (tag.counts.meals === 1 ? '' : 's') +  " " +
+                            (tag.counts.ingredients === 0 ? 'No' : tag.counts.ingredients) + ' ingredient' + (tag.counts.ingredients === 1 ? '' : 's');
+              tags_html = tags_html + '<li><a class="tag" href="#" title="' + hover_text + '">' +
+                          tag.name + ' <span class="tag-count">' + tag.count + '</span>';
             }
-        
-            lastXhr = $.getJSON( "/search", request, function( data, status, xhr ) {
-              cache[ term ] = data;
-              if ( xhr === lastXhr ) {
-                response( data );
-              }
-            });
-          },
-          select: function (event, ui) {
-            // console.log (ui.item ?
-            // "Selected: " + ui.item.value + " aka " + ui.item.label :
-            // "Nothing selected, input was " + this.value, event);
-            return false; // don't update the search field.
-          },
-          response: function (event, ui) {
-            // console.log ('do we ever get here?', event);
-          }
-          // note the spinner sometimes doesn't stop spinning
-          // see http://stackoverflow.com/questions/2519513/spinner-with-jquery-ui-1-8-autocomplete
-          // and http://stackoverflow.com/questions/4316071/remove-spinner-from-jquery-ui-autocomplete-if-nothing-found
+            tags_html = tags_html + '</a></li>';
+            $("#tag-cloud").html(tags_html);
+          })
         });
-      });
     %title #{settings.name}
   %body
     #page
@@ -107,29 +98,8 @@
                       :alt => "Open Recipe Logo."}
       #page-content.ui-helper-reset.ui-widget.ui-widget-content.ui-corner-all
         = yield
-      - if logged_in?
-        -# note migrate this to an Ajax call.
-        - if any_tags
-          #tag-cloud.ui-helper-reset.ui-widget.ui-widget-content.ui-corner-all
-          :javascript
-            $.get('/favourite-tags', function(data) {
-              // console.log("using data", data);
-              var tag, hover_text,
-                  tag_data = data.tags,
-                  tags_html = '<h2>#{UnicodeUtils::titlecase(t.ui.tags)}</h2><ul>';
-              
-              for (i in tag_data) {
-                tag = tag_data[i];
-                // todo: finish i18n.
-                hover_text = (tag.counts.recipes === 0 ? 'No' : tag.counts.recipes) + ' recipe' + (tag.counts.recipes === 1 ? '' : 's') + " " +
-                              (tag.counts.meals === 0 ? 'No' : tag.counts.meals) + ' meal' + (tag.counts.meals === 1 ? '' : 's') +  " " +
-                              (tag.counts.ingredients === 0 ? 'No' : tag.counts.ingredients) + ' ingredient' + (tag.counts.ingredients === 1 ? '' : 's');
-                tags_html = tags_html + '<li><a class="tag" href="#" title="' + hover_text + '">' +
-                            tag.name + ' <span class="tag-count">' + tag.count + '</span>';
-              }
-              tags_html = tags_html + '</a></li>';
-              $("#tag-cloud").html(tags_html);
-            });
+      - if logged_in? && any_tags?
+        #tag-cloud.ui-helper-reset.ui-widget.ui-widget-content.ui-corner-all
       #page-bottom.ui-helper-reset.ui-widget.ui-widget-content.ui-corner-all
         #copyright< ©2013 #{settings.owner}
         - if logged_in?

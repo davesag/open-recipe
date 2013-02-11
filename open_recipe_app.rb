@@ -187,8 +187,12 @@ class OpenRecipeApp < Sinatra::Application
       return menu
     end
 
-    def any_tags
-      return true
+    def any_tags?
+      return true if logged_in? && !active_user.favourite_tags.empty?
+      in_use = Tag.in_use.empty?
+      return true if !Tag.in_use.empty?
+      return true if used_tags.empty? && !Tag.all.empty?
+      return false
     end
 
     def allowed_units
