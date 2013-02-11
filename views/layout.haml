@@ -28,7 +28,7 @@
     %link{ :rel =>"stylesheet", :type => "text/css",
            :href => "/css/jquery.dataTables_themeroller.css"}
     %script{ :src => "/scripts/jquery-1.9.1.min.js" }
-    %script{ :src => "/scripts/jquery-migrate-1.1.0.min.js" }
+    =# %script{ :src => "/scripts/jquery-migrate-1.1.0.min.js" }
     %script{ :src => "/scripts/jquery-ui-1.10.0.custom.min.js" }
     %script{ :src => "/scripts/jquery.dataTables.min.js" }
     %script{ :src => "/scripts/jquery.validate.min.js" }
@@ -38,7 +38,7 @@
         'field-required':"#{t.errors.field.required}",
         'field-integer':"#{t.errors.field.integer}"
       };
-    %script{ :src => "/scripts/open_recipe_ui_objects.js" }
+    %script{ :src => "/scripts/open_recipe_ui_objects.min.js" }
     :javascript
       $(function () {
         var cache = {}, lastXhr;

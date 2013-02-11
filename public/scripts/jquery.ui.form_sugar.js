@@ -44,29 +44,28 @@ $(function() {
   $.widget("ui.form_sugar",{
     _init: function(){
       // console.log ('form_sugar init.', this.option());
-      var options = this.option();  // might want to do ome checking of this now.
-      var object = this;
-      var form = this.element;
-      
-      var validation_rules = {};
-      var validation_messages = {};
-      
-      var inputs = form.find("input , select ,textarea");
+      var options = this.option(),  // might want to do ome checking of this now.
+          object = this,
+          form = this.element,
+          validation_rules = {},
+          validation_messages = {},
+          inputs = form.find("input , select ,textarea"),
+          field, field_id, fModel, vr;
 
       form.find("fieldset").addClass("ui-widget-content");
       form.find("legend").addClass("ui-widget-header ui-corner-all");
       form.addClass("ui-widget");
 
       $.each(inputs,function(){
-        var field = $(this);
-        var field_id = field.attr('id');
+        field = $(this);
+        field_id = field.attr('id');
         field.addClass('ui-state-default ui-corner-all');
         if (typeof field.attr('name') === 'undefined' || field.attr('name') === '') {
           field.attr('name', field_id); // so the jQuery Validator plugin works.
         } else if (field.attr('name') !== field_id) field_id = field.attr('name');
         // console.log("field name = ", field.attr('name'));
-        var fModel = options.fields[field.attr('name')];
-        var has_fModel = (typeof fModel !== 'undefined' && fModel != null);
+        fModel = options.fields[field.attr('name')];
+        has_fModel = (typeof fModel !== 'undefined' && fModel != null);
         if (has_fModel) {
           // console.log("fModel for " + field_id, fModel);
           if (!(field.parent().is("span") || field.parent().is("td"))) {
@@ -89,7 +88,7 @@ $(function() {
         }
       });
 
-      var vr = {
+      vr = {
         debug: true,  // todo: turn this off.
         submitHandler: function(f) {  // todo: review the need for this.
           // do nothing

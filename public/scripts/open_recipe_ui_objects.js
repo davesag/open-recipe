@@ -6,12 +6,19 @@
  * ref http://blogs.sitepoint.com/javascript-inheritance/
  */
 function copy_prototype(a_descendant, a_parent) {
-	var constructor = a_parent.toString();
-	var match = constructor.match( /\s*function (.*)\(/ );
-	if ( match !== null ) { a_descendant.prototype[match[1]] = a_parent; }
-	for (var m in a_parent.prototype) {
-		a_descendant.prototype[m] = a_parent.prototype[m];
+	var constructor = a_parent.toString(),
+	    match = constructor.match( /\s*function (.*)\(/ );
+	if (match !== null) a_descendant.prototype[match[1]] = a_parent;
+	for (p in a_parent.prototype) {
+		a_descendant.prototype[p] = a_parent.prototype[p];
 	}
+}
+
+// core objects
+
+function Quantity(an_amount,an_allowed_unit) {
+  this.amount = an_amount;
+  this.unit_id = an_allowed_unit;
 }
 
 function ActiveIngredient(an_ingredient, a_quantity) {
@@ -32,12 +39,43 @@ function Recipe(an_id, a_name, a_serves, a_cooking_time, a_prep_time, a_descript
   this.active_ingredients = some_active_ingredients;
   this.tags = some_tags;
   this.meal = a_meal;
-  
 }
 
-function Quantity(an_amount,an_allowed_unit) {
-  this.amount = an_amount;
-  this.unit_id = an_allowed_unit;
+Recipe.fromForm = function(form) {
+  // do nothing. This method must be overwritten by form specific logic.
+}
+
+Recipe.prototype.toForm = function(form) {
+  // do nothing. This method must be overwritten by form specific logic.
+}
+
+Recipe.populate = function(data_or_url, form) {
+  if (typeof data_or_url === 'string') return Recipe.populate_from_url(data_or_url, form, Recipe.populate_from_data);
+  return Recipe.populate_from_data(data_or_url);
+}
+Recipe.populate_from_data = function(data, form) {
+  // console.log("incoming data and form", [data, form]);
+  // Recipe(an_id, a_name, a_serves, a_cooking_time, a_prep_time, a_description,
+  //        a_method, a_requirements, some_active_ingredients, some_tags, a_meal)
+  var active_ingredients = [],
+      aid, result;
+  for (i in data.active_ingredients) {
+    // active_ingredients.push(/* new active ingredient */);
+    aid = data.active_ingredients[i].active_ingredient;
+    active_ingredients.push(new ActiveIngredient(aid.name, new Quantity(aid.quantity.amount, aid.quantity.unit_id)));
+  }
+  result = new Recipe(data.id, data.name, data.serves, data.cooking_time, data.preparation_time,
+                      data.description, data.method, data.requirements, active_ingredients, null, data.meal_id);  // no tags yet.
+  // console.log("returning recipe", result);
+  result.toForm(form);
+}
+
+// override this if you want it to populate a specific form. 
+Recipe.populate_from_url = function(a_url, form, callback) {
+  $.get(a_url, function(data) {
+    // console.log("got data", data.recipe);
+    this.recipe = callback(data.recipe, form);
+  });
 }
 
 // request message containers.
@@ -66,8 +104,9 @@ copy_prototype(Recipe_Request, Request_Base);
 // other miscellaneous interface bits
 
 function convert_to_options_html(a_map_of_options) {
-  result = '';
-  group_count = 0;
+  var result = '',
+      group_count = 0,
+      io;
   for (i in a_map_of_options) {
     io = a_map_of_options[i];
     if (io['kind'] == 'option') {

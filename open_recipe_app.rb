@@ -318,6 +318,7 @@ class OpenRecipeApp < Sinatra::Application
       return result;
     end
 
+    # move to the Recipe object.
     def parse_ingredients_from_json(recipe_json)
       ais = recipe_json['active_ingredients']
       result = []
@@ -335,6 +336,7 @@ class OpenRecipeApp < Sinatra::Application
       return result
     end
 
+    # move to the Recipe object.
     def parse_recipe_from_json(recipe_json)
       id = recipe_json['id'].to_i
       n = recipe_json['name']
@@ -383,6 +385,7 @@ class OpenRecipeApp < Sinatra::Application
       end
     end
 
+    # todo: move this logic to a rabl view.
     def recipe_datatable_json(recipes, echo, table_name)
       result = {
         'sEcho' => echo,
@@ -654,33 +657,9 @@ class OpenRecipeApp < Sinatra::Application
   # return an array of the active user's own recipes in raw summary form.
   # todo: forcing AJAX is off while I test this.
   get '/recipes' do
-    # if request.xhr? && logged_in?
+    if request.xhr? && logged_in?
       content_type :json
       return active_user.recipes.to_json(:include => :active_ingredients)   
-#     else
-#       status 403
-#       haml :'403'
-#     end
-  end
-
-  get '/vt' do
-    if logged_in?
-      haml :recipe_create_or_edit
-    else
-      status 403
-      haml :'403'
-    end
-  end
-
-  get '/vt/:id' do
-    if logged_in?
-      recipe = Recipe.find_by_id(params[:id].to_i)
-      if recipe != nil
-        haml :recipe_create_or_edit, :locals => {:recipe => recipe}
-      else
-        status 404
-        haml :'404'
-      end
     else
       status 403
       haml :'403'
@@ -689,7 +668,7 @@ class OpenRecipeApp < Sinatra::Application
 
   get '/create-recipe' do
     if logged_in?
-      haml :recipe_create
+      haml :recipe_create_or_edit
     else
       status 403
       haml :'403'
@@ -729,7 +708,7 @@ class OpenRecipeApp < Sinatra::Application
     if logged_in?
       recipe = Recipe.find_by_id(params[:id].to_i)
       if recipe != nil
-        haml :recipe_update, :locals => {:recipe => recipe}
+        haml :recipe_create_or_edit, :locals => {:recipe => recipe}
       else
         status 404
         haml :'404'

@@ -1,4 +1,3 @@
-# only very limited i18n support so far.
 # all stand alone phrases are all lower case.
 # phrases that accept params should be in the specific case required for display.
 # note the term 'method' is keyed as 'the_method' because 'method' is a reserved word.
@@ -34,6 +33,9 @@ ui:
   search_text: search text
   serves: serves
   unit: unit
+  placeholder:
+    recipe_name: What do you call your recipe?
+    duration: 1d 11h 11m
 
 warnings:
   not_added_any_recipes: you have not added any recipes yet.
