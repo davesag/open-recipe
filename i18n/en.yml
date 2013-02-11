@@ -32,6 +32,7 @@ ui:
   save: save
   search_text: search text
   serves: serves
+  tags: tags
   unit: unit
   placeholder:
     recipe_name: What do you call your recipe?

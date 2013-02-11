@@ -34,9 +34,7 @@
     %script{ :src => "/scripts/jquery.validate.min.js" }
     :javascript
       var ERROR_MESSAGES = {
-        'server':"#{t.errors.server}",
-        'field-required':"#{t.errors.field.required}",
-        'field-integer':"#{t.errors.field.integer}"
+        'server':"#{t.errors.server}"
       };
     %script{ :src => "/scripts/open_recipe_ui_objects.min.js" }
     :javascript
@@ -110,24 +108,28 @@
       #page-content.ui-helper-reset.ui-widget.ui-widget-content.ui-corner-all
         = yield
       - if logged_in?
-        - tags = active_tags
-        - if tags.count > 0
+        -# note migrate this to an Ajax call.
+        - if any_tags
           #tag-cloud.ui-helper-reset.ui-widget.ui-widget-content.ui-corner-all
-            %h2 Tags
-            %ul
-              - for tag in tags
-                %li
-                  - tcs = tag[:counts]
-                  - c_recipe = tcs[:recipes]
-                  - c_meal = tcs[:meals]
-                  - c_ingredient = tcs[:ingredients]
-                  
-                  - hover_text = "#{c_recipe == 0 ? 'No' : c_recipe} recipe#{c_recipe == 1 ? '' : 's'}, "
-                  - hover_text << "#{c_meal == 0 ? 'No' : c_meal} meal#{c_meal == 1 ? '' : 's'}, "
-                  - hover_text << "#{c_ingredient == 0 ? 'No' : c_ingredient} ingredient#{c_ingredient == 1 ? '' : 's'}."
-                  %a.tag{:href => "#", :title => hover_text}<
-                    #{tag[:name]}
-                    %span.tag-count #{tag[:count]}
+          :javascript
+            $.get('/favourite-tags', function(data) {
+              // console.log("using data", data);
+              var tag, hover_text,
+                  tag_data = data.tags,
+                  tags_html = '<h2>#{UnicodeUtils::titlecase(t.ui.tags)}</h2><ul>';
+              
+              for (i in tag_data) {
+                tag = tag_data[i];
+                // todo: finish i18n.
+                hover_text = (tag.counts.recipes === 0 ? 'No' : tag.counts.recipes) + ' recipe' + (tag.counts.recipes === 1 ? '' : 's') + " " +
+                              (tag.counts.meals === 0 ? 'No' : tag.counts.meals) + ' meal' + (tag.counts.meals === 1 ? '' : 's') +  " " +
+                              (tag.counts.ingredients === 0 ? 'No' : tag.counts.ingredients) + ' ingredient' + (tag.counts.ingredients === 1 ? '' : 's');
+                tags_html = tags_html + '<li><a class="tag" href="#" title="' + hover_text + '">' +
+                            tag.name + ' <span class="tag-count">' + tag.count + '</span>';
+              }
+              tags_html = tags_html + '</a></li>';
+              $("#tag-cloud").html(tags_html);
+            });
       #page-bottom.ui-helper-reset.ui-widget.ui-widget-content.ui-corner-all
         #copyright< ©2013 #{settings.owner}
         - if logged_in?

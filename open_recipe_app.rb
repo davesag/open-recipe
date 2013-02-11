@@ -187,39 +187,8 @@ class OpenRecipeApp < Sinatra::Application
       return menu
     end
 
-    def summarise_tag (tag, zero_okay = true)
-      rc = tag.recipes.count
-      mc = tag.meals.count
-      ic = tag.ingredients.count
-      tot = rc + mc + ic
-      
-      return {:name => tag.name, :count => tot, :counts => {:recipes => rc,
-                                                          :meals => mc,
-                                                          :ingredients => ic}}
-    end
-
-    # active tags are determined as follows.
-    # first, does the user have any favourite tags? If so then display those tags and also
-    # then, what recipes are being displayed on the page? If any then what tags are used in those recipes?
-    # otherwise just show all the tags that are in use in the system.
-    def active_tags
-      tags = []
-      if logged_in? && !active_user.favourite_tags.empty?
-        active_user.favourite_tags.sort_by(&:name).each do |tag|
-          ts = summarise_tag(tag)
-          tags << ts unless ts == nil
-        end
-        #what recipe or recipes are being shown right now?
-        
-      else
-        used_tags = Tag.in_use  # returns sorted list by default.
-        used_tags = Tag.find(:all, :order => 'name collate nocase ASC') if used_tags.empty?
-        used_tags.each do |tag|
-          ts = summarise_tag(tag)
-          tags << ts unless ts == nil
-        end
-      end
-      return tags
+    def any_tags
+      return true
     end
 
     def allowed_units
@@ -611,18 +580,34 @@ class OpenRecipeApp < Sinatra::Application
     end
   end
 
+  get '/favourite-tags' do
+    if request.xhr? && logged_in?
+      content_type :json
+      if !active_user.favourite_tags.empty?
+        rabl :favourite_tags, :locals => {:tags => active_user.favourite_tags.sort_by(&:name)}
+      else
+        used_tags = Tag.in_use  # returns sorted list by default.
+        used_tags = Tag.find(:all, :order => 'name collate nocase ASC') if used_tags.empty?
+        rabl :favourite_tags, :locals => {:tags => used_tags}        
+      end
+    else
+      status 403
+      haml :'403'
+    end
+  end
+
   # return an array of the active user's own recipes,
   # with 'active_ingredient" details.
   # todo: forcing AJAX is off while I test this.
   get '/recipes/with_ingredients' do
-    # if request.xhr? && logged_in?
+    if request.xhr? && logged_in?
       content_type :json
       return [].to_json unless logged_in?
       return active_user.recipes.to_json(:include => :active_ingredients)   
-#     else
-#       status 403
-#       haml :'403'
-#     end
+    else
+      status 403
+      haml :'403'
+    end
   end
   
   # return an array of the active user's own recipes in summary form,

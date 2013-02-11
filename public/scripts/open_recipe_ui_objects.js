@@ -16,7 +16,7 @@ function copy_prototype(a_descendant, a_parent) {
 
 // core objects
 
-function Quantity(an_amount,an_allowed_unit) {
+function Quantity(an_amount, an_allowed_unit) {
   this.amount = an_amount;
   this.unit_id = an_allowed_unit;
 }
