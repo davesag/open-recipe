@@ -48,7 +48,8 @@ var ingredient_name_autocompleter = {
           } else {
             // console.log('message', data['message']);
             // todo: perhaps do something with this message.
-            location.href = '/';
+            // location.href = '/';
+            goto_previous_page();
           }
         }).error(function() {
             alert(ERROR_MESSAGES['server']);
@@ -59,7 +60,8 @@ var ingredient_name_autocompleter = {
       event.preventDefault();
       // check if there have been any changes.
       // console.log("Cancel clicked");
-      location.href = '/';
+      // location.href = '/';
+      goto_previous_page();
     }
   }
 

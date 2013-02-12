@@ -103,6 +103,12 @@ copy_prototype(Recipe_Request, Request_Base);
 
 // other miscellaneous interface bits
 
+function goto_previous_page(default_page) {
+  if (typeof default_page === 'undefined') default_page = '/';
+  if (document.referrer === '') location.href = default_page
+  else location.href = document.referrer;
+}
+
 function convert_to_options_html(a_map_of_options) {
   var result = '',
       group_count = 0,
