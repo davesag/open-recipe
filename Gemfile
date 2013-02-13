@@ -12,6 +12,7 @@ gem 'ruby-units'
 gem 'unicode_utils'
 gem 'rabl'
 gem 'oj' # add either `oj` or `yajl-ruby` as the JSON parser
+gem 'tactful_tokenizer'
 
 group :development do
 	gem 'sqlite3'

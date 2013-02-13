@@ -63,8 +63,15 @@ textarea:focus:-moz-placeholder { color:#646463; }
 	margin-bottom:1em;
 }
  
-/* Keep tables with long content from pushing too far over */
-table { word-break: break-all; }
+/* Keep tables with long content from pushing too far over, but ensure correct word-breaks in cells. */
+table {
+  /* table-layout:fixed; */
+  word-break: normal; 
+}
+
+td {
+  white-space: wrap;
+}
 
 textarea {
     resize: vertical;
@@ -84,7 +91,7 @@ label.error {
 }
 
 .error {
-  color: #f00;
+  color: #B31528;
 }
 
 #title {

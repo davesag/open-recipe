@@ -14,6 +14,7 @@ require 'unicode'
 require 'unicode_utils'
 require 'ruby-units'
 require 'rabl'
+require 'tactful_tokenizer'
 
 # register your app at facebook to get these codes
 APP_ID = 435425809841072 # the app's id
@@ -47,7 +48,8 @@ class OpenRecipeApp < Sinatra::Application
   set :root, File.dirname(__FILE__)
   set :models, Proc.new { root && File.join(root, 'models') }
   set :facebook_permissions, ["read_friendlists", "publish_stream","email", "user_likes", "user_photos"]
-
+  set :tokeniser, TactfulTokenizer::Model.new
+  
 	enable :sessions, :logging, :show_exceptions
 
   @graph = nil               # the facebook graph is reloaded on each request in the before method.
@@ -207,6 +209,33 @@ class OpenRecipeApp < Sinatra::Application
       return result.to_json
     end
 
+    # summarise the supplied text to less than the supplied charcount.
+    # if charcount = 0 then just return the first sentence.
+    # else if charcount < text.length then break at a whole word.
+    def summarise(text, charcount = 0)
+      return text if text.length <= charcount
+      sentences = settings.tokeniser.tokenize_text(text)
+      return sentences[0] if charcount == 0
+      i = 0
+      result = ''
+      total_length = 0
+      # which sentence gets broken by the charcount?
+      sentences.each do |sentence|
+        total_length = total_length + sentence.length
+        if total_length < charcount
+          result << sentence
+          result << ' '
+          i += 1
+        else
+          break
+        end
+      end
+      return result if i > 0
+      #  todo: break at words otherwise
+      result = sentence[0]
+      return result
+    end
+
     def ingredient_names
       # return Ingredient.find(:all, :select => 'name', :order => 'name collate nocase ASC').to_json
       # note the above returns a hash of objects, not an array of ingredient names.
@@ -356,31 +385,6 @@ class OpenRecipeApp < Sinatra::Application
           recipe.save
         end
       end
-    end
-
-    # todo: move this logic to a rabl view.
-    def recipe_datatable_json(recipes, echo, table_name)
-      result = {
-        'sEcho' => echo,
-        'iTotalRecords' => recipes.count,
-        'iTotalDisplayRecords' => recipes.count
-      }
-      aaData = []
-      recipes.each do |r|
-        aaData << {
-          'DT_RowId' => "#{table_name}-id-#{r.id}",
-          '0' => UnicodeUtils::titlecase(r.name),
-          '1' => UnicodeUtils::titlecase(t.people(r.serves)),
-          '2' => r.description,
-          '3' => human_readable_time(r.preparation_time),
-          '4' => human_readable_time(r.cooking_time),
-          '5' => r.serves,
-          '6' => r.preparation_time,
-          '7' => r.cooking_time
-        }
-      end
-      result['aaData'] = aaData
-      return result.to_json
     end
 
     def logged_in?
@@ -606,7 +610,6 @@ class OpenRecipeApp < Sinatra::Application
   get '/recipes/with_ingredients' do
     if request.xhr? && logged_in?
       content_type :json
-      return [].to_json unless logged_in?
       return active_user.recipes.to_json(:include => :active_ingredients)   
     else
       status 403
@@ -622,7 +625,9 @@ class OpenRecipeApp < Sinatra::Application
   get '/recipes/datatable\??*' do
     if request.xhr? && logged_in?
       content_type :json
-      return recipe_datatable_json(active_user.recipes, params[:sEcho].to_i, params['tName'])
+      rabl :recipes_datatable, :locals => { :recipes => active_user.recipes,
+                                            :echo => params[:sEcho].to_i,
+                                            :table_name => params['tName'] }
     else
       status 403
       haml :'403'
@@ -636,7 +641,9 @@ class OpenRecipeApp < Sinatra::Application
   # todo: forcing AJAX is off while I test this.
   get '/favourite-recipes/datatable\??*' do
     if request.xhr? && logged_in?
-      return recipe_datatable_json(active_user.favourite_recipes, params[:sEcho].to_i, params['tName'])
+      rabl :recipes_datatable, :locals => { :recipes => active_user.favourite_recipes,
+                                            :echo => params[:sEcho].to_i,
+                                            :table_name => params['tName'] }
     else
       status 403
       haml :'403'

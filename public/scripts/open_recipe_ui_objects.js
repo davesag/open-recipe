@@ -103,6 +103,17 @@ copy_prototype(Recipe_Request, Request_Base);
 
 // other miscellaneous interface bits
 
+function update_datatable_size(a_datatable) {
+  if (a_datatable == null) return;
+  var dtb;
+  if (typeof a_datatable === 'string') dtb = $(a_datatable)
+  else dtb = a_datatable;
+  if (dtb == null) return;
+  
+  dtb.css('width', dtb.parent().width());
+  dtb.fnAdjustColumSizing();
+}
+
 function goto_previous_page(default_page) {
   if (typeof default_page === 'undefined') default_page = '/';
   if (document.referrer === '') location.href = default_page
