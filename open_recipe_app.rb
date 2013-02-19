@@ -50,7 +50,9 @@ class OpenRecipeApp < Sinatra::Application
   set :facebook_permissions, ["read_friendlists", "publish_stream","email", "user_likes", "user_photos"]
   set :tokeniser, TactfulTokenizer::Model.new
   
-	enable :sessions, :logging, :show_exceptions
+	enable :logging, :show_exceptions
+  #enable :sessions # disabled as per http://www.sinatrarb.com/faq.html#sessions
+  # rack session set up in config.ru instead.
 
   @graph = nil               # the facebook graph is reloaded on each request in the before method.
   @active_user = nil         # the active user is reloaded on each request in the before method.

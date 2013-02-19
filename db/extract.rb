@@ -28,7 +28,7 @@ puts "Seasons extracted."
 
 puts "Extracting Core Ingredients."
 result = []
-CoreIngredient.all.each do |ci|
+CoreIngredient.find(:all, :order=>"name ASC").each do |ci|
   tag_names = []
   ci.tags.all.each {|t| tag_names << t.name}
   if ci.seasons.length == 4
@@ -52,7 +52,7 @@ puts "Core Ingredients seeded."
 
 puts "Extracting Tags."
 result = []
-tags = Tag.all.each do |t|
+tags = Tag.find(:all, :order=>"name ASC").each do |t|
   result << t.name
 end
 
@@ -87,7 +87,7 @@ puts "Meals Extracted."
 
 puts "Extracting Ingredients."
 result = []
-Ingredient.all.each do |i|
+Ingredient.find(:all, :order=>"name ASC").each do |i|
   # remove the tags that are in the core.
   tags = i.tags - i.core_ingredients.first.tags unless i.core_ingredients.empty?
   tags = i.tags if i.core_ingredients.empty?

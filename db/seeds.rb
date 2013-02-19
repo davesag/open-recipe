@@ -35,7 +35,9 @@ ActiveRecord::Base.transaction do |tran|
     i = ihash[name]
     puts "i: #{i.inspect}"
   
-    core_ingredient = CoreIngredient.where(:name => name).first_or_create(:description => i['description'], :energy => i['energy'])
+    core_ingredient = CoreIngredient.where(:name => name).first_or_create
+    core_ingredient.description = i['description'] unless i['description'] == nil
+    core_ingredient.energy = i['energy'] unless i['energy'] == nil
     # read in the tags
     tags = i['tags']
     tags.each do |t|
@@ -94,7 +96,9 @@ ActiveRecord::Base.transaction do |tran|
     puts "m['name'] = #{m['name']}"
     mt = MealType.where(:name => m['meal_type']).first
     puts "mt = #{mt}"
-    meal = Meal.where(:name => m['name']).first_or_create(:meal_type => mt, :description => m['description'])
+    meal = Meal.where(:name => m['name']).first_or_create
+    meal.meal_type = mt
+    meal.description = m['description']
     # read in the tags
     tags = m['tags']
     tags.each do |t|
@@ -118,8 +122,9 @@ ActiveRecord::Base.transaction do |tran|
     core_ingredient = CoreIngredient.match_core(i['core_ingredient'])
     puts "found core_ingredient #{core_ingredient.inspect}"
 
-    ingredient = Ingredient.where(:name => name).first_or_create(:description => i['description'],
-                                                            :core_ingredients => [core_ingredient])
+    ingredient = Ingredient.where(:name => name).first_or_create
+    ingredient.description = i['description'] unless i['description'] == nil
+    ingredient.core_ingredients = [core_ingredient] unless core_ingredient == nil
     # read in the tags
     tags = i['tags']
     if tags != nil
