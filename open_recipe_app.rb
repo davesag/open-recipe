@@ -21,11 +21,14 @@ APP_ID = 435425809841072 # the app's id
 APP_CODE = 'b8c359ffe13e3ed7e90670e4bb5ec5bd' # the app's secret code
 
 # testing at http://ppp167-251-9.static.internode.on.net:5000/
-# production tests at http://open-recipe.herokuapp.com
-SITE_URL = 'http://ppp167-251-9.static.internode.on.net:5000/' # your app site url
+SITE_HOST = 'ppp167-251-9.static.internode.on.net:5000'
+SITE_URL = "http://#{SITE_HOST}/" # your app site url
 
 # don't change this without changing the callback route below.
 CALLBACK_URL = SITE_URL + 'callback'
+
+#There are 31536000 seconds in a year
+LONG_CACHE_LENGTH = 31536000
 
 class OpenRecipeApp < Sinatra::Application
   register Sinatra::R18n
@@ -158,6 +161,30 @@ class OpenRecipeApp < Sinatra::Application
     # graph.put_wall_post("Checkout my new cool app!", {}, "someoneelse's id")
     def homepage
 
+    end
+
+    def meta_tags (recipe = nil)
+      result = [
+        {:property => 'og:site_name', :content => "#{settings.name} - #{settings.tagline}."},
+        # todo: change this when we can attach an image to a recipe.
+        {:property => "og:image", :content => "#{settings.owner_website}images/Open_Recipe_Logo_Square_210x210.png"},
+        {:property => "og:url", :content => request.url},
+        {:rel => "canonical", :href => request.url},
+        {:name => "keywords", :content => settings.keywords},
+        {:property => 'fb:app_id', :content => APP_ID}
+      ]
+      if recipe == nil
+        result << {:property => 'og:type', :content => 'website'}
+        result << {:property => "og:title", :content => settings.name}
+        result << {:property => 'og:description', :content => settings.description}
+        result << {:name => "description", :content => settings.description}
+      else
+        result << {:property => 'og:type', :content => 'food'} # food or drink (todo: meal_types)
+        result << {:property => 'og:title', :content => "#{recipe.name} via #{settings.name}."}
+        result << {:property => 'og:description', :content => summarise(recipe.description, 200)}
+        result << {:name => "description", :content => summarise(recipe.description, 250)}
+      end
+      return result
     end
 
     def rabl(template, options = {}, locals = {})
@@ -387,6 +414,18 @@ class OpenRecipeApp < Sinatra::Application
       end
     end
 
+    def allowed_to_view_recipe?(recipe)
+      result = false
+      if logged_in?
+        # if the recipe belongs to the user then true
+        return true if recipe.owner === active_user
+        
+      else
+      
+      end
+      return result
+    end
+
     def logged_in?
       session['access_token'] = nil if (session['access_token'] != nil && session['access_token'].empty?)
       return session['access_token'] != nil
@@ -556,6 +595,19 @@ class OpenRecipeApp < Sinatra::Application
     haml :faqs
   end
 
+  get '/fb_channel' do
+    response['Pragma'] = "public"
+    response['Cache-Control'] = "max-age=#{LONG_CACHE_LENGTH}"
+    response['Expires'] = (Time.new + LONG_CACHE_LENGTH).utc.strftime("%a, %d %b %Y %H:%M:%S %Z") # eg Thu, 01 Dec 1994 16:00:00 UTC
+    # as per https://developers.facebook.com/docs/reference/javascript/
+    # adding a channel file.
+    '<script src="//connect.facebook.net/en_US/all.js"></script>' # todo: inject correct locale in here.
+  end
+
+  get '/fbt' do
+    haml :fb_status_test
+  end
+
   get '*.html\??*' do
     #only use while testing.
     filename = "#{params[:splat][0]}.html"
@@ -686,16 +738,16 @@ class OpenRecipeApp < Sinatra::Application
       end
       rabl :recipe, :locals => {:recipe => recipe}
     else
-      if logged_in?
-	      if recipe != nil
+      if recipe != nil
+        if allowed_to_view_recipe?(recipe)
           haml :recipe_display, :locals => {:recipe => recipe} 
         else
-          status 404
-          haml :'404'
+          status 403
+          haml :'403'
         end
 	    else
-  	    status 403
-	      haml :'403'
+  	    status 404
+	      haml :'404'
       end
     end
   end

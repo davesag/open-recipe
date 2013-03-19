@@ -2,11 +2,8 @@
 %html{:xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang => "en" }
   %head
     %meta{ :'http-equiv' => "Content-Type", :content => "text/html; charset=UTF-8"}
-    %meta{ :property => "og:title", :content => settings.name}
-    %meta{ :property => "og:type", :content => "website"}
-    %meta{ :property => "og:image", :content => "#{settings.owner_website}/images/Open_Recipe_Logo_Square_210x210.png"}
-    %meta{ :property => "og:url", :content => 'http://apps.facebook.com/open-recipe/'}
-    %meta{ :property => "og:site_name", :content => "#{settings.name} - #{settings.tagline}."}
+    - for mt in meta_tags (defined?(recipe)? recipe : nil)
+      %meta{ :property => mt[:property], :name => mt[:name], :rel => mt[:rel], :content => mt[:content], :href => mt[:href]}
     %meta{ :property => "fb:admins", :content => "davesag"}
     %meta{ :property => "fb:admins", :content => "amyjeeves"}
     %meta{ :property => "fb:admins", :content => "1578116633"}
@@ -17,10 +14,7 @@
     %meta{ :name => "viewport", :content => "width=760"}
     %meta{ :'http-equiv' => "X-UA-Compatible", :content => "IE=100"}
     
-    %meta{ :name => "description", :content => settings.description}
-    %meta{ :name => "keywords", :content => settings.keywords}
     %link{ :rel => "Shortcut Icon", :type => "image/x-icon", :href => "favicon.ico"}
-    %link{ :rel => "canonical", :href => 'http://apps.facebook.com/open-recipe/'}
     %link{ :rel =>"stylesheet", :type => "text/css", :href => "/css/main.css"}
     -# %link{ :rel =>"stylesheet", :type => "text/css", :href => "/css/main.min.css"}
     %link{ :rel =>"stylesheet", :type => "text/css",
@@ -63,6 +57,7 @@
         });
     %title #{settings.name}
   %body
+    #fb-root
     #page
       #page-top
         #title
