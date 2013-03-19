@@ -186,8 +186,6 @@ class OpenRecipeApp < Sinatra::Application
       menu << menu_item('Browse', '/browse') if logged_in?
       menu << menu_item('Settings', '/settings') if logged_in?
       menu << menu_item('FAQs', '/faqs')
-      menu << menu_item('Privacy', '/privacy')
-      menu << menu_item('Terms', '/terms')
       return menu
     end
 

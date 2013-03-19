@@ -26,6 +26,7 @@ ui:
   none: none
   preparation_time: prep time
   preview: preview
+  privacy: privacy
   recipe_name: recipe name
   requirements: requirements
   save_recipe: save recipe
@@ -33,6 +34,7 @@ ui:
   search_text: search text
   serves: serves
   tags: tags
+  terms: terms and conditions
   unit: unit
   placeholder:
     recipe_name: What do you call your recipe?

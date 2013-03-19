@@ -21,8 +21,8 @@
     %meta{ :name => "keywords", :content => settings.keywords}
     %link{ :rel => "Shortcut Icon", :type => "image/x-icon", :href => "favicon.ico"}
     %link{ :rel => "canonical", :href => 'http://apps.facebook.com/open-recipe/'}
-    %link{ :rel =>"stylesheet", :type => "text/css",
-           :href => "/css/main.css"}
+    %link{ :rel =>"stylesheet", :type => "text/css", :href => "/css/main.css"}
+    -# %link{ :rel =>"stylesheet", :type => "text/css", :href => "/css/main.min.css"}
     %link{ :rel =>"stylesheet", :type => "text/css",
            :href => "/css/themes/open-recipe-theme/jquery-ui-1.8.23.custom.css"}
     %link{ :rel =>"stylesheet", :type => "text/css",
@@ -102,5 +102,9 @@
         #tag-cloud.ui-helper-reset.ui-widget.ui-widget-content.ui-corner-all
       #page-bottom.ui-helper-reset.ui-widget.ui-widget-content.ui-corner-all
         #copyright< ©2013 #{settings.owner}
-        - if logged_in?
-          %p <a href='/logout'>#{UnicodeUtils::titlecase(t.ui.log_out)}</a>
+        #footer-navigation
+          %ul
+            - if logged_in?
+              %li <a href='/logout'>#{UnicodeUtils::titlecase(t.ui.log_out)}</a>
+            %li <a href='/privacy'>#{UnicodeUtils::titlecase(t.ui.privacy)}</a>
+            %li <a href='/terms'>#{UnicodeUtils::titlecase(t.ui.terms)}</a>

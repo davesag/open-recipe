@@ -205,6 +205,27 @@ label.error {
   padding:0;
 }
 
+#footer-navigation ul {
+  list-style-type:none;
+  font-size: 0.85em;
+}
+
+#footer-navigation ul li {
+  display: inline-block;
+  padding-right: 5px;
+}
+
+#footer-navigation ul li a{
+  background: #646463;
+  color: #fff;
+}
+
+#footer-navigation ul li a:hover{
+  background: #fff;
+  color: #646463;
+}
+
+
 .edit-or-create-recipe label {
   clear: left;
   float: left;
