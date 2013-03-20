@@ -187,6 +187,7 @@ class OpenRecipeApp < Sinatra::Application
       return result
     end
 
+    # deprecated.  Not needed in latest version of Sinatra
     def rabl(template, options = {}, locals = {})
       # Rabl.register!
       render :rabl, template, options, locals
@@ -201,6 +202,11 @@ class OpenRecipeApp < Sinatra::Application
         menu_item[:href] = href
       end
       return menu_item
+    end
+
+    def locale_code
+      return 'en_US' if session[:locale] == nil # facebook's default.
+      return session[:locale]
     end
 
     # returns an array of hashes of the following
@@ -414,6 +420,7 @@ class OpenRecipeApp < Sinatra::Application
       end
     end
 
+    # todo: expand this with more specific permissions.
     def allowed_to_view_recipe?(recipe)
       result = false
       if logged_in?
@@ -516,10 +523,10 @@ class OpenRecipeApp < Sinatra::Application
 		logger.debug "Received login request."
 		session['oauth'] = Facebook::OAuth.new(APP_ID, APP_CODE, CALLBACK_URL)
 		logger.debug "session['oauth'] = #{session['oauth'].inspect}"
-    logger.debug "session['session_id'] = #{session['session_id']}"
+    # logger.debug "session['session_id'] = #{session['session_id']}"
 		# redirect to facebook to get your code
 		redirect_url = session['oauth'].url_for_oauth_code(:permissions => settings.facebook_permissions)
-		logger.debug "redirecting to '#{redirect_url}'"
+		# logger.debug "redirecting to '#{redirect_url}'"
 		redirect redirect_url
 	end
 
@@ -601,7 +608,7 @@ class OpenRecipeApp < Sinatra::Application
     response['Expires'] = (Time.new + LONG_CACHE_LENGTH).utc.strftime("%a, %d %b %Y %H:%M:%S %Z") # eg Thu, 01 Dec 1994 16:00:00 UTC
     # as per https://developers.facebook.com/docs/reference/javascript/
     # adding a channel file.
-    '<script src="//connect.facebook.net/en_US/all.js"></script>' # todo: inject correct locale in here.
+    "<script src='//connect.facebook.net/#{locale_code}/all.js'></script>"
   end
 
   get '/fbt' do

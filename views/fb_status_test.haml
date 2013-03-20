@@ -6,12 +6,12 @@
       channelUrl : '//#{SITE_HOST}/fb_channel', // Channel File for x-domain communication
       status     : true, // check the login status upon init?
       cookie     : true, // set sessions cookies to allow your server to access the session?
-      xfbml      : true  // parse XFBML tags on this page?
+      xfbml      : true,  // parse XFBML tags on this page?
+      frictionlessRequests : true // cleaner and faster for the user.
     });
 
     // Additional initialization code such as adding Event Listeners goes here
-
-    FB.getLoginStatus(function(response) {
+    FB.Event.subscribe('auth.authResponseChange', function(response) {
       if (response.status === 'connected') {
         // the user is logged in and has authenticated your
         // app, and response.authResponse supplies
@@ -20,7 +20,11 @@
         // and signed request each expire
         var uid = response.authResponse.userID;
         var accessToken = response.authResponse.accessToken;
+        // console.log("response", response);
         console.log("found user.", uid, accessToken);
+        FB.api('/me', function(resp) {
+          console.log("resp", resp);
+        });
       } else if (response.status === 'not_authorized') {
         // the user is logged in to Facebook, 
         // but has not authenticated your app
@@ -30,7 +34,6 @@
         console.log("User not logged in.");
       }
     });
-
   };
 
   // Load the SDK's source Asynchronously
@@ -41,7 +44,71 @@
     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
     if (d.getElementById(id)) {return;}
     js = d.createElement('script'); js.id = id; js.async = true;
-    js.src = "//connect.facebook.net/en_US/all" + (debug ? "/debug" : "") + ".js"; // todo: localise.
+    js.src = "//connect.facebook.net/#{locale_code}/all" + (debug ? "/debug" : "") + ".js"; // todo: localise.
     ref.parentNode.insertBefore(js, ref);
   }(document, /*debug*/ false));
 %h3 Facebook Javascript API tests.
+%ul
+  %li <a onclick='postToFeed(); return false;'>Post to Feed</a>
+  %li <a onclick="sendRequestViaMultiFriendSelector(); return false;">Send Request to Friends</a>
+  %li <a onclick="sendAsMessageToFriend(); return false;">Send Message to friends</a>
+  %li <a onclick="getPhotosFromFacebook(); return false;">Get Photos from Facebook</a>
+%p#msg
+:javascript
+  function postToFeed() {
+    // calling the API ...
+    var obj = {
+      method: 'feed',
+      redirect_uri: '#{request.url}',
+      link: '#{request.url}',
+      picture: '#{settings.owner_website}images/Open_Recipe_Logo_Square_210x210.png', // get more specific.
+      name: 'Open Recipe test',
+      caption: 'Testing the Open Recipe server\s interaction with Facebook.',
+      description: 'Really I\m just testing the Open Recipe server\s interaction with Facebook Users.'
+    };
+
+    function callback(response) {
+      console.log("Feed Post Callback got response", response);
+      document.getElementById('msg').innerHTML = "Post ID: " + response['post_id'];
+    }
+
+    FB.ui(obj, callback);
+  }
+  function sendRequestViaMultiFriendSelector() {
+    FB.ui({method: 'apprequests',
+      message: 'My Great Request',
+      caption: 'Testing the Open Recipe server\s interaction with Facebook.'
+    }, function(response) {
+      console.log("Friend selector response.", response);
+    });
+  }
+  function sendAsMessageToFriend() {
+    FB.ui({
+      method: 'send',
+      name: 'Open Recipe message test',
+      caption: 'Testing the Open Recipe server\s interaction with Facebook.',
+      link: "#{request.url}",
+    });
+  }
+  function getPhotosFromFacebook() {
+    FB.api('/me/albums?fields=id,name', function(response) {
+      for (var i=0; i<response.data.length; i++) {
+        var album = response.data[i];
+        if (album.name == 'Profile Pictures'){
+          FB.api('/'+album.id+'/photos', function(photos){
+            if (photos && photos.data && photos.data.length){
+              for (var j=0; j<photos.data.length; j++){
+                var photo = photos.data[j];
+                // photo.picture contain the link to picture
+                var image = document.createElement('img');
+                image.src = photo.picture;
+                document.body.appendChild(image);
+              }
+            }
+          });
+          break;
+        }
+      }
+    });
+  }
+  
