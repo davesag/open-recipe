@@ -90,6 +90,7 @@
       link: "#{request.url}",
     });
   }
+  // see also https://github.com/cshold/jQuery-Facebook-Photo-Selector
   function getPhotosFromFacebook() {
     FB.api('/me/albums?fields=id,name', function(response) {
       for (var i=0; i<response.data.length; i++) {
