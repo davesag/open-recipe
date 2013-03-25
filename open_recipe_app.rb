@@ -173,15 +173,19 @@ class OpenRecipeApp < Sinatra::Application
         {:name => "keywords", :content => settings.keywords},
         {:property => 'fb:app_id', :content => APP_ID}
       ]
+      if logged_in?
+        result << {:property => 'og:locale', :content => locale_code}
+      end
       if recipe == nil
         result << {:property => 'og:type', :content => 'website'}
         result << {:property => "og:title", :content => settings.name}
         result << {:property => 'og:description', :content => settings.description}
         result << {:name => "description", :content => settings.description}
       else
-        result << {:property => 'og:type', :content => 'food'} # food or drink (todo: meal_types)
-        result << {:property => 'og:title', :content => "#{recipe.name} via #{settings.name}."}
-        result << {:property => 'og:description', :content => summarise(recipe.description, 200)}
+        result << {:property => 'og:type', :content => 'open-recipe:recipe'}
+        result << {:property => 'og:title', :content => recipe.name}
+        result << {:property => 'open-recipe:owner', :content => recipe.owner.remote_id}
+        result << {:property => 'og:description', :content => summarise(recipe.description, 1000)}
         result << {:name => "description", :content => summarise(recipe.description, 250)}
       end
       return result
@@ -421,7 +425,29 @@ class OpenRecipeApp < Sinatra::Application
     end
 
     # todo: expand this with more specific permissions.
-    def allowed_to_view_recipe?(recipe)
+    def allowed_to_view?(recipe)
+      result = false
+      if logged_in?
+        # if the recipe belongs to the user then true
+        return true if recipe.owner === active_user
+        
+      else
+      
+      end
+      return result
+    end
+
+    def user_owns?(recipe)
+      result = false
+      if logged_in?
+        # if the recipe belongs to the user then true
+        return true if recipe.owner === active_user
+      end
+      return result
+    end
+
+    # todo: expand this with more specific permissions.
+    def allowed_to_edit?(recipe)
       result = false
       if logged_in?
         # if the recipe belongs to the user then true
@@ -746,12 +772,7 @@ class OpenRecipeApp < Sinatra::Application
       rabl :recipe, :locals => {:recipe => recipe}
     else
       if recipe != nil
-        if allowed_to_view_recipe?(recipe)
-          haml :recipe_display, :locals => {:recipe => recipe} 
-        else
-          status 403
-          haml :'403'
-        end
+        haml :recipe_display, :locals => {:recipe => recipe} 
 	    else
   	    status 404
 	      haml :'404'

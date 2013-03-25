@@ -15,6 +15,7 @@ ui:
   edit_recipe: edit recipe
   edit_this_recipe: edit this recipe
   favourites: favourites
+  favourite_this_recipe: favourite this recipe
   ingredients: ingredients
   ingredient_name: ingredient name
   greeting: Hello %1, welcome to Open Recipe.
@@ -27,6 +28,7 @@ ui:
   preparation_time: prep time
   preview: preview
   privacy: privacy
+  recipe: recipe
   recipe_name: recipe name
   requirements: requirements
   save_recipe: save recipe
@@ -39,6 +41,9 @@ ui:
   placeholder:
     recipe_name: What do you call your recipe?
     duration: 1d 11h 11m
+  recipe_title:
+    your: Your recipe, &#8220;%1&#8221;
+    someone: "%1's recipe, &#8220;%2&#8221;"
 
 warnings:
   not_added_any_recipes: you have not added any recipes yet.

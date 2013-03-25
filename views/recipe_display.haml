@@ -1,31 +1,54 @@
-%h2< Recipe &#8220;#{Unicode::capitalize(recipe.name)}&#8221;
-#recipe
-  %dl
-    %dt< Serves:
-    %dd<= t.people(recipe.serves)
-    %dt< Description:
-    %dd<~ recipe.description
-    %dt< Preparation Time:
-    %dd<= human_readable_time(recipe.preparation_time)
-    %dt< Cooking Time:
-    %dd<= human_readable_time(recipe.cooking_time)
-    %dt< Requirements:
-    %dd<~ recipe.requirements
-    %dt< Ingredients:
-    %dd<
-      %ul<
-        -for i in recipe.active_ingredients
-          -if i.quantity != nil
-            - q = human_readable_quantity i.quantity
-            %li< #{UnicodeUtils::titlecase(i.ingredient.name)} #{q == '' ? '' : ': ' << q}
-          -else
-            %li<= UnicodeUtils::titlecase(i.ingredient.name)
-    %dt< Method:
-    %dd<~ recipe.method
-%button#change-recipe<= UnicodeUtils::titlecase(t.ui.edit_this_recipe)
-:javascript
-  $(function() {
-    $('#change-recipe').button({icons: {primary:'ui-icon-gear'}}).click(function() {
-      location.href = "/edit-recipe/#{recipe.id}"
-    });
-  });
+-can_read = allowed_to_view?(recipe)
+-can_edit = allowed_to_edit?(recipe)
+-owns = user_owns?(recipe)
+-if can_read
+  %h2<
+    -if owns
+      =t.ui.recipe_title.your(UnicodeUtils::titlecase(recipe.name))
+    -else
+      =t.ui.recipe_title.someone(UnicodeUtils::titlecase(recipe.owner.name), UnicodeUtils::titlecase(recipe.name))
+  #recipe
+    %dl
+      %dt<= UnicodeUtils::titlecase(t.ui.serves)
+      %dd<= t.people(recipe.serves)
+      %dt<= UnicodeUtils::titlecase(t.ui.description)
+      %dd<~ recipe.description
+      %dt<= UnicodeUtils::titlecase(t.ui.preparation_time)
+      %dd<= human_readable_time(recipe.preparation_time)
+      %dt<= UnicodeUtils::titlecase(t.ui.cooking_time)
+      %dd<= human_readable_time(recipe.cooking_time)
+      %dt<= UnicodeUtils::titlecase(t.ui.requirements)
+      %dd<~ recipe.requirements
+      %dt<= UnicodeUtils::titlecase(t.ui.ingredients)
+      %dd<
+        %ul<
+          -for i in recipe.active_ingredients
+            -if i.quantity != nil
+              - q = human_readable_quantity i.quantity
+              %li< #{UnicodeUtils::titlecase(i.ingredient.name)} #{q == '' ? '' : ': ' << q}
+            -else
+              %li<= UnicodeUtils::titlecase(i.ingredient.name)
+      %dt<= UnicodeUtils::titlecase(t.ui.the_method)
+      %dd<~ recipe.method
+  #actions
+    -if !owns
+      %button#favourite-recipe<= UnicodeUtils::titlecase(t.ui.favourite_this_recipe)
+    -if can_edit
+      %button#change-recipe<= UnicodeUtils::titlecase(t.ui.edit_this_recipe)
+    %div.fb-like(data-layout="button_count" data-width="450" data-show-faces="true" data-font="tahoma")
+  -if can_edit
+    :javascript
+      $(function() {
+        $('#change-recipe').button({icons: {primary:'ui-icon-gear'}}).click(function() {
+          location.href = "/edit-recipe/#{recipe.id}"
+        });
+        $('#favourite-recipe').button({icons: {primary:'ui-icon-heart'}}).click(function() {
+          // use some AJAX to favourite the recipe, and
+          // also kick off a facebook 'like' request.
+          console.log("favourite recipe", "#{recipe.name}");
+        });
+      });
+-else
+  #recipe.error.ui-widget-content.ui-corner-all
+    %p.error You don't have permission to view the details of #{UnicodeUtils::titlecase(recipe.name)}.
+    %p<~ recipe.description

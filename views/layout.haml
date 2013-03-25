@@ -1,6 +1,6 @@
 !!! 5
 %html{:xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang => "en" }
-  %head
+  %head(prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# open-recipe: http://ogp.me/ns/fb/open-recipe#")
     %meta{ :'http-equiv' => "Content-Type", :content => "text/html; charset=UTF-8"}
     - for mt in meta_tags (defined?(recipe)? recipe : nil)
       %meta{ :property => mt[:property], :name => mt[:name], :rel => mt[:rel], :content => mt[:content], :href => mt[:href]}
@@ -27,12 +27,61 @@
     %script{ :src => "/scripts/jquery.dataTables.min.js" }
     %script{ :src => "/scripts/jquery.validate.min.js" }
     :javascript
-      var ERROR_MESSAGES = {
+      var debugging = false,
+      ERROR_MESSAGES = {
         'server':"#{t.errors.server}"
       };
+      if (typeof console == "undefined") var console = { log: function() {} }; 
+      else if (!debugging || typeof console.log == "undefined") console.log = function() {};
     -# %script{ :src => "/scripts/open_recipe_ui_objects.js" }
     -# %script{ :src => "/scripts/open_recipe_core_jquery.js" }
     %script{ :src => "/scripts/open_recipe_core.min.js" }
+    :javascript
+      window.fbAsyncInit = function() {
+        // init the FB JS SDK
+        FB.init({
+          appId      : '#{APP_ID}',
+          channelUrl : '//#{SITE_HOST}/fb_channel', // Channel File for x-domain communication
+          status     : true, // check the login status upon init?
+          cookie     : true, // set sessions cookies to allow your server to access the session?
+          xfbml      : true,  // parse XFBML tags on this page?
+          frictionlessRequests : true // cleaner and faster for the user.
+        });
+
+        // Additional initialization code such as adding Event Listeners goes here
+        FB.Event.subscribe('auth.authResponseChange', function(response) {
+          if (response.status === 'connected') {
+            // the user is logged in and has authenticated your
+            // app, and response.authResponse supplies
+            // the user's ID, a valid access token, a signed
+            // request, and the time the access token 
+            // and signed request each expire
+            var uid = response.authResponse.userID,
+                accessToken = response.authResponse.accessToken;
+            // todo: remove console.log
+            console.log("found user.", uid, accessToken);
+          } else if (response.status === 'not_authorized') {
+            // the user is logged in to Facebook, 
+            // but has not authenticated your app
+            console.log("User logged in but not authenticated.");
+          } else {
+            // the user isn't logged in to Facebook.
+            console.log("User not logged in.");
+          }
+        });
+      };
+
+      // Load the SDK's source Asynchronously
+      // Note that the debug version is being actively developed and might 
+      // contain some type checks that are overly strict. 
+      // Please report such bugs using the bugs tool.
+      (function(d, debug){
+        var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement('script'); js.id = id; js.async = true;
+        js.src = "//connect.facebook.net/#{locale_code}/all" + (debug ? "/debug" : "") + ".js"; // todo: localise.
+        ref.parentNode.insertBefore(js, ref);
+      }(document, debugging));
     - if logged_in? && any_tags?
       :javascript
         $(function () {
@@ -75,6 +124,7 @@
                       %form#search-form
                         %input#search-field{:type => 'text', :name => 'search', :placeholder => t.ui.search_text, :style => 'width:80%;'}
             -else
+              #login-button.fb-login-button(data-show-faces="true" data-width="200" data-max-rows="1")
               %a{:href => "/login"}<
                 %img.fb-login{:src => '/images/fb_login_button.png'}
             #nav-bar.ui-tabs.ui-widget.ui-widget-content.ui-corner-all
