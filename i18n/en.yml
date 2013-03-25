@@ -5,6 +5,7 @@
 ui:
   add_a_recipe: add a recipe
   amount: amount
+  browse: browse
   cancel: cancel
   choose_photo: choose photo
   choose_this_photo: choose this photo
@@ -25,6 +26,7 @@ ui:
   my_recipes: my recipies
   name: name
   none: none
+  owner: owner
   preparation_time: prep time
   preview: preview
   privacy: privacy
@@ -38,6 +40,7 @@ ui:
   tags: tags
   terms: terms and conditions
   unit: unit
+  you: you
   placeholder:
     recipe_name: What do you call your recipe?
     duration: 1d 11h 11m

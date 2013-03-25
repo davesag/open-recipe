@@ -425,38 +425,23 @@ class OpenRecipeApp < Sinatra::Application
     end
 
     # todo: expand this with more specific permissions.
+    # any logged in user can view any recipe.
     def allowed_to_view?(recipe)
-      result = false
-      if logged_in?
-        # if the recipe belongs to the user then true
-        return true if recipe.owner === active_user
-        
-      else
-      
-      end
-      return result
+      return logged_in?
     end
 
     def user_owns?(recipe)
-      result = false
       if logged_in?
         # if the recipe belongs to the user then true
         return true if recipe.owner === active_user
       end
-      return result
+      return false
     end
 
     # todo: expand this with more specific permissions.
+    # only users can edit their own recipes
     def allowed_to_edit?(recipe)
-      result = false
-      if logged_in?
-        # if the recipe belongs to the user then true
-        return true if recipe.owner === active_user
-        
-      else
-      
-      end
-      return result
+      return user_owns?(recipe)
     end
 
     def logged_in?
@@ -706,7 +691,6 @@ class OpenRecipeApp < Sinatra::Application
   # localised and formatted for use by a dataTable object.
   # see http://datatables.net/usage/server-side and also
   # see http://www.datatables.net/release-datatables/examples/server_side/ids.html
-  # todo: forcing AJAX is off while I test this.
   get '/recipes/datatable\??*' do
     if request.xhr? && logged_in?
       content_type :json
@@ -723,7 +707,6 @@ class OpenRecipeApp < Sinatra::Application
   # localised and formatted for use by a dataTable object.
   # see http://datatables.net/usage/server-side and also
   # see http://www.datatables.net/release-datatables/examples/server_side/ids.html
-  # todo: forcing AJAX is off while I test this.
   get '/favourite-recipes/datatable\??*' do
     if request.xhr? && logged_in?
       rabl :recipes_datatable, :locals => { :recipes => active_user.favourite_recipes,
@@ -734,7 +717,24 @@ class OpenRecipeApp < Sinatra::Application
       haml :'403'
     end
   end
-  
+
+  # return an array of all of the recipes in summary form,
+  # localised and formatted for use by a dataTable object.
+  # see http://datatables.net/usage/server-side and also
+  # see http://www.datatables.net/release-datatables/examples/server_side/ids.html
+  # todo: only dish up the bits of the recipe needed to display
+  #       to improve performance when the list gets long.
+  get '/all-recipes/datatable\??*' do
+    if request.xhr?
+      rabl :all_recipes_datatable, :locals => { :recipes => Recipe.all,
+                                            :echo => params[:sEcho].to_i,
+                                            :table_name => params['tName'] }
+    else
+      status 403
+      haml :'403'
+    end
+  end
+
   # return an array of the active user's own recipes in raw summary form.
   # todo: forcing AJAX is off while I test this.
   get '/recipes' do
@@ -788,6 +788,22 @@ class OpenRecipeApp < Sinatra::Application
       else
         status 404
         haml :'404'
+      end
+    else
+      status 403
+      haml :'403'
+    end
+  end
+
+  post '/favourite-recipe/:id' do
+    if logged_in? && request.xhr?
+      recipe = Recipe.find_by_id(params[:id].to_i)
+      if recipe != nil
+        #todo: add it as a favourite.
+        return {:success => true, :message => 'recipe_favourited'}.to_json
+      else
+        status 404
+        return {:success => false, :error => 'recipe_not_found'}.to_json
       end
     else
       status 403

@@ -106,4 +106,61 @@ file = File.open('./extracts/ingredients.yml', 'w')
 file.write(result.to_yaml)
 puts "Ingredients Extracted."
 
+puts "Extracting Users."
+result = []
+User.find(:all, :order=>"name ASC").each do |i|
+  r = {
+    'name' => i.name,
+    'sex' => i.sex,
+    'first_name' => i.first_name,
+    'last_name' => i.last_name,
+    'email' => i.email,
+    'remote_id' => i.remote_id,
+    'profile_picture_url' => i.profile_picture_url,
+    'locale' => i.locale
+  }
+  result << { i.name => r }
+end
+file = File.open('./extracts/users.yml', 'w')
+file.write(result.to_yaml)
+puts "Users Extracted."
+
+puts "Extracting Recipes."
+result = []
+Recipe.find(:all, :order=>"name ASC").each do |i|
+  r = {
+    'name' => i.name,
+    'serves' => i.serves,
+    'cooking_time' => i.cooking_time,
+    'preparation_time' => i.preparation_time,
+    'description' => i.description.squeeze(' ').strip,
+    'method' => i.method.strip,
+    'requirements' => i.requirements.strip
+  }
+  tags = i.tags
+  tag_names = []
+  if !tags.empty?
+    tags.each { |t| tag_names << t.name }
+  end
+  r['tags'] = tag_names
+  ais = i.active_ingredients
+  ings = []
+  if !ais.empty?
+    ais.each do |ai|
+      ings << {
+        'name' => ai.ingredient.name,
+        'quantity' => (ai.quantity) ? {
+          'unit' => (ai.quantity.unit) ? ai.quantity.unit.name : nil,
+          'amount' => (ai.quantity.amount) ? ai.quantity.amount : nil
+        } : nil
+      }
+    end
+    r['ingredients'] = ings
+  end
+  result << { i.name => r }
+end
+file = File.open('./extracts/recipes.yml', 'w')
+file.write(result.to_yaml)
+puts "Recipes Extracted."
+
 puts 'Database Extracted.'

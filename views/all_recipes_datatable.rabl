@@ -13,13 +13,12 @@ node :aaData do
     {
       'DT_RowId' => "#{@table_name}-id-#{r.id}",
       '0' => UnicodeUtils::titlecase(r.name),
-      '1' => UnicodeUtils::titlecase(t.people(r.serves)),
+      '1' => UnicodeUtils::titlecase(user_owns?(r) ? t.ui.you : r.owner.name ),
       '2' => summarise(r.description),
       '3' => human_readable_time(r.preparation_time),
       '4' => human_readable_time(r.cooking_time),
-      '5' => r.serves,
-      '6' => r.preparation_time,
-      '7' => r.cooking_time
+      '5' => r.preparation_time,
+      '6' => r.cooking_time
     }
   end
 end

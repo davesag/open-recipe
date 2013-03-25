@@ -1,1 +1,50 @@
-%h3 Browse
+:javascript    
+  $(window).resize(function() {
+    setTimeout(function(){update_datatable_size('#recipe-list')}, 250);
+  });
+  
+  $(function() {
+    // first turn on the tabs.
+    $('#recipes').tabs();
+    // add a 'new recipe' button.
+    $('#add-recipe').button({icons: {primary:'ui-icon-circle-plus'}}).click(function() {
+      location.href = '/create-recipe';
+    });
+    // use the data in a dataTable.
+    // the server will assign an ID to each row
+    // using a tName param in the form {tName}-id-{recipe.id}
+    // making it simple to parse out into the associated recipe's ID.
+    $('#recipe-list').dataTable( {
+      "bJQueryUI": true,
+      "sPaginationType": "full_numbers",
+      "sAjaxSource":"/all-recipes/datatable",
+      "bProcessing":true,
+      "bServerSide":false,
+      'aaSorting': [[0, 'asc']],
+      'bAutoWidth ':false,
+      "aoColumns": [
+        {"sTitle": "#{UnicodeUtils::titlecase(t.ui.name)}", "sType": 'string', 'sWidth': '25%'},
+        {"sTitle": "#{UnicodeUtils::titlecase(t.ui.owner)}", "sType": 'string', 'sWidth': '20%'},
+        {"sTitle": "#{UnicodeUtils::titlecase(t.ui.description)}", "sType": 'string', 'sWidth': '25%', 'bSortable': false},
+        {"sTitle": "#{UnicodeUtils::titlecase(t.ui.preparation_time)}", "sType": 'string', 'sWidth': '15%', 'bSearchable': false, 'iDataSort': 6},
+        {"sTitle": "#{UnicodeUtils::titlecase(t.ui.cooking_time)}", "sType": 'string', 'sWidth': '15%', 'bSearchable': false, 'iDataSort': 7},
+        {"sType": 'numeric', 'bSearchable': false, 'bVisible': false},
+        {"sType": 'numeric', 'bSearchable': false, 'bVisible': false},
+      ],
+      'fnServerParams': function (aoData) {
+        aoData.push({'name':'tName', 'value':'recipe-list'});
+      },
+      'fnDrawCallback': function () {
+        $(this.fnGetNodes()).click(function() {
+          location.href = '/recipe/' + $(this).attr('id').substring('recipe-list-id-'.length);
+        });
+      }
+    });
+    // now load the user's favourite recipes into a table.
+  });
+%h2<= UnicodeUtils::titlecase(t.ui.browse)
+#recipes
+  -if Recipe.all.empty?
+    %p< #{Unicode::capitalize(t.warnings.no_recipes)}
+  - else
+    %table#recipe-list

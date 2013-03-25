@@ -27,7 +27,7 @@
     %script{ :src => "/scripts/jquery.dataTables.min.js" }
     %script{ :src => "/scripts/jquery.validate.min.js" }
     :javascript
-      var debugging = false,
+      var debugging = true,
       ERROR_MESSAGES = {
         'server':"#{t.errors.server}"
       };
@@ -47,28 +47,6 @@
           xfbml      : true,  // parse XFBML tags on this page?
           frictionlessRequests : true // cleaner and faster for the user.
         });
-
-        // Additional initialization code such as adding Event Listeners goes here
-        FB.Event.subscribe('auth.authResponseChange', function(response) {
-          if (response.status === 'connected') {
-            // the user is logged in and has authenticated your
-            // app, and response.authResponse supplies
-            // the user's ID, a valid access token, a signed
-            // request, and the time the access token 
-            // and signed request each expire
-            var uid = response.authResponse.userID,
-                accessToken = response.authResponse.accessToken;
-            // todo: remove console.log
-            console.log("found user.", uid, accessToken);
-          } else if (response.status === 'not_authorized') {
-            // the user is logged in to Facebook, 
-            // but has not authenticated your app
-            console.log("User logged in but not authenticated.");
-          } else {
-            // the user isn't logged in to Facebook.
-            console.log("User not logged in.");
-          }
-        });
       };
 
       // Load the SDK's source Asynchronously
@@ -79,7 +57,7 @@
         var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
         if (d.getElementById(id)) {return;}
         js = d.createElement('script'); js.id = id; js.async = true;
-        js.src = "//connect.facebook.net/#{locale_code}/all" + (debug ? "/debug" : "") + ".js"; // todo: localise.
+        js.src = "//connect.facebook.net/#{locale_code}/all" + (debug ? "/debug" : "") + ".js";
         ref.parentNode.insertBefore(js, ref);
       }(document, debugging));
     - if logged_in? && any_tags?

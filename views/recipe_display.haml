@@ -42,13 +42,15 @@
         $('#change-recipe').button({icons: {primary:'ui-icon-gear'}}).click(function() {
           location.href = "/edit-recipe/#{recipe.id}"
         });
-        $('#favourite-recipe').button({icons: {primary:'ui-icon-heart'}}).click(function() {
-          // use some AJAX to favourite the recipe, and
-          // also kick off a facebook 'like' request.
-          console.log("favourite recipe", "#{recipe.name}");
-        });
+      });
+  -if !owns
+    :javascript
+      $('#favourite-recipe').button({icons: {primary:'ui-icon-heart'}}).click(function() {
+        // use some AJAX to favourite the recipe, and
+        // also kick off a facebook 'like' request.
+        console.log("favourite recipe", "#{recipe.name}");
       });
 -else
-  #recipe.error.ui-widget-content.ui-corner-all
+  #recipe.ui-state-error.ui-widget-content.ui-corner-all
     %p.error You don't have permission to view the details of #{UnicodeUtils::titlecase(recipe.name)}.
     %p<~ recipe.description
