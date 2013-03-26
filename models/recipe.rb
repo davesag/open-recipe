@@ -12,6 +12,7 @@ class Recipe < ActiveRecord::Base
   # :requirements, Text
 
   has_and_belongs_to_many :ingredients  # ingredients made according to this recipe.
+  has_and_belongs_to_many :users # users have favourite recipes.
   has_many :active_ingredients, :dependent => :destroy  # ingredients used to make this recipe with, 
                                         # in addition to their quantities.
   has_and_belongs_to_many :tags # tags for this recipe.
@@ -19,6 +20,5 @@ class Recipe < ActiveRecord::Base
   
   belongs_to :owner, :class_name => 'User'
   belongs_to :meal
-  has_many :favourite_recipes # recipes with a rating.
   
 end

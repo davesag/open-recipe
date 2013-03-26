@@ -165,10 +165,8 @@ class UserTest < HandlerTestBase
       assert easy.recipes.include?(frog_and_duck_soup), "expected frog and duck soup to be easy"
       
       # favourite_recipes
-      favourite_recipes = []
-      favourite_recipes << fav_frog_and_duck_soup = FavouriteRecipe.create(:recipe => frog_and_duck_soup, :rating => 7, :user => bob)
-      assert bob.favourite_recipes.first.recipe.name == frog_and_duck_soup.name, "expected bob's fave to be frog and duck soup but it was #{bob.favourite_recipes.first.recipe.name}."
-      assert bob.favourite_recipes.first.rating == 7, "expetced it to have a rating of 7 but it was #{bob.favourite_recipes.first.rating}."
+      bob.favourite_recipes << frog_and_duck_soup
+      assert bob.favourite_recipes.first.name == frog_and_duck_soup.name, "expected bob's fave to be frog and duck soup but it was #{bob.favourite_recipes.first.name}."
 
       # and finally shut it all down
 
@@ -183,7 +181,6 @@ class UserTest < HandlerTestBase
       user.destroy
       assert ActiveIngredient.count == 0, "There #{ActiveIngredient.count == 1 ? 'are' : 's'} #{ActiveIngredient.count} ActiveIngredient#{ActiveIngredient.count == 1 ? '' : 's'} left over."
       assert AllowedUnit.count == 0, "There #{AllowedUnit.count == 1 ? 'are' : 's'} #{AllowedUnit.count} AllowedUnit#{AllowedUnit.count == 1 ? '' : 's'} left over."
-      assert FavouriteRecipe.count == 0, "Expected the favourite recipes to be gone but there #{FavouriteRecipe.count == 1 ? 'was' : 'were'} #{FavouriteRecipe.count} left."
       assert Ingredient.count == 0, "There #{Ingredient.count == 1 ? 'are' : 's'} #{Ingredient.count} Ingredient#{Ingredient.count == 1 ? '' : 's'} left over."
       assert Meal.count == 0, "There #{Meal.count == 1 ? 'are' : 's'} #{Meal.count} Meal#{Meal.count == 1 ? '' : 's'} left over."
       assert MealType.count == 0, "There #{MealType.count == 1 ? 'are' : 's'} #{MealType.count} MealType#{MealType.count == 1 ? '' : 's'} left over."

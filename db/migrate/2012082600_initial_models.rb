@@ -106,13 +106,13 @@ class InitialModels < ActiveRecord::Migration
       t.string   :name, :limit => 75
       t.string   :sex, :limit => 7
       t.string   :first_name, :limit => 50
-      t.string   :last_name, :limit => 50
+      t.string   :last_name, :limit => 150
       t.string   :email, :limit => 125
       t.integer  :remote_id
       t.string   :profile_picture_url, :limit => 255
       t.string   :locale, :limit => 7
                                       # user has_many :recipes
-                                      # user has_many :favourite_recipes
+                                      # user has_and_belongs_to_many :favourite_recipes :class_name => 'Recipe'
                                       # user has_many :photos.
                                       # user has_and_belongs_to_many :favourite_tags, :class_name => 'Tag'
     end
@@ -150,6 +150,12 @@ class InitialModels < ActiveRecord::Migration
     
     add_index :tags, :name, :unique => true
 
+    # recipes can be favourited by users and users can have many favourite_recipes
+    create_table :recipes_users, :id => false do |t|
+      t.integer  :user_id
+      t.integer  :recipe_id
+    end
+
     # tags have users and users have favourite_tags
     create_table :tags_users, :id => false do |t|
       t.integer  :user_id
@@ -167,22 +173,9 @@ class InitialModels < ActiveRecord::Migration
       t.integer :recipe_id
     end
 
-    create_table :favourite_recipes do |t|
-      t.integer :recipe_id      # favourite_recipe belongs_to :recipe
-                                # recipe has_many :favourite_recipes
-      t.integer :user_id        # favourite_recipe belongs_to :users
-                                # user has_many :favourite_recipes
-      t.integer :rating         # the rating the user gives the recipe. (aggregated to compute recipe's average rating.)
-    end
-
     create_table :quantities do |t|
       t.decimal :amount
       t.integer :unit_id        # quantity belongs_to :unit
-    end
-
-    create_table :preparations do |t|
-      t.string :name, :limit => 25
-                                # preparation has_many :active_ingredients
     end
 
     create_table :photos do |t|

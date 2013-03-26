@@ -80,10 +80,8 @@ class RecipeTest < HandlerTestBase
     assert Recipe.count == 0, "There #{Recipe.count == 1 ? 'is' : 'are'} #{Recipe.count} Recipe#{Recipe.count == 1 ? '' : 's'} left over."
     assert Ingredient.count == 0, "There #{Ingredient.count == 1 ? 'is' : 'are'} #{Ingredient.count} Ingredient#{Ingredient.count == 1 ? '' : 's'} left over."
     assert CoreIngredient.count == 0, "There #{CoreIngredient.count == 1 ? 'is' : 'are'} #{CoreIngredient.count} CoreIngredient#{CoreIngredient.count == 1 ? '' : 's'} left over."
-    assert Preparation.count == 0, "There #{Preparation.count == 1 ? 'is' : 'are'} #{Preparation.count} Preparation#{Preparation.count == 1 ? '' : 's'} left over."
     assert ActiveIngredient.count == 0, "There #{ActiveIngredient.count == 1 ? 'is' : 'are'} #{ActiveIngredient.count} ActiveIngredient#{ActiveIngredient.count == 1 ? '' : 's'} left over."
     assert AllowedUnit.count == 0, "There #{AllowedUnit.count == 1 ? 'is' : 'are'} #{AllowedUnit.count} AllowedUnit#{AllowedUnit.count == 1 ? '' : 's'} left over."
-    assert Preparation.count == 0, "There #{Preparation.count == 1 ? 'is' : 'are'} #{Preparation.count} Preparation#{Preparation.count == 1 ? '' : 's'} left over."
     assert Season.count == 0, "There #{Season.count == 1 ? 'is' : 'are'} #{Season.count} Season#{Season.count == 1 ? '' : 's'} left over."
     assert Tag.count == 0, "There #{Tag.count == 1 ? 'is' : 'are'} #{Tag.count} Tag#{Tag.count == 1 ? '' : 's'} left over."
   end
