@@ -17,6 +17,7 @@ ui:
   edit_this_recipe: edit this recipe
   favourites: favourites
   favourite_this_recipe: favourite this recipe
+  unfavourite_this_recipe: unfavourite this recipe
   ingredients: ingredients
   ingredient_name: ingredient name
   greeting: Hello %1, welcome to Open Recipe.

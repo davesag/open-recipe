@@ -1,6 +1,7 @@
 -can_read = allowed_to_view?(recipe)
 -can_edit = allowed_to_edit?(recipe)
 -owns = user_owns?(recipe)
+-fave = active_user.favourite_recipes.include?(recipe)
 -if can_read
   %h2<
     -if owns
@@ -32,7 +33,10 @@
       %dd<~ recipe.method
   #actions
     -if !owns
-      %button#favourite-recipe<= UnicodeUtils::titlecase(t.ui.favourite_this_recipe)
+      -if fave
+        %button#favourite-recipe<= UnicodeUtils::titlecase(t.ui.unfavourite_this_recipe)
+      -else
+        %button#favourite-recipe<= UnicodeUtils::titlecase(t.ui.favourite_this_recipe)
     -if can_edit
       %button#change-recipe<= UnicodeUtils::titlecase(t.ui.edit_this_recipe)
     %div.fb-like(data-layout="button_count" data-width="450" data-show-faces="true" data-font="tahoma")
@@ -46,9 +50,15 @@
   -if !owns
     :javascript
       $('#favourite-recipe').button({icons: {primary:'ui-icon-heart'}}).click(function() {
-        // use some AJAX to favourite the recipe, and
-        // also kick off a facebook 'like' request.
-        console.log("favourite recipe", "#{recipe.name}");
+        // use some AJAX to favourite the recipe
+        $.post('/favourite-recipe/#{recipe.id}', function(data){
+          if (data['success']) {
+            // switch the button to an unfavourite button.
+            $('#favourite-recipe').button('option', 'label', data['message']);
+          }
+        }).error(function() {
+            alert(ERROR_MESSAGES['server']);
+        })
       });
 -else
   #recipe.ui-state-error.ui-widget-content.ui-corner-all

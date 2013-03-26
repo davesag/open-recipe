@@ -795,12 +795,23 @@ class OpenRecipeApp < Sinatra::Application
     end
   end
 
+  # toggles the presence of the recipe in the user's favourites.
   post '/favourite-recipe/:id' do
     if logged_in? && request.xhr?
+    	content_type :json
       recipe = Recipe.find_by_id(params[:id].to_i)
+      message = ''
       if recipe != nil
-        #todo: add it as a favourite.
-        return {:success => true, :message => 'recipe_favourited'}.to_json
+        user = active_user
+        if user.favourite_recipes.include?(recipe)
+          user.favourite_recipes.delete(recipe)
+          message = UnicodeUtils::titlecase(t.ui.favourite_this_recipe)
+        else
+          user.favourite_recipes << recipe
+          message = UnicodeUtils::titlecase(t.ui.unfavourite_this_recipe)
+        end
+        user.save
+        return {:success => true, :message => message}.to_json
       else
         status 404
         return {:success => false, :error => 'recipe_not_found'}.to_json
