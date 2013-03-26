@@ -115,11 +115,12 @@ User.find(:all, :order=>"name ASC").each do |i|
     'first_name' => i.first_name,
     'last_name' => i.last_name,
     'email' => i.email,
-    'remote_id' => i.remote_id,
+    'username' => i.username,
     'profile_picture_url' => i.profile_picture_url,
     'locale' => i.locale
   }
-  result << { i.name => r }
+  # what to do with favourite recipes?
+  result << { i.remote_id => r }
 end
 file = File.open('./extracts/users.yml', 'w')
 file.write(result.to_yaml)
@@ -129,6 +130,7 @@ puts "Extracting Recipes."
 result = []
 Recipe.find(:all, :order=>"name ASC").each do |i|
   r = {
+    'owner' => i.owner.remote_id,
     'name' => i.name,
     'serves' => i.serves,
     'cooking_time' => i.cooking_time,
@@ -155,7 +157,7 @@ Recipe.find(:all, :order=>"name ASC").each do |i|
         } : nil
       }
     end
-    r['ingredients'] = ings
+    r['active_ingredients'] = ings
   end
   result << { i.name => r }
 end

@@ -1,0 +1,400 @@
+---
+- Bacon lettuce and tomato sandwich:
+    owner: 677015415
+    name: Bacon lettuce and tomato sandwich
+    serves: 6
+    cooking_time: 900
+    preparation_time: 300
+    description: A classic. And it's delicious.
+    method: ! "First up, lightly toast the bread and pan fry the bacon until it is
+      cooked but not crisp.  Remove half of the bacon and continue to fry the other
+      half until it is crisp.\nIn the meantime, slice the lettuce and tomatoes without
+      bruising it then layer the lettuce and tomatoes onto the bread.  Salt the tomatoes
+      lightly.\nAdd the soft bacon.  You might also want to apply a thin smear of
+      mayo here too. Grind on some pepper and layer on the crispy bacon. \nClose the
+      sandwich with the other piece of bread and slice into triangles."
+    requirements: ! 'It''s best to use lettuce and tomatoes from your own garden if
+      you can, and use a good heavy bread.
+
+      Slice the tomato as thinly as you can.'
+    tags: []
+    active_ingredients:
+    - name: lettuce
+      quantity:
+        unit: 
+        amount: 0.5
+    - name: tomato
+      quantity:
+        unit: 
+        amount: 2.0
+    - name: a pinch of salt
+      quantity:
+        unit: 
+        amount: 0.0
+    - name: slice of bread
+      quantity:
+        unit: 
+        amount: 12.0
+    - name: bacon rashers
+      quantity:
+        unit: 
+        amount: 12.0
+    - name: black pepper
+      quantity:
+        unit: 
+        amount: 0.0
+- Dave's Special Sauce:
+    owner: 677015415
+    name: Dave's Special Sauce
+    serves: 2
+    cooking_time: 129600
+    preparation_time: 3600
+    description: An amazing sauce. Delicious in fact.
+    method: Mix and serve.  (to be filled in later)
+    requirements: A pot
+    tags: []
+    active_ingredients:
+    - name: tomato
+      quantity:
+        unit: 
+        amount: 2.0
+    - name: black pepper
+      quantity:
+        unit: gram
+        amount: 100.0
+- Fish Biscuit:
+    owner: 677015415
+    name: Fish Biscuit
+    serves: 1
+    cooking_time: 900
+    preparation_time: 0
+    description: A fish in the shape of a biscuit
+    method: Cook fish in oil, then cover in flour and cut into biscuits.
+    requirements: None
+    tags: []
+    active_ingredients:
+    - name: a whole fish
+      quantity:
+        unit: 
+        amount: 1.0
+    - name: flour
+      quantity:
+        unit: gram
+        amount: 250.0
+    - name: olive oil
+      quantity:
+        unit: tablespoon
+        amount: 1.0
+    - name: butter
+      quantity:
+        unit: gram
+        amount: 50.0
+    - name: a pinch of salt
+      quantity:
+        unit: 
+        amount: 0.0
+    - name: curry powder
+      quantity:
+        unit: gram
+        amount: 0.33
+- Fish Salad:
+    owner: 677015415
+    name: Fish Salad
+    serves: 2
+    cooking_time: 900
+    preparation_time: 1800
+    description: A delicious salad made of fish.
+    method: Fry the fish and sprinkle with lettuce.  Serve hot.
+    requirements: A good hot pan.
+    tags: []
+    active_ingredients:
+    - name: a whole fish
+      quantity:
+        unit: 
+        amount: 1.0
+    - name: tumeric
+      quantity:
+        unit: teaspoon
+        amount: 1.0
+    - name: lettuce
+      quantity:
+        unit: 
+        amount: 1.0
+    - name: tomato
+      quantity:
+        unit: 
+        amount: 2.0
+    - name: olive oil
+      quantity:
+        unit: tablespoon
+        amount: 2.0
+- Fish Soup:
+    owner: 677015415
+    name: Fish Soup
+    serves: 6
+    cooking_time: 4260
+    preparation_time: 2700
+    description: Delicious fish soup. Yumo!
+    method: Mix the stuff up and cook it.
+    requirements: Pot
+    tags: []
+    active_ingredients:
+    - name: fish
+      quantity:
+        unit: 
+        amount: 1.0
+    - name: wine
+      quantity:
+        unit: liter
+        amount: 2.25
+    - name: rosemary
+      quantity:
+        unit: 
+        amount: 
+    - name: garlic
+      quantity:
+        unit: 
+        amount: 
+    - name: sage
+      quantity:
+        unit: 
+        amount: 
+    - name: water
+      quantity:
+        unit: milliliter
+        amount: 500.0
+- Lamb Salad:
+    owner: 704796629
+    name: Lamb Salad
+    serves: 6
+    cooking_time: 600
+    preparation_time: 10800
+    description: Delicious middle-eastern inspired lamb salad.
+    method: ! 'Roast the seasoned lamb shoulder at 150°C for 3 hours, tightly covered
+      in foil to keep the juices in.
+
+      While the lamb is cooking, steam the cauliflower florets for 2 minutes.
+
+      When the lamb is cooked, let it rest for 10 minutes, then slice into small chunks.
+
+      If you are using last night''s leftover roast lamb, gently fry it off in a non-stick
+      pan.
+
+      Mix it all together in a large bowl and sprinkle with sumac.
+
+      Serve at room temperature.'
+    requirements: Roasting pan, and a decent oven.
+    tags: []
+    active_ingredients:
+    - name: lamb shoulder
+      quantity:
+        unit: kilogram
+        amount: 1.0
+    - name: sprig of rosemary
+      quantity:
+        unit: 
+        amount: 
+    - name: cauliflower florets
+      quantity:
+        unit: 
+        amount: 6.0
+    - name: sunflower seeds
+      quantity:
+        unit: cup
+        amount: 0.5
+    - name: natural yoghurt
+      quantity:
+        unit: gram
+        amount: 200.0
+    - name: sumac
+      quantity:
+        unit: tablespoon
+        amount: 1.0
+    - name: chickpeas
+      quantity:
+        unit: cup
+        amount: 0.5
+- Roadkill Salad:
+    owner: 677015415
+    name: Roadkill Salad
+    serves: 8
+    cooking_time: 900
+    preparation_time: 176760
+    description: Scrape and eat it all up. Yummy!
+    method: Cook and eat. Yum!
+    requirements: A roa, and the willingness to use it.
+    tags: []
+    active_ingredients:
+    - name: wombat
+      quantity:
+        unit: 
+        amount: 2.0
+    - name: echidna
+      quantity:
+        unit: 
+        amount: 1.0
+    - name: kangaroo
+      quantity:
+        unit: 
+        amount: 1.0
+    - name: wine (red)
+      quantity:
+        unit: liter
+        amount: 20.0
+    - name: a whole fish
+      quantity:
+        unit: 
+        amount: 
+- Testing:
+    owner: 1578116633
+    name: Testing
+    serves: 2
+    cooking_time: 1200
+    preparation_time: 600
+    description: Just testing
+    method: Cook it.
+    requirements: Stuff
+    tags: []
+    active_ingredients:
+    - name: a whole fish
+      quantity:
+        unit: 
+        amount: 1.0
+- Veal Schnitzel:
+    owner: 677015415
+    name: Veal Schnitzel
+    serves: 2
+    cooking_time: 1800
+    preparation_time: 900
+    description: Delicious and nutritious. A favourite in my home.
+    method: ! 'Flour the veal and coat with egg and breadcrumbs.
+
+      Fry in oil and butter for 5 mts per side.
+
+      Serve with lemon.'
+    requirements: A hot pan.
+    tags: []
+    active_ingredients:
+    - name: veal fillets
+      quantity:
+        unit: 
+        amount: 2.0
+    - name: breadcrumbs
+      quantity:
+        unit: gram
+        amount: 250.0
+    - name: butter
+      quantity:
+        unit: gram
+        amount: 100.0
+    - name: olive oil
+      quantity:
+        unit: milliliter
+        amount: 100.0
+    - name: plain flour
+      quantity:
+        unit: gram
+        amount: 100.0
+    - name: eggs
+      quantity:
+        unit: 
+        amount: 2.0
+- Yummalishous Stew:
+    owner: 677015415
+    name: Yummalishous Stew
+    serves: 11
+    cooking_time: 5100
+    preparation_time: 2700
+    description: A very yummy stew.
+    method: Add veggies to the water and boil it dry.
+    requirements: A big pot.
+    tags: []
+    active_ingredients:
+    - name: diced carrots
+      quantity:
+        unit: 
+        amount: 3.0
+    - name: sliced red onions
+      quantity:
+        unit: 
+        amount: 4.0
+    - name: water
+      quantity:
+        unit: liter
+        amount: 3.5
+- test:
+    owner: 677015415
+    name: test
+    serves: 6
+    cooking_time: 15000
+    preparation_time: 8400
+    description: test
+    method: test
+    requirements: test
+    tags: []
+    active_ingredients:
+    - name: chicken stock
+      quantity:
+        unit: liter
+        amount: 2.8
+    - name: wine
+      quantity:
+        unit: cup
+        amount: 1.0
+    - name: chicken livers
+      quantity:
+        unit: tablespoon
+        amount: 3.33
+    - name: liquid nitrogen
+      quantity:
+        unit: liter
+        amount: 2.125
+- test 3:
+    owner: 677015415
+    name: test 3
+    serves: 2
+    cooking_time: 129600
+    preparation_time: 600
+    description: prep = 10m
+    method: Yum!
+    requirements: testing
+    tags: []
+    active_ingredients:
+    - name: bleached flour
+      quantity:
+        unit: gram
+        amount: 100.0
+- test 4:
+    owner: 677015415
+    name: test 4
+    serves: 4
+    cooking_time: 5400
+    preparation_time: 1500
+    description: test 4 d
+    method: test m
+    requirements: blah
+    tags: []
+    active_ingredients:
+    - name: liquid nitrogen
+      quantity:
+        unit: liter
+        amount: 1.0
+    - name: cheese
+      quantity:
+        unit: kilogram
+        amount: 0.25
+- testing again:
+    owner: 677015415
+    name: testing again
+    serves: 1
+    cooking_time: 7200
+    preparation_time: 900
+    description: meal for one
+    method: just cook it.
+    requirements: time and space
+    tags: []
+    active_ingredients:
+    - name: fish
+      quantity:
+        unit: gram
+        amount: 250.0

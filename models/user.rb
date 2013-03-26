@@ -36,8 +36,8 @@ class User < ActiveRecord::Base
     self.name = n
     self.first_name = me['first_name']
     self.last_name = me['last_name']
-    self.username = me['username'] unless me['username'] == nil
-    self.username = me['id'] if me['username'] == nil
+    self.username = me['username'] unless (me['username'] == nil || me['username'].empty?)
+    self.username = me['id'] if (me['username'] == nil || me['username'].empty?)
     self.email = me['email']
     self.sex = me['gender']
     self.remote_id = me['id'].to_i

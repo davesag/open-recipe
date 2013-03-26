@@ -479,16 +479,16 @@ class OpenRecipeApp < Sinatra::Application
       logger.debug "@active_user is nil and so is session['access_token']"
       return
     end
-    @active_user = User.find_by_id(session['user_id']) unless session['user_id'] == nil
+    @active_user = User.find_by_remote_id(session['user_id']) unless session['user_id'] == nil
     if (@active_user == nil)
       me = graph.get_object('me')
       @active_user = User.where(:username => me['username']).first_or_create(:remote_id => me['id'].to_i)
       @active_user.update_from_facebook me
       @active_user.save
-      session['user_id'] = @active_user.id
+      session['user_id'] = @active_user.remote_id
       logger.debug "Loaded @active_user = #{@active_user.inspect} from Facebook."
     else
-      logger.debug "Found @active_user.id = #{@active_user.id} in the database."
+      logger.debug "Found @active_user.remote_id = #{@active_user.remote_id} in the database."
       logger.debug "@active_user.name = #{@active_user.name}."
     end
   end
