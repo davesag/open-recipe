@@ -59,6 +59,7 @@ class InitialModels < ActiveRecord::Migration
 
     create_table :recipes do |t|
       t.string  :name, :null => false, :limit => 255
+    #  t.string  :slug, :null => false, :limit => 45
       t.integer :serves, :null => false
       t.integer :cooking_time         # seconds
       t.integer :preparation_time     # seconds
@@ -74,6 +75,7 @@ class InitialModels < ActiveRecord::Migration
     end
     
     add_index :recipes, :name, :unique => false
+    # add_index :recipes, :slug, :unique => true
 
     # ingredient has_and_belongs_to_many :recipes (These are the recipes to make this ingredient.)
     # recipe has_and_belongs_to_many :ingredients (These are the recipes to make this ingredient.)
