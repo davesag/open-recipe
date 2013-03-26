@@ -216,13 +216,22 @@ class OpenRecipeApp < Sinatra::Application
     # returns an array of hashes of the following
     # {:title => 'menu title', :href => '/something'}
     # or the default {:title => 'menu title', :selected => true} implying selected is true and no link.
-    def navigation
+    def navigation(recipe = nil)
       menu = []
-      menu << menu_item('Dashboard', '/')
-      menu << menu_item('About', '/about')
-      menu << menu_item('Browse', '/browse') if logged_in?
-      menu << menu_item('Settings', '/settings') if logged_in?
-      menu << menu_item('FAQs', '/faqs')
+      menu << menu_item(t.navigation.dashboard, '/')
+      if logged_in?
+        if recipe != nil
+          menu << menu_item(t.navigation.recipe, "/recipe/#{recipe.id}") if request.path_info.downcase.start_with? '/recipe'
+          menu << menu_item(t.navigation..edit_recipe, "/edit-recipe/#{recipe.id}") if request.path_info.downcase.start_with? '/edit-recipe'
+        end
+        menu << menu_item(t.navigation.create_recipe, "/create-recipe") if request.path_info.downcase.start_with? '/create-recipe'
+        menu << menu_item(t.navigation.my_recipes, '/my-recipes')
+        menu << menu_item(t.navigation.favourites, '/favourite-recipes')
+        menu << menu_item(t.navigation.browse, '/browse')
+        # menu << menu_item(t.navigation.settings, '/settings')
+      end
+      menu << menu_item(t.navigation.about, '/about')
+      menu << menu_item(t.navigation.faqs, '/faqs')
       return menu
     end
 
@@ -626,6 +635,7 @@ class OpenRecipeApp < Sinatra::Application
     haml :fb_status_test
   end
 
+  #todo remove once done testing.
   get '*.html\??*' do
     #only use while testing.
     filename = "#{params[:splat][0]}.html"
@@ -703,13 +713,32 @@ class OpenRecipeApp < Sinatra::Application
     end
   end
 
+  get '/favourite-recipes' do
+    if !request.xhr? & logged_in?
+      haml :favourite_recipes
+    else
+      status 403
+      haml :'403'
+    end
+  end
+
+  get '/my-recipes' do
+    if !request.xhr? & logged_in?
+      haml :my_recipes
+    else
+      status 403
+      haml :'403'
+    end
+  end
+
   # return an array of the active user's own recipes in summary form,
   # localised and formatted for use by a dataTable object.
   # see http://datatables.net/usage/server-side and also
   # see http://www.datatables.net/release-datatables/examples/server_side/ids.html
   get '/favourite-recipes/datatable\??*' do
     if request.xhr? && logged_in?
-      rabl :recipes_datatable, :locals => { :recipes => active_user.favourite_recipes,
+      content_type :json
+      rabl :all_recipes_datatable, :locals => { :recipes => active_user.favourite_recipes,
                                             :echo => params[:sEcho].to_i,
                                             :table_name => params['tName'] }
     else

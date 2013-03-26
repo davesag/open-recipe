@@ -2,6 +2,18 @@
 # phrases that accept params should be in the specific case required for display.
 # note the term 'method' is keyed as 'the_method' because 'method' is a reserved word.
 
+navigation:
+  dashboard: Dashboard
+  recipe: Recipe
+  my_recipes: My Recipes
+  favourites: Favourites
+  browse: Browse
+  about: About
+  settings: Settings
+  faqs: FAQs
+  edit_recipe: Edit Recipe
+  create_recipe: Create Recipe
+
 ui:
   add_a_recipe: add a recipe
   amount: amount

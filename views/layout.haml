@@ -107,7 +107,7 @@
                 %img.fb-login{:src => '/images/fb_login_button.png'}
             #nav-bar.ui-tabs.ui-widget.ui-widget-content.ui-corner-all
               %ul.ui-tabs-nav.ui-helper-reset.ui-helper-clearfix.ui-widget-header.ui-corner-all
-                - for item in navigation
+                - for item in navigation(defined?(recipe)? recipe : nil)
                   - selected = item[:selected]
                   - mods = "ui-state-default ui-corner-top#{selected ? ' ui-tabs-selected ui-state-active' : ''}"
                   %li{:class => mods}<

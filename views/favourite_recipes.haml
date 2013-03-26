@@ -1,0 +1,56 @@
+-if !logged_in?
+  %div.ui-widget{:style => 'width:75%;margin-top:1.5em; margin-left:auto; margin-right:auto;'}
+    %div.ui-state-error.ui-corner-all{:style => 'padding: .7em; font-size:1.2em;'}
+      %p<
+        %span.ui-icon.ui-icon-alert{:style => 'float: left; margin-right: .3em'}
+        %strong< You are not logged in.
+      %p<
+        You will need to <a href="/login">log in via facebook</a> and authorise us so we may
+        access the data we need to operate this site for you.
+      %p<
+        Please see our
+        %a{:href => '/privacy', :title => "Privacy Policy"}Privacy Policy
+        for more details concerning the information we pull from Facebook and how we use it.
+-else
+  - if active_user.favourite_recipes.empty?
+    %p< #{Unicode::capitalize(t.warnings.not_favourited_any_recipes)}
+  - else
+    :javascript    
+      $(window).resize(function() {
+        setTimeout(function(){update_datatable_size('#favourite-recipe-list')}, 250);
+      });
+  
+      $(function() {
+        // use the data in a dataTable.
+        // the server will assign an ID to each row
+        // using a tName param in the form {tName}-id-{recipe.id}
+        // making it simple to parse out into the associated recipe's ID.
+        $('#favourite-recipe-list').dataTable( {
+          "bJQueryUI": true,
+          "sPaginationType": "full_numbers",
+          "sAjaxSource":"/favourite-recipes/datatable",
+          "bProcessing":true,
+          "bServerSide":false,
+          'aaSorting': [[0, 'asc']],
+          'bAutoWidth ':false,
+          "aoColumns": [
+            {"sTitle": "#{UnicodeUtils::titlecase(t.ui.name)}", "sType": 'string', 'sWidth': '25%'},
+            {"sTitle": "#{UnicodeUtils::titlecase(t.ui.owner)}", "sType": 'string', 'sWidth': '20%'},
+            {"sTitle": "#{UnicodeUtils::titlecase(t.ui.description)}", "sType": 'string', 'sWidth': '25%', 'bSortable': false},
+            {"sTitle": "#{UnicodeUtils::titlecase(t.ui.preparation_time)}", "sType": 'string', 'sWidth': '15%', 'bSearchable': false, 'iDataSort': 6},
+            {"sTitle": "#{UnicodeUtils::titlecase(t.ui.cooking_time)}", "sType": 'string', 'sWidth': '15%', 'bSearchable': false, 'iDataSort': 7},
+            {"sType": 'numeric', 'bSearchable': false, 'bVisible': false},
+            {"sType": 'numeric', 'bSearchable': false, 'bVisible': false},
+          ],
+          'fnServerParams': function (aoData) {
+            aoData.push({'name':'tName', 'value':'favourite-recipe-list'});
+          },
+          'fnDrawCallback': function () {
+            $(this.fnGetNodes()).click(function() {
+              location.href = '/recipe/' + $(this).attr('id').substring('favourite-recipe-list-id-'.length);
+            });
+          }
+        });
+      });
+    #recipes
+      %table#favourite-recipe-list
