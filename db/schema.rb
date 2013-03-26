@@ -53,12 +53,6 @@ ActiveRecord::Schema.define(:version => 2012082600) do
     t.integer "tag_id"
   end
 
-  create_table "favourite_recipes", :force => true do |t|
-    t.integer "recipe_id"
-    t.integer "user_id"
-    t.integer "rating"
-  end
-
   create_table "ingredients", :force => true do |t|
     t.string  "name",        :null => false
     t.text    "description"
@@ -126,10 +120,6 @@ ActiveRecord::Schema.define(:version => 2012082600) do
 
   add_index "preferences", ["name"], :name => "index_preferences_on_name"
 
-  create_table "preparations", :force => true do |t|
-    t.string "name", :limit => 25
-  end
-
   create_table "quantities", :force => true do |t|
     t.decimal "amount"
     t.integer "unit_id"
@@ -151,6 +141,11 @@ ActiveRecord::Schema.define(:version => 2012082600) do
 
   create_table "recipes_tags", :id => false, :force => true do |t|
     t.integer "tag_id"
+    t.integer "recipe_id"
+  end
+
+  create_table "recipes_users", :id => false, :force => true do |t|
+    t.integer "user_id"
     t.integer "recipe_id"
   end
 
@@ -182,7 +177,7 @@ ActiveRecord::Schema.define(:version => 2012082600) do
     t.string  "name",                :limit => 75
     t.string  "sex",                 :limit => 7
     t.string  "first_name",          :limit => 50
-    t.string  "last_name",           :limit => 50
+    t.string  "last_name",           :limit => 150
     t.string  "email",               :limit => 125
     t.integer "remote_id"
     t.string  "profile_picture_url"
