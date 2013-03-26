@@ -191,11 +191,14 @@ ActiveRecord::Base.transaction do |tran|
     if ais != nil
       ais.each do |ai|
         ingredient = Ingredient.where(:name => ai['name']).first
+        # puts "DEBUGGING ::: No Ingredient" if ingredient == nil
+        # puts "DEBUGGING ::: #{ingredient.inspect}" unless ingredient == nil
         aiq = ai['quantity']
          
         u = (aiq['unit'] != nil) ? AllowedUnit.where(:name => aiq['unit']).first : nil
         q = Quantity.create(:amount => aiq['amount'], :unit => u)
         active_ingredient = ActiveIngredient.create(:ingredient => ingredient, :quantity => q)
+        recipe.active_ingredients << active_ingredient
       end
     end
     recipe.save
