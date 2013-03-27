@@ -3,7 +3,8 @@
   %li <a onclick='postToFeed(); return false;'>Post to Feed</a>
   %li <a onclick="sendRequestViaMultiFriendSelector(); return false;">Send Request to Friends</a>
   %li <a onclick="sendAsMessageToFriend(); return false;">Send Message to friends</a>
-  %li <a onclick="getPhotosFromFacebook(); return false;">Get Photos from Facebook</a>
+  %li <a onclick="getPhotosFromFacebook(); return false;">Get Your Profile Photos from Facebook</a>
+  %li <a onclick="choosePhoto(); return false;">Show Image Selector</a>
 %p#msg
 :javascript
   function postToFeed() {
@@ -63,4 +64,79 @@
       }
     });
   }
-  
+  function choosePhoto() {
+    // callbacks.
+    callbackAlbumSelected = function(albumId) {
+      var album = CSPhotoSelector.getAlbumById(albumId);
+      // show album photos
+      selector.showPhotoSelector(null, album.id);
+      console.log('Selected Album', album);
+    };
+    callbackAlbumUnselected = function(albumId) {
+      var album = CSPhotoSelector.getAlbumById(albumId);
+      console.log('Unselected Album', album);
+    };
+    callbackPhotoSelected = function(photoId) {
+      var photo = CSPhotoSelector.getPhotoById(photoId);
+      $('#CSPhotoSelector_buttonOK').show();
+      console.log('Selected Photo', photo);
+    };
+    callbackPhotoUnselected = function(photoId) {
+      var photo = CSPhotoSelector.getPhotoById(photoId);
+      $('#CSPhotoSelector_buttonOK').hide();
+      console.log('Unselected Photo', photo);
+    };
+    callbackSubmit = function(photoId) {
+      var photo = CSPhotoSelector.getPhotoById(photoId);
+      console.log('Submitted Photo', photo);
+    };
+    // photo selector.
+    CSPhotoSelector.init({debug: true});
+    var selector = CSPhotoSelector.newInstance({
+      callbackAlbumSelected	: callbackAlbumSelected,
+      callbackAlbumUnselected	: callbackAlbumUnselected,
+      callbackPhotoSelected	: callbackPhotoSelected,
+      callbackPhotoUnselected	: callbackPhotoUnselected,
+      callbackSubmit			: callbackSubmit,
+      maxSelection			: 1,
+      albumsPerPage			: 6,
+      photosPerPage			: 200,
+      autoDeselection			: true
+    });
+    // reset and show album selector
+    selector.reset();
+    selector.showAlbumSelector('me');
+  }
+-# Markup for Carson Shold's Photo Selector
+#CSPhotoSelector
+  %div.CSPhotoSelector_dialog
+    %a#CSPhotoSelector_buttonClose(href="#")< x
+    %div.CSPhotoSelector_form
+      %div.CSPhotoSelector_header
+        %p< Choose from Photos
+      %div.CSPhotoSelector_content.CSAlbumSelector_wrapper
+        %p< Browse your albums until you find a picture you want to use
+        %div.CSPhotoSelector_searchContainer.CSPhotoSelector_clearfix
+          %div.CSPhotoSelector_selectedCountContainer< Select an album
+        %div.CSPhotoSelector_photosContainer.CSAlbum_container
+      %div.CSPhotoSelector_content.CSPhotoSelector_wrapper
+        %p< Select a new photo
+        %div.CSPhotoSelector_searchContainer.CSPhotoSelector_clearfix
+          %div.CSPhotoSelector_selectedCountContainer<
+            %span.CSPhotoSelector_selectedPhotoCount< 0
+            | 
+            %span.CSPhotoSelector_selectedPhotoCountMax< 0
+            photos selected
+          %a#CSPhotoSelector_backToAlbums(href="#")< Back to albums
+        %div.CSPhotoSelector_photosContainer.CSPhoto_container<
+      #CSPhotoSelector_loader<
+      %div.CSPhotoSelector_footer.CSPhotoSelector_clearfix
+        %a#CSPhotoSelector_pagePre.CSPhotoSelector_disabled(href="#")< Previous
+        %a#CSPhotoSelector_pageNext(href="#")< Next
+        %div.CSPhotoSelector_pageNumberContainer
+          Page
+          %span#CSPhotoSelector_pageNumber< 1
+          |
+          %span#CSPhotoSelector_pageNumberTotal< 1
+        %a#CSPhotoSelector_buttonOK(href="#")< OK
+        %a#CSPhotoSelector_buttonCancel(href="#")< Cancel
