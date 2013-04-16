@@ -23,7 +23,6 @@
     %script{ :src => "/scripts/jquery-ui-1.10.0.custom.min.js" }
     %script{ :src => "/scripts/jquery.dataTables.min.js" }
     %script{ :src => "/scripts/jquery.validate.min.js" }
-    %script{ :src => "/scripts/csphotoselector.js" }
     :javascript
       var debugging = true,
       ERROR_MESSAGES = {
@@ -31,9 +30,10 @@
       };
       if (typeof console == "undefined") var console = { log: function() {} }; 
       else if (!debugging || typeof console.log == "undefined") console.log = function() {};
-    -# %script{ :src => "/scripts/open_recipe_ui_objects.js" }
-    -# %script{ :src => "/scripts/open_recipe_core_jquery.js" }
-    %script{ :src => "/scripts/open_recipe_core.min.js" }
+    %script{ :src => "/scripts/open_recipe_ui_objects.js" }
+    %script{ :src => "/scripts/open_recipe_core_jquery.js" }
+    -# %script{ :src => "/scripts/open_recipe_core.min.js" }
+    %script{ :src => "/scripts/csphotoselector.js" }
     :javascript
       window.fbAsyncInit = function() {
         // init the FB JS SDK

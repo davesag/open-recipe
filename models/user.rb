@@ -5,12 +5,13 @@ require 'active_record'
 class User < ActiveRecord::Base
 
   validates_uniqueness_of :username
+  validates_uniqueness_of :remote_id
+
   # :name, String, :length => 1..75
   # :sex, String, :length => 1..7
   # :first_name, String, :length => 1..25
   # :last_name, String, :length => 1..25
   # :email, String, :length => 1..75
-  # :remote_id, Integer, :unique => true
   # :profile_picture_url, String, :length => 1..255
   # :locale, String, :length => 1..6
 

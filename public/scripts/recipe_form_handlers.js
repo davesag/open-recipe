@@ -26,9 +26,49 @@ var ingredient_name_autocompleter = {
   button_handlers = {
     "choose-photo" : function (event) {
       event.preventDefault();
-      console.log('choose a recipe photo from your facebook photos.');  // enhance this later
-      // see example at http://code.google.com/p/facebook-photo-picker/
-      // and a jQuery one at https://github.com/seanhellwig/jQuery-Facebook-Multi-Photo-Selector
+      // callbacks.
+      callbackAlbumSelected = function(albumId) {
+        var album = CSPhotoSelector.getAlbumById(albumId);
+        selector.showPhotoSelector(null, album.id);
+      };
+      callbackAlbumUnselected = function(albumId) {
+        var album = CSPhotoSelector.getAlbumById(albumId);
+      };
+      callbackPhotoSelected = function(photoId) {
+        var photo = CSPhotoSelector.getPhotoById(photoId);
+        $('#CSPhotoSelector_buttonOK').show();
+      };
+      callbackPhotoUnselected = function(photoId) {
+        var photo = CSPhotoSelector.getPhotoById(photoId);
+        $('#CSPhotoSelector_buttonOK').hide();
+      };
+      callbackSubmit = function(photoId) {
+        var photo = CSPhotoSelector.getPhotoById(photoId);
+        console.log('Chosen photo', photo);
+        // display the photo somewhere and
+        $("#edit-or-create-recipe-photobox").css('background-image', 'url(' + photo.source + ')');
+        // attach the photo details to the recipe to be saved.
+        $("input#photo-remote_id").val(photo.id);
+        $("input#photo-name").val(photo.name);
+        $("input#photo-image_url").val(photo.source);
+        $("input#photo-thumbnail_url").val(photo.picture);
+      };
+      // photo selector.
+      CSPhotoSelector.init({debug: debugging});
+      var selector = CSPhotoSelector.newInstance({
+        callbackAlbumSelected	: callbackAlbumSelected,
+        callbackAlbumUnselected	: callbackAlbumUnselected,
+        callbackPhotoSelected	: callbackPhotoSelected,
+        callbackPhotoUnselected	: callbackPhotoUnselected,
+        callbackSubmit			: callbackSubmit,
+        maxSelection			: 1,
+        albumsPerPage			: 6,
+        photosPerPage			: 200,
+        autoDeselection			: true
+      });
+      // reset and show album selector
+      selector.reset();
+      selector.showAlbumSelector('me');
     },
     "save-recipe" : function (event) {
       event.preventDefault();
@@ -78,7 +118,14 @@ Recipe.prototype.toForm = function(form) {
   $("#cooking-time").val(toDurationString(this.cooking_time));
   $("#the-method").val(this.method);
   $("#requirements").val(this.requirements);
-
+  if (this.photo != null) {
+    $("photo-id").val(this.photo.id);
+    $("photo-remote_id").val(this.photo.remote_id);
+    $("photo-name").val(this.photo.name);
+    $("photo-image_url").val(this.photo.image_url);
+    $("photo-thumbnail_url").val(this.photo.thumbnail_url);
+    $("#edit-or-create-recipe-photobox").css('background-image', 'url(' + this.photo.image_url + ')');
+  }
   for (i in this.active_ingredients) {
     ai = this.active_ingredients[i];
     row = $(create_blank_ingredients_row(i));
@@ -117,8 +164,17 @@ Recipe.fromForm = function(form) {
       ingredients.push(new ActiveIngredient(n,q));
     }
   }
+  var photo = null;
+  if ($("#photo-remote_id").val() != '') {
+    // an_id, a_remote_id, a_name, an_image_url, a_thumbnail_url
+    photo = new Photo(parseInt($("#photo-id").val()),
+                      parseInt($("#photo-remote_id").val()),
+                      $("#photo-name").val(),
+                      $("#photo-image_url").val(),
+                      $("#photo-thumbnail_url").val());    
+  }
   return new Recipe(recipe_id, $('#recipe-name').val(), parseInt($('#serves').val()), ct, pt, $('#description').val(),
-      $('#the-method').val(), $('#requirements').val(), ingredients, null, null); // ignore tags and meal for now.
+      $('#the-method').val(), $('#requirements').val(), ingredients, null, null, photo); // ignore tags and meal for now.
 }
 
 function to_seconds(d,hh,mm) {

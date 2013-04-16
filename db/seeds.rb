@@ -163,19 +163,38 @@ ActiveRecord::Base.transaction do |tran|
   puts "Users seeded."
 end
 
+ActiveRecord::Base.transaction do |tran|
+  puts "Seeding photos."
+  users = YAML.load(File.read('./config/photos.yml'))
+  users.each do |ihash|
+    fbid = ihash.keys.first
+    #puts "facebook_id: #{fbid}"
+    i = ihash[fbid]
+    #puts "i: #{i.inspect}"
+    owner = User.find_by_remote_id(i['owner'].to_i)
+    photo = Photo.where(:remote_id => fbid.to_i).first_or_create(:name => i['name'],
+                                                                 :owner => owner,
+                                                                 :image_url => i['image_url'],
+                                                                 :thumbnail_url => i['thumbnail_url'])
+  end
+  puts "Photos seeded."
+end
+
 # todo: recipes need a canonical name that is unique, and which can be used in a URL.
 ActiveRecord::Base.transaction do |tran|
   puts "Seeding recipes."
   recipes = YAML.load(File.read('./config/recipes.yml'))
   recipes.each do |ihash|
     name = ihash.keys.first
-    puts "name: #{name}"
+    # puts "name: #{name}"
     i = ihash[name]
-    puts "i: #{i.inspect}"
+    # puts "i: #{i.inspect}"
   
     recipe = Recipe.where(:name => name).first_or_create
     owner = User.where(:remote_id => i['owner']).first
     recipe.owner = owner unless recipe.owner == owner
+    photo = (i['photo'] != nil) ? Photo.find_by_remote_id(i['photo'].to_i) : nil
+    recipe.photos << photo unless photo == nil || recipe.photos.include?(photo)
     recipe.name = name unless recipe.name == name
     recipe.serves = i['serves'] unless recipe.serves == i['serves']
     recipe.cooking_time = i['cooking_time'] unless recipe.cooking_time == i['cooking_time']

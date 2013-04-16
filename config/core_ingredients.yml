@@ -4,7 +4,7 @@
     tags:
     - Middle East
     - nut
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - asparagus:
     description: a spring vegetable, native to most of Europe, northern Africa and
       western Asia
@@ -15,14 +15,14 @@
     description: Smoked, thinly sliced pork belly
     tags:
     - meat
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - bamboo:
     description: the largest members of the grass family, and some of the fastest
       growing plants in the world
     tags:
     - Asian
     - vegetable
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - beans:
     description: large plant seeds of several genera of the family Leguminosae
     tags:
@@ -33,18 +33,18 @@
     tags:
     - meat
     - red meat
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - beef stock:
     description: a stock made from rendering down parts of a cow with vegetables
     tags:
     - beef
     - stock
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - beer:
     description: the world's most loved alcoholic beverage
     tags:
     - alcohol
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - berries:
     description: foresty fruits
     tags:
@@ -57,26 +57,24 @@
     - green
     - Chinese
     - vegetable
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - bread:
     description: Bread
     tags:
     - bread
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring, summer,
-      autumn, winter, spring
+    season: all
 - breadcrumbs:
     description: Finely crumbled old bits of bread
     tags:
     - bread
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring, summer,
-      autumn, winter, spring
+    season: all
 - butter:
     description: A dairy product made by churning fresh or fermented cream or milk
     tags:
     - dairy
     - spread
     - oil
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - cardamom:
     description: Several plants of the similar genera Elettaria and Amomum in the
       ginger family Zingiberaceae
@@ -85,7 +83,7 @@
     - Bhutan
     - Nepal
     - spice
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - cauliflower:
     description: A vegetable that looks a bit like a brain and with a fractal dimension
       of 2.8
@@ -97,8 +95,7 @@
     tags:
     - cheese
     - diary
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring, summer,
-      autumn, winter, spring
+    season: all
 - chicken:
     description: the most common type of poultry in the world
     energy: 916000
@@ -106,13 +103,13 @@
     - poultry
     - meat
     - white meat
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - chicken stock:
     description: a stock made from rendering down parts of a chicken with vegetables
     tags:
     - chicken
     - stock
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - chickpeas:
     description: A legume of the family Fabaceae, subfamily Faboideae. Its seeds are
       high in protein.
@@ -125,23 +122,23 @@
     tags:
     - Sri Lanka
     - spice
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - cocoa:
     description: A low-fat component of chocolate, extracted from cocoa beans
     tags:
     - chocolate
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - cod:
     description: salt water fish with a mild flavour and a dense, flaky white flesh
     tags:
     - fish
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - cream:
     description: Cream is a dairy product that is composed of the higher-butterfat
       layer skimmed from the top of milk before homogenization.
     tags:
     - dairy
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - dried fruit:
     description: Fruit where the majority of the original water content has been removed
       either naturally, through sun drying, or through the use of specialized dryers
@@ -150,63 +147,63 @@
     - fruit
     - dried
     - dehydrated
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - duck eggs:
     description: Eggs laid by ducks. Larger and fattier than chicken eggs
     tags:
     - egg
     - duck
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - eggs:
     description: Typically refers to Chicken Eggs which and have been eaten by humans
       for millennia
     tags:
     - egg
     - chicken
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - figs:
     description: A delicious fruit
     tags:
     - fig
     - fruit
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - fish:
     description: an animal that lives in water
     tags:
     - fish
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - flour:
     description: a powder made by grinding cereal grains, other seeds or roots
     tags:
     - gluten
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - garlic:
     description: pungent flavored bulb related to onions
     tags:
     - vegetable
     - smelly
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - ginger:
     description: The rhizome of the plant Zingiber officinale, consumed as a delicacy,
       medicine, or spice.
     tags:
     - spice
     - Asian
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - honey:
     description: A sweet food made by bees using nectar from flowers
     tags:
     - sweet
     - fructose
     - glucose
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - icecream:
     description: Cold, creamy and delicious.  Comes in various flavours
     tags:
     - cold
     - sweet
     - dessert
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - lamb:
     description: Meat from a young sheep.
     tags:
@@ -223,7 +220,7 @@
       temperature.
     tags:
     - cold
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - maple syrup:
     description: A syrup usually made from the xylem sap of Maple trees
     tags:
@@ -231,66 +228,66 @@
     - sap
     - syrup
     - sweet
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - milk:
     description: A white liquid produced by the mammary glands of mammals
     tags:
     - white
     - liquid
     - dairy
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - molasses:
     description: Sweet, viscous by-product of the beating of sugarcane, grapes or
       sugar beets into sugar
     tags:
     - sweet
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - mushrooms:
     description: the fleshy body of a fungus
     tags:
     - fungus
     - vegetarian
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - nutmeg:
     description: A spice made from Myristica fragrans, an evergreen tree indigenous
       to the Banda Islands in the Moluccas (or Spice Islands) of Indonesia.
     tags:
     - spice
     - Indonesia
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - nuts:
     description: Hard-shelled indehiscent fruits of some plants
     tags:
     - seed
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - oats:
     description: Oats are a cereal
     tags:
     - oat
     - cereal
     - grain
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - oil:
     description: A fat obtained from animals or vegetables, or from drilling for oil
     tags:
     - oil
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - onions:
     description: the most widely cultivated species of the genus Allium
     tags:
     - vegetable
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - parsley:
     description: a flavoursome herb
     tags:
     - herb
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - pastry:
     description: The dough from which baked products are made
     tags:
     - gluten
     - baking
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - peas:
     description: an edible pulse
     tags:
@@ -304,12 +301,12 @@
     - USA
     - Mexico
     - nut
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - pepper:
     description: The genus Piper (genus) of the pepper family (Piperaceae)
     tags:
     - spice
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - pistachios:
     description: Seeds from the Pistacia vera tree
     tags:
@@ -317,32 +314,32 @@
     - USA
     - Turkey
     - nut
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - pork:
     description: meat from domestic pigs
     tags:
     - meat
     - white meat
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - rosemary:
     description: a flavoursome herb
     tags:
     - herb
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - sage:
     description: a flavoursome herb
     tags:
     - herb
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - salt:
     description: 
     tags: []
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - seeds:
     description: Edible seeds from various plants
     tags:
     - seed
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - spring onion:
     description: a delicious relative of the traditional onion
     tags:
@@ -354,7 +351,7 @@
       for soups and so forth
     tags:
     - stock
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - sugar:
     description: a sweet carbohydrate
     tags:
@@ -363,24 +360,23 @@
     - glucose
     - fructose
     - galactose
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - sultanas:
     description: A delicious dried grape
     tags:
     - grape
     - fruit
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - sumac:
     description: A tangy Middle-Eastern spice
     tags:
     - spice
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring, summer,
-      autumn, winter, spring
+    season: all
 - thyme:
     description: a flavoursome herb
     tags:
     - herb
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - toffee:
     description: Sweet confenction made by caramelizing sugar or molasses (creating
       inverted sugar) along with butter, and occasionally flour
@@ -390,13 +386,13 @@
     - glucose
     - fructose
     - galactose
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - veal:
     description: meat from infant domestic cattle
     tags:
     - meat
     - red meat
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - vegetable stock:
     description: a stock made from rendering down vegetables
     tags:
@@ -404,31 +400,31 @@
     - vegan
     - vegetable
     - stock
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - vinegar:
     description: acetic acid diluted in water
     tags:
     - acid
     - slow cooking
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - walnuts:
     description: An edible seed of any tree of the genus Juglans, especially the Persian
       walnut, Juglans regia
     tags:
     - nut
     - seed
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - wine:
     description: An ancient alcoholic recipe
     tags:
     - alcohol
     - wine
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - yoghurt:
     description: A dairy product produced by bacterial fermentation of milk.
     tags:
     - diary
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all
 - zucchini:
     description: The zucchini or courgette is a dark or light green summer squash
       which can reach nearly a meter in length, but which is usually harvested at
@@ -437,4 +433,4 @@
     - green
     - vegetable
     - squash
-    season: summer, autumn, winter, spring, summer, autumn, winter, spring
+    season: all

@@ -11,3 +11,15 @@ child :active_ingredients do
     }
   end
 end
+child :photos do
+  node do |photo|
+    {
+      :id => photo.id,
+      :name => photo.name,
+      :remote_id => photo.remote_id,
+      :remote_id => photo.remote_id,
+      :image_url => photo.image_url,
+      :thumbnail_url => photo.thumbnail_url,
+    }
+  end
+end

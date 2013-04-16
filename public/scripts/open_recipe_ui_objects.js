@@ -26,8 +26,16 @@ function ActiveIngredient(an_ingredient, a_quantity) {
   this.quantity = a_quantity;
 }
 
+function Photo(an_id, a_remote_id, a_name, an_image_url, a_thumbnail_url) {
+  this.id = an_id;
+  this.remote_id = a_remote_id;
+  this.name = a_name;
+  this.image_url = an_image_url;
+  this.thumbnail_url = a_thumbnail_url;
+}
+
 function Recipe(an_id, a_name, a_serves, a_cooking_time, a_prep_time, a_description,
-                a_method, a_requirements, some_active_ingredients, some_tags, a_meal) {
+                a_method, a_requirements, some_active_ingredients, some_tags, a_meal, a_photo) {
   this.id = an_id;
   this.name = a_name;
   this.serves = a_serves;
@@ -39,6 +47,7 @@ function Recipe(an_id, a_name, a_serves, a_cooking_time, a_prep_time, a_descript
   this.active_ingredients = some_active_ingredients;
   this.tags = some_tags;
   this.meal = a_meal;
+  this.photo = a_photo;
 }
 
 Recipe.fromForm = function(form) {
@@ -56,7 +65,7 @@ Recipe.populate = function(data_or_url, form) {
 Recipe.populate_from_data = function(data, form) {
   // console.log("incoming data and form", [data, form]);
   // Recipe(an_id, a_name, a_serves, a_cooking_time, a_prep_time, a_description,
-  //        a_method, a_requirements, some_active_ingredients, some_tags, a_meal)
+  //        a_method, a_requirements, some_active_ingredients, some_tags, a_meal, a_photo)
   var active_ingredients = [],
       aid, result;
   for (i in data.active_ingredients) {
@@ -64,8 +73,16 @@ Recipe.populate_from_data = function(data, form) {
     aid = data.active_ingredients[i].active_ingredient;
     active_ingredients.push(new ActiveIngredient(aid.name, new Quantity(aid.quantity.amount, aid.quantity.unit_id)));
   }
-  result = new Recipe(data.id, data.name, data.serves, data.cooking_time, data.preparation_time,
-                      data.description, data.method, data.requirements, active_ingredients, null, data.meal_id);  // no tags yet.
+  var photo = null;
+  if (data.photos.length > 0) {
+    // only use 1 photo for now.
+    var pdata = data.photos[0].photo;
+    // console.log('photo data', pdata);
+    photo = new Photo(pdata.id, pdata.remote_id, pdata.name, pdata.image_url, pdata.thumbnail_url);
+    // console.log('loaded photo', photo);
+  }
+  var result = new Recipe(data.id, data.name, data.serves, data.cooking_time, data.preparation_time,
+                      data.description, data.method, data.requirements, active_ingredients, null, data.meal_id, photo);  // no tags yet.
   // console.log("returning recipe", result);
   result.toForm(form);
 }

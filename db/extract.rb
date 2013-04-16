@@ -126,6 +126,21 @@ file = File.open('./extracts/users.yml', 'w')
 file.write(result.to_yaml)
 puts "Users Extracted."
 
+puts "Extracting Photos."
+result = []
+Photo.find(:all, :order=>"remote_id ASC").each do |i|
+  r = {
+    'name' => i.name,
+    'owner' => i.owner.remote_id,
+    'image_url' => i.image_url,
+    'thumbnail_url' => i.thumbnail_url
+  }
+  result << { i.remote_id => r }
+end
+file = File.open('./extracts/photos.yml', 'w')
+file.write(result.to_yaml)
+puts "Photos Extracted."
+
 puts "Extracting Recipes."
 result = []
 Recipe.find(:all, :order=>"name ASC").each do |i|
@@ -137,7 +152,8 @@ Recipe.find(:all, :order=>"name ASC").each do |i|
     'preparation_time' => i.preparation_time,
     'description' => i.description.squeeze(' ').strip,
     'method' => i.method.strip,
-    'requirements' => i.requirements.strip
+    'requirements' => i.requirements.strip,
+    'photo' => (i.photos.empty?) ? nil : i.photos[0].remote_id
   }
   tags = i.tags
   tag_names = []

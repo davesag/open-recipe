@@ -1,4 +1,10 @@
+#edit-or-create-recipe-photobox
 %form#recipe-form.edit-or-create-recipe
+  %input#photo-id(type = 'hidden')
+  %input#photo-remote_id(type = 'hidden')
+  %input#photo-name(type = 'hidden')
+  %input#photo-image_url(type = 'hidden')
+  %input#photo-thumbnail_url(type = 'hidden')
   %input#recipe-name(placeholder = '#{t.ui.placeholder.recipe_name}')
   %input#serves(style='width:3em;')
   %textarea#description
@@ -19,13 +25,47 @@
     %input#choose-photo.action-button(type='submit')
     %input#save-recipe.action-button(type='submit')
     %input#cancel.action-button(type='reset')
+#CSPhotoSelector
+  %div.CSPhotoSelector_dialog
+    %a#CSPhotoSelector_buttonClose(href="#")< x
+    %div.CSPhotoSelector_form
+      %div.CSPhotoSelector_header
+        %p<= Unicode.capitalize(t.ui.photo_picker.choose)
+      %div.CSPhotoSelector_content.CSAlbumSelector_wrapper
+        %p<= Unicode.capitalize(t.ui.photo_picker.browse_albums)
+        %div.CSPhotoSelector_searchContainer.CSPhotoSelector_clearfix
+          %div.CSPhotoSelector_selectedCountContainer<= Unicode.capitalize(t.ui.photo_picker.select_album)
+        %div.CSPhotoSelector_photosContainer.CSAlbum_container
+      %div.CSPhotoSelector_content.CSPhotoSelector_wrapper
+        %p<= Unicode.capitalize(t.ui.photo_picker.select_photo)
+        %div.CSPhotoSelector_searchContainer.CSPhotoSelector_clearfix
+          %div.CSPhotoSelector_selectedCountContainer
+            %span.CSPhotoSelector_selectedPhotoCount< 0
+            = t.ui.photo_picker.of
+            %span.CSPhotoSelector_selectedPhotoCountMax< 0
+            = t.ui.photo_picker.photo_selected
+          %a#CSPhotoSelector_backToAlbums(href="#")<= Unicode.capitalize(t.ui.photo_picker.back_to_albums)
+        %div.CSPhotoSelector_photosContainer.CSPhoto_container<
+      #CSPhotoSelector_loader<
+      %div.CSPhotoSelector_footer.CSPhotoSelector_clearfix
+        %a#CSPhotoSelector_pagePrev.CSPhotoSelector_disabled(href="#")< Previous
+        %a#CSPhotoSelector_pageNext(href="#")< Next
+        %div.CSPhotoSelector_pageNumberContainer
+          = Unicode.capitalize(t.ui.photo_picker.page)
+          %span#CSPhotoSelector_pageNumber< 1
+          = t.ui.photo_picker.of
+          %span#CSPhotoSelector_pageNumberTotal< 1
+        %a#CSPhotoSelector_buttonOK(href="#")<= Unicode.capitalize(t.ui.okay)
+        %a#CSPhotoSelector_buttonCancel(href="#")<= Unicode.capitalize(t.ui.cancel)
 :javascript
   var allowed_unit_options = #{allowed_units};
   var all_ingredient_names = #{ingredient_names}
   var default_allowed_unit_options = convert_to_options_html(allowed_unit_options);
   var recipe_id = #{defined?(recipe) ? recipe.id : 0};
-%script{:src => "/scripts/recipe_form_handlers.min.js"}
-%script{:src => "/scripts/jquery.ui.form_sugar.min.js"}
+-# %script{:src => "/scripts/recipe_form_handlers.min.js"}
+-# %script{:src => "/scripts/jquery.ui.form_sugar.min.js"}
+%script{:src => "/scripts/recipe_form_handlers.js"}
+%script{:src => "/scripts/jquery.ui.form_sugar.js"}
 :javascript
   $(function() {
     if (recipe_id !== 0) Recipe.populate('/recipe/' + recipe_id);
@@ -61,14 +101,14 @@
           validation: {
             duration: true
           },
-          messages: "Invalid duration format."
+          messages: "#{t.errors.field.duration}"
         },
         'cooking-time': {
           label: "#{UnicodeUtils::titlecase(t.ui.cooking_time)}",
           validation: {
             duration: true
           },
-          messages: "Invalid duration format."
+          messages: "#{t.errors.field.duration}"
         },
         'requirements': {label: "#{UnicodeUtils::titlecase(t.ui.requirements)}"},
         'the-method': {label: "#{UnicodeUtils::titlecase(t.ui.the_method)}"},

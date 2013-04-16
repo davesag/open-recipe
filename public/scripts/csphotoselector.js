@@ -589,7 +589,7 @@ var CSPhotoSelector = (function(module, $) {
 		var buildSecondMarkup, buildPhotoMarkup;
 		log("buildPhotoSelector");
 		
-		FB.api('/'+ albumId +'/photos?fields=id,picture,source,height,width&limit=500', function(response) {
+		FB.api('/'+ albumId +'/photos?fields=id,picture,source,height,width,name&limit=500', function(response) {
 			if (response.data) {
 				setPhotos(response.data);
 				// Build the markup

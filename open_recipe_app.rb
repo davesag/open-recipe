@@ -222,7 +222,7 @@ class OpenRecipeApp < Sinatra::Application
       if logged_in?
         if recipe != nil
           menu << menu_item(t.navigation.recipe, "/recipe/#{recipe.id}") if request.path_info.downcase.start_with? '/recipe'
-          menu << menu_item(t.navigation..edit_recipe, "/edit-recipe/#{recipe.id}") if request.path_info.downcase.start_with? '/edit-recipe'
+          menu << menu_item(t.navigation.edit_recipe, "/edit-recipe/#{recipe.id}") if request.path_info.downcase.start_with? '/edit-recipe'
         end
         menu << menu_item(t.navigation.create_recipe, "/create-recipe") if request.path_info.downcase.start_with? '/create-recipe'
         menu << menu_item(t.navigation.my_recipes, '/my-recipes')
@@ -395,17 +395,24 @@ class OpenRecipeApp < Sinatra::Application
       m = recipe_json['method']
       r = recipe_json['requirements']
       mn = recipe_json['meal']
+      ph = recipe_json['photo']
       ActiveRecord::Base.transaction do |t|
         active_ingredients = parse_ingredients_from_json recipe_json
         tags = parse_tags_from_json recipe_json
         meal = nil if mn == nil
         meal = Meal.find_by_name(mn).first_or_create if mn != nil
-    
+        photo = nil
+        if ph != nil
+          photo = Photo.where(:remote_id => ph['remote_id'].to_i).first_or_create(:owner => active_user,
+                                    :name => ph['name'],
+                                    :image_url => ph['image_url'],
+                                    :thumbnail_url => ph['thumbnail_url'])
+        end
         if id == 0
           recipe = Recipe.create(:owner => active_user, :name => n, :cooking_time => ct,
                                  :preparation_time => pt, :serves => s, :description => d,
                                  :method => m, :active_ingredients => active_ingredients,
-                                 :requirements => r, :tags => tags, :meal => meal)
+                                 :requirements => r, :tags => tags, :meal => meal, :photos => [photo])
             
         else  # a non-zero id implies we are saving an existing record.
           recipe = Recipe.find_by_id(id)
@@ -417,7 +424,7 @@ class OpenRecipeApp < Sinatra::Application
           recipe.method = m unless recipe.method == m
           recipe.requirements = r unless recipe.requirements == r
           recipe.serves = s unless recipe.serves == s
-          
+          recipe.photos << photo unless photo == nil || recipe.photos.include?(photo)
           logger.debug "Todo: save active ingredients, tags and meal"
           # active ingredients
           # first go through and remove any ingredients we currently have

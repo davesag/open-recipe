@@ -17,6 +17,7 @@
       you can, and use a good heavy bread.
 
       Slice the tomato as thinly as you can.'
+    photo: 
     tags: []
     active_ingredients:
     - name: lettuce
@@ -52,6 +53,7 @@
     description: An amazing sauce. Delicious in fact.
     method: Mix and serve.  (to be filled in later)
     requirements: A pot
+    photo: 10152577342710416
     tags: []
     active_ingredients:
     - name: tomato
@@ -71,6 +73,7 @@
     description: A fish in the shape of a biscuit
     method: Cook fish in oil, then cover in flour and cut into biscuits.
     requirements: None
+    photo: 
     tags: []
     active_ingredients:
     - name: a whole fish
@@ -106,6 +109,7 @@
     description: A delicious salad made of fish.
     method: Fry the fish and sprinkle with lettuce.  Serve hot.
     requirements: A good hot pan.
+    photo: 
     tags: []
     active_ingredients:
     - name: a whole fish
@@ -137,6 +141,7 @@
     description: Delicious fish soup. Yumo!
     method: Mix the stuff up and cook it.
     requirements: Pot
+    photo: 
     tags: []
     active_ingredients:
     - name: fish
@@ -184,6 +189,7 @@
 
       Serve at room temperature.'
     requirements: Roasting pan, and a decent oven.
+    photo: 
     tags: []
     active_ingredients:
     - name: lamb shoulder
@@ -223,6 +229,7 @@
     description: Scrape and eat it all up. Yummy!
     method: Cook and eat. Yum!
     requirements: A roa, and the willingness to use it.
+    photo: 
     tags: []
     active_ingredients:
     - name: wombat
@@ -245,21 +252,6 @@
       quantity:
         unit: 
         amount: 
-- Testing:
-    owner: 1578116633
-    name: Testing
-    serves: 2
-    cooking_time: 1200
-    preparation_time: 600
-    description: Just testing
-    method: Cook it.
-    requirements: Stuff
-    tags: []
-    active_ingredients:
-    - name: a whole fish
-      quantity:
-        unit: 
-        amount: 1.0
 - Veal Schnitzel:
     owner: 677015415
     name: Veal Schnitzel
@@ -273,6 +265,7 @@
 
       Serve with lemon.'
     requirements: A hot pan.
+    photo: 
     tags: []
     active_ingredients:
     - name: veal fillets
@@ -308,6 +301,7 @@
     description: A very yummy stew.
     method: Add veggies to the water and boil it dry.
     requirements: A big pot.
+    photo: 
     tags: []
     active_ingredients:
     - name: diced carrots
@@ -331,6 +325,7 @@
     description: test
     method: test
     requirements: test
+    photo: 
     tags: []
     active_ingredients:
     - name: chicken stock
@@ -358,6 +353,7 @@
     description: prep = 10m
     method: Yum!
     requirements: testing
+    photo: 
     tags: []
     active_ingredients:
     - name: bleached flour
@@ -373,6 +369,7 @@
     description: test 4 d
     method: test m
     requirements: blah
+    photo: 
     tags: []
     active_ingredients:
     - name: liquid nitrogen
@@ -392,6 +389,7 @@
     description: meal for one
     method: just cook it.
     requirements: time and space
+    photo: 
     tags: []
     active_ingredients:
     - name: fish

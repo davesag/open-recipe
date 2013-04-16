@@ -128,11 +128,10 @@
       layer skimmed from the top of milk before homogenization.
     core_ingredient: cream
 - curry powder:
-    description: A mixture of spices of widely varying composition based on South Asian cuisine.
-    core_ingredient: curry
+    description: A mixture of spices of widely varying composition based on South
+      Asian cuisine.
 - diced carrots:
     description: Carrots cut into small cubes.
-    core_ingredient: carrot
 - dried fruit:
     description: Fruit where the majority of the original water content has been removed
       either naturally, through sun drying, or through the use of specialized dryers
@@ -144,6 +143,8 @@
 - duck eggs:
     description: Eggs laid by ducks. Larger and fattier than chicken eggs
     core_ingredient: duck eggs
+    tags:
+    - chicken
 - echidna:
     description: 
 - eggs:

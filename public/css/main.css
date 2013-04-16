@@ -266,6 +266,21 @@ label.error {
   text-align:left;
 }
 
+#recipe-photobox {
+  float: right;
+  height: 256px;
+  width: 256px;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+#edit-or-create-recipe-photobox {
+  float: right;
+  height: 256px;
+  width: 256px;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
 
 /* jQuery UI overrides */
 .ui-autocomplete-loading {

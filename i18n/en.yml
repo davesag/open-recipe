@@ -39,6 +39,7 @@ ui:
   my_recipes: my recipies
   name: name
   none: none
+  okay: okay
   owner: owner
   preparation_time: prep time
   preview: preview
@@ -60,6 +61,15 @@ ui:
   recipe_title:
     your: Your recipe, &#8220;%1&#8221;
     someone: "%1's recipe, &#8220;%2&#8221;"
+  photo_picker:
+    choose: choose from your photos
+    browse_albums: browse your albums until you find the picture you want to attach
+    select_album: select an album
+    select_photo: select a photo
+    back_to_albums: back to albums
+    page: page
+    of: out of
+    photo_selected: photo selected
 
 warnings:
   not_added_any_recipes: you have not added any recipes yet.
@@ -68,9 +78,11 @@ warnings:
 errors:
   server: Your request failed due to a server error.
   create_recipe: An error occured while creating your recipe.
+  view_recipe_details: You don't have permission to view the full details of &#8220;%1&#8221;
   field:
     required: This field is required.
     integer: This field must be a whole number.
+    duration: Invalid duration format.
 
 unit:
   cu: cup
