@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
       puts "verified = '#{me['verified']}'"
       return false
     end
-    
+
     self.name = n
     self.first_name = me['first_name']
     self.last_name = me['last_name']

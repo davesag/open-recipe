@@ -52,7 +52,7 @@ class OpenRecipeApp < Sinatra::Application
   set :models, Proc.new { root && File.join(root, 'models') }
   set :facebook_permissions, ["read_friendlists", "publish_stream","email", "user_likes", "user_photos"]
   set :tokeniser, TactfulTokenizer::Model.new
-  
+
 	enable :logging, :show_exceptions
   #enable :sessions # disabled as per http://www.sinatrarb.com/faq.html#sessions
   # rack session set up in config.ru instead.
@@ -151,7 +151,7 @@ class OpenRecipeApp < Sinatra::Application
   end
 
   helpers do
-  
+
     # this is where the magic happens. Prepare local page data for the Open Recipe's homepage.
     # Could do some stuff with facebook here, for example:
     # graph = Koala::Facebook::API.new(session['access_token'])
@@ -166,8 +166,6 @@ class OpenRecipeApp < Sinatra::Application
     def meta_tags (recipe = nil)
       result = [
         {:property => 'og:site_name', :content => "#{settings.name} - #{settings.tagline}."},
-        # todo: change this when we can attach an image to a recipe.
-        {:property => "og:image", :content => "#{settings.owner_website}images/Open_Recipe_Logo_Square_210x210.png"},
         {:property => "og:url", :content => request.url},
         {:rel => "canonical", :href => request.url},
         {:name => "keywords", :content => settings.keywords},
@@ -177,6 +175,7 @@ class OpenRecipeApp < Sinatra::Application
         result << {:property => 'og:locale', :content => locale_code}
       end
       if recipe == nil
+        result << {:property => "og:image", :content => "#{settings.owner_website}images/Open_Recipe_Logo_Square_210x210.png"}
         result << {:property => 'og:type', :content => 'website'}
         result << {:property => "og:title", :content => settings.name}
         result << {:property => 'og:description', :content => settings.description}
@@ -187,6 +186,11 @@ class OpenRecipeApp < Sinatra::Application
         result << {:property => 'open-recipe:owner', :content => recipe.owner.remote_id}
         result << {:property => 'og:description', :content => summarise(recipe.description, 1000)}
         result << {:name => "description", :content => summarise(recipe.description, 250)}
+        if recipe.photos.empty?
+          result << {:property => "og:image", :content => "#{settings.owner_website}images/Open_Recipe_Logo_Square_210x210.png"}
+        else
+          result << {:property => "og:image", :content => "#{recipe.photos.first.image_url}"}
+        end
       end
       return result
     end
@@ -294,14 +298,14 @@ class OpenRecipeApp < Sinatra::Application
     def human_readable_quantity(a_quantity)
       a = a_quantity.amount
       u = a_quantity.unit
-      
+
       pu = ''
       whole = 0
       frac = 0.0
       # look for common fractions
       # like 0.33, 0.5, 0.25, 0.125
       whole = a.to_i unless a == nil
-      frac = (a % 1).to_f unless a == nil      
+      frac = (a % 1).to_f unless a == nil
       f = nil
       f = '' if frac == 0.0                           # no fraction.
       f = '&#xbd;' if frac == 0.5                     # 1 half
@@ -402,18 +406,22 @@ class OpenRecipeApp < Sinatra::Application
         meal = nil if mn == nil
         meal = Meal.find_by_name(mn).first_or_create if mn != nil
         photo = nil
+        photos = []
         if ph != nil
           photo = Photo.where(:remote_id => ph['remote_id'].to_i).first_or_create(:owner => active_user,
                                     :name => ph['name'],
                                     :image_url => ph['image_url'],
                                     :thumbnail_url => ph['thumbnail_url'])
+          photos = [photo]
         end
         if id == 0
+          # todo: make sure photos get saved
+          #       and if there is no photo make sure we pass in []
           recipe = Recipe.create(:owner => active_user, :name => n, :cooking_time => ct,
                                  :preparation_time => pt, :serves => s, :description => d,
                                  :method => m, :active_ingredients => active_ingredients,
-                                 :requirements => r, :tags => tags, :meal => meal, :photos => [photo])
-            
+                                 :requirements => r, :tags => tags, :meal => meal, :photos => photos)
+
         else  # a non-zero id implies we are saving an existing record.
           recipe = Recipe.find_by_id(id)
           recipe.owner = active_user unless recipe.owner.id == active_user.id
@@ -432,7 +440,7 @@ class OpenRecipeApp < Sinatra::Application
           recipe.active_ingredients = active_ingredients
           # tags
           recipe.tags = tags
-          
+
           # meal
           recipe.meal = meal
           recipe.save
@@ -470,7 +478,7 @@ class OpenRecipeApp < Sinatra::Application
       load_active_user
       return @active_user
     end
-    
+
     def graph
       if @graph == nil
         logger.debug "Loading Facebook Graph using access token '#{session['access_token']}'"
@@ -478,7 +486,7 @@ class OpenRecipeApp < Sinatra::Application
       end
       return @graph
     end
-    
+
     def logout_user!
       logger.debug "Logout from session #{session['session_id']}"
       session['oauth'] = nil
@@ -654,7 +662,7 @@ class OpenRecipeApp < Sinatra::Application
       haml :'404'
     end
   end
-  
+
   # search request comes from jQuery UI component.
   # user must be logged in for this to return a sensible result.
   get '/search' do
@@ -662,7 +670,7 @@ class OpenRecipeApp < Sinatra::Application
       content_type :json
       term = params[:term]
       logger.debug "Got search request #{params[:term]}."
-    
+
       # find tags, ingredients, recipes, meals.
       result = []
       Tag.name_contains(term).each do |tag|
@@ -683,7 +691,7 @@ class OpenRecipeApp < Sinatra::Application
       else
         used_tags = Tag.in_use  # returns sorted list by default.
         used_tags = Tag.find(:all, :order => 'name collate nocase ASC') if used_tags.empty?
-        rabl :favourite_tags, :locals => {:tags => used_tags}        
+        rabl :favourite_tags, :locals => {:tags => used_tags}
       end
     else
       status 403
@@ -697,13 +705,13 @@ class OpenRecipeApp < Sinatra::Application
   get '/recipes/with_ingredients' do
     if request.xhr? && logged_in?
       content_type :json
-      return active_user.recipes.to_json(:include => :active_ingredients)   
+      return active_user.recipes.to_json(:include => :active_ingredients)
     else
       status 403
       haml :'403'
     end
   end
-  
+
   # return an array of the active user's own recipes in summary form,
   # localised and formatted for use by a dataTable object.
   # see http://datatables.net/usage/server-side and also
@@ -776,7 +784,7 @@ class OpenRecipeApp < Sinatra::Application
   get '/recipes' do
     if request.xhr? && logged_in?
       content_type :json
-      return active_user.recipes.to_json(:include => :active_ingredients)   
+      return active_user.recipes.to_json(:include => :active_ingredients)
     else
       status 403
       haml :'403'
@@ -808,7 +816,7 @@ class OpenRecipeApp < Sinatra::Application
       rabl :recipe, :locals => {:recipe => recipe}
     else
       if recipe != nil
-        haml :recipe_display, :locals => {:recipe => recipe} 
+        haml :recipe_display, :locals => {:recipe => recipe}
 	    else
   	    status 404
 	      haml :'404'

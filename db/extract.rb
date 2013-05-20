@@ -18,7 +18,7 @@ file.write(result.to_yaml)
 puts "Units, and Unit Types Extracted."
 
 puts "Extracting Seasons."
-result = []  
+result = []
 Season.all.each do |t|
   result << t.name
 end
@@ -144,6 +144,8 @@ puts "Photos Extracted."
 puts "Extracting Recipes."
 result = []
 Recipe.find(:all, :order=>"name ASC").each do |i|
+  faves = []
+  i.users.each { |u| faves << u.remote_id }
   r = {
     'owner' => i.owner.remote_id,
     'name' => i.name,
@@ -153,7 +155,8 @@ Recipe.find(:all, :order=>"name ASC").each do |i|
     'description' => i.description.squeeze(' ').strip,
     'method' => i.method.strip,
     'requirements' => i.requirements.strip,
-    'photo' => (i.photos.empty?) ? nil : i.photos[0].remote_id
+    'photo' => (i.photos.empty?) ? nil : i.photos[0].remote_id,
+    'users' => faves
   }
   tags = i.tags
   tag_names = []

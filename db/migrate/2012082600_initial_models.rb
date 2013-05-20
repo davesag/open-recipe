@@ -49,7 +49,7 @@ class InitialModels < ActiveRecord::Migration
     create_table :seasons do |t|
       t.string   :name, :null => false, :limit => 7
     end
-    
+
     add_index :seasons, :name, :unique => true
 
     create_table :core_ingredients_seasons, :id => false do |t|
@@ -73,7 +73,7 @@ class InitialModels < ActiveRecord::Migration
       t.integer :meal_id            # recipe belongs_to :meal
                                     # meal has_many :recipes
     end
-    
+
     add_index :recipes, :name, :unique => false
     # add_index :recipes, :slug, :unique => true
 
@@ -131,7 +131,7 @@ class InitialModels < ActiveRecord::Migration
       t.integer  :meal_type_id
                                     # meal belongs_to :meal_type
                                     # meal_type has_many :meals
-      
+
     end
 
     add_index :meals, :name, :unique => true
@@ -140,16 +140,16 @@ class InitialModels < ActiveRecord::Migration
       t.string   :name, :null => false, :limit => 12
                                     # meal_type has_many :meals
                                     # meal belongs_to :meal_type
-      
+
     end
 
     add_index :meal_types, :name, :unique => true
-    
+
     create_table :tags do |t|
       t.string   :name, :null => false, :limit => 25
                                   # tag has_and_belongs_to_many :users
     end
-    
+
     add_index :tags, :name, :unique => true
 
     # recipes can be favourited by users and users can have many favourite_recipes
@@ -201,7 +201,7 @@ class InitialModels < ActiveRecord::Migration
       t.integer :core_ingredient_id
       t.integer :photo_id
     end
-    
+
     create_table :photos_recipes, :id => false do |t|
       t.integer :recipe_id
       t.integer :photo_id

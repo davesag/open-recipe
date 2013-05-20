@@ -6,18 +6,18 @@
     cooking_time: 900
     preparation_time: 300
     description: A classic. And it's delicious.
-    method: ! "First up, lightly toast the bread and pan fry the bacon until it is
-      cooked but not crisp.  Remove half of the bacon and continue to fry the other
-      half until it is crisp.\nIn the meantime, slice the lettuce and tomatoes without
+    method: "First up, lightly toast the bread and pan fry the bacon until it is cooked
+      but not crisp.  Remove half of the bacon and continue to fry the other half
+      until it is crisp.\nIn the meantime, slice the lettuce and tomatoes without
       bruising it then layer the lettuce and tomatoes onto the bread.  Salt the tomatoes
       lightly.\nAdd the soft bacon.  You might also want to apply a thin smear of
       mayo here too. Grind on some pepper and layer on the crispy bacon. \nClose the
       sandwich with the other piece of bread and slice into triangles."
-    requirements: ! 'It''s best to use lettuce and tomatoes from your own garden if
-      you can, and use a good heavy bread.
-
-      Slice the tomato as thinly as you can.'
+    requirements: |-
+      It's best to use lettuce and tomatoes from your own garden if you can, and use a good heavy bread.
+      Slice the tomato as thinly as you can.
     photo: 
+    users: []
     tags: []
     active_ingredients:
     - name: lettuce
@@ -44,6 +44,155 @@
       quantity:
         unit: 
         amount: 0.0
+- Chicken soup with barley:
+    owner: 614335700
+    name: Chicken soup with barley
+    serves: 8
+    cooking_time: 9000
+    preparation_time: 1200
+    description: ''
+    method: "1. Cook the barley in a saucepan of water until almost tender (about
+      30 minutes).  Strain and set aside.  \n\n2. To make the soup stock, rinse the
+      chicken, put in a large pan and just cover with cold water. Bring to the boil
+      and skim the scum from the top.\n\n3. Add the celery, onion, the roughly chopped
+      carrot and leek, the parsley stalks and black peppercorns. Simmer gently for
+      about 1 hour, then remove meat from the bones, chop, and set aside.  Return
+      the bones to the pan, and simmer for a further 1 hour.  Strain the soup stock
+      into a large bowl and discard bones and stock vegetables.\n\n4. Saute the remaining
+      carrots and leeks in the soup pan for 5-10 minutes until they soften but retain
+      a slight crunch.  \n\n5. Add the soup stock, chicken and barley. Season to taste,
+      and serve with the chopped parsley leaves on top."
+    requirements: ''
+    photo: 
+    users:
+    - 677015415
+    - 704796629
+    tags: []
+    active_ingredients:
+    - name: whole chicken (organic, free range if possible)
+      quantity:
+        unit: 
+        amount: 1.0
+    - name: celery sticks, chopped
+      quantity:
+        unit: 
+        amount: 3.0
+    - name: onion, chopped
+      quantity:
+        unit: 
+        amount: 1.0
+    - name: carrots, 1 roughly chopped, 2 diced
+      quantity:
+        unit: 
+        amount: 3.0
+    - name: leeks, 1 roughly chopped, 2 finely shredded
+      quantity:
+        unit: 
+        amount: 3.0
+    - name: parsley, small bunch separated into stalks and leaves
+      quantity:
+        unit: 
+        amount: 1.0
+    - name: black peppercorns, whole
+      quantity:
+        unit: 
+        amount: 5.0
+    - name: barley, cooked (pearl or wholegrain)
+      quantity:
+        unit: gram
+        amount: 200.0
+- Chickpea and Chorizo Stew:
+    owner: 677015415
+    name: Chickpea and Chorizo Stew
+    serves: 6
+    cooking_time: 3600
+    preparation_time: 600
+    description: A warming and delicious hearty stew
+    method: |-
+      Heat some olive oil in a large heavy cooking pot.
+      Chop up the pancetta and chorizo into chunks and fry in the oil, with the paprika until the colour bleeds out into the oil.
+      Finely chop both onions, and crush and chop the garlic.
+      After a few minutes remove the pancetta and chorizo from the pan and set aside.
+      Throw the onions and garlic into the pot and reduce the heat and allow them to soften and absorb the oils.
+      Chop up the capsicums and throw them in too.
+      Throw in the tomatoes and oregano, and pour in the chicken stock and wine.
+      Cover and bring to the boil.
+      Peel and chop the potatoes into medium sized chunks.
+      Add the chorizo and pancetta, the potatoes, and the chickpeas.
+      Stir it all in well and bring to a simmer.
+      Let it simmer and reduce for about 30 to 45 minutes (until the potatoes are cooked), stirring regularly.
+      Serve hot with crusty bread and some parsley.
+    requirements: Make sure you have pre-cooked the chickpeas by soaking them overnight
+      and cook until tender, or a 400g tin of canned chickpeas if you don't have access
+      to fresh ones.
+    photo: 10152816501135416
+    users: []
+    tags: []
+    active_ingredients:
+    - name: chickpeas, cooked
+      quantity:
+        unit: gram
+        amount: 200.0
+    - name: Hot Corizos (whole)
+      quantity:
+        unit: 
+        amount: 2.0
+    - name: olive oil
+      quantity:
+        unit: tablespoon
+        amount: 2.0
+    - name: Mild Pancetta, thickly sliced
+      quantity:
+        unit: gram
+        amount: 250.0
+    - name: Red Onion
+      quantity:
+        unit: 
+        amount: 1.0
+    - name: White Onion
+      quantity:
+        unit: 
+        amount: 1.0
+    - name: A handful of Chopped Parsley
+      quantity:
+        unit: 
+        amount: 
+    - name: Smoked Paprika
+      quantity:
+        unit: teaspoon
+        amount: 1.0
+    - name: Red Capsicum
+      quantity:
+        unit: 
+        amount: 2.0
+    - name: Waxy Potatoes
+      quantity:
+        unit: 
+        amount: 2.0
+    - name: Garlic Cloves
+      quantity:
+        unit: 
+        amount: 3.0
+    - name: chicken stock
+      quantity:
+        unit: cup
+        amount: 0.5
+    - name: white wine
+      quantity:
+        unit: cup
+        amount: 0.5
+    - name: Tin of Tomatoes
+      quantity:
+        unit: gram
+        amount: 600.0
+    - name: Crusty bread
+      quantity:
+        unit: 
+        amount: 
+    - name: Fresh Oregano
+      quantity:
+        unit: 
+        amount: 
 - Dave's Special Sauce:
     owner: 677015415
     name: Dave's Special Sauce
@@ -54,6 +203,7 @@
     method: Mix and serve.  (to be filled in later)
     requirements: A pot
     photo: 10152577342710416
+    users: []
     tags: []
     active_ingredients:
     - name: tomato
@@ -64,42 +214,6 @@
       quantity:
         unit: gram
         amount: 100.0
-- Fish Biscuit:
-    owner: 677015415
-    name: Fish Biscuit
-    serves: 1
-    cooking_time: 900
-    preparation_time: 0
-    description: A fish in the shape of a biscuit
-    method: Cook fish in oil, then cover in flour and cut into biscuits.
-    requirements: None
-    photo: 
-    tags: []
-    active_ingredients:
-    - name: a whole fish
-      quantity:
-        unit: 
-        amount: 1.0
-    - name: flour
-      quantity:
-        unit: gram
-        amount: 250.0
-    - name: olive oil
-      quantity:
-        unit: tablespoon
-        amount: 1.0
-    - name: butter
-      quantity:
-        unit: gram
-        amount: 50.0
-    - name: a pinch of salt
-      quantity:
-        unit: 
-        amount: 0.0
-    - name: curry powder
-      quantity:
-        unit: gram
-        amount: 0.33
 - Fish Salad:
     owner: 677015415
     name: Fish Salad
@@ -110,6 +224,7 @@
     method: Fry the fish and sprinkle with lettuce.  Serve hot.
     requirements: A good hot pan.
     photo: 
+    users: []
     tags: []
     active_ingredients:
     - name: a whole fish
@@ -142,6 +257,7 @@
     method: Mix the stuff up and cook it.
     requirements: Pot
     photo: 
+    users: []
     tags: []
     active_ingredients:
     - name: fish
@@ -168,6 +284,49 @@
       quantity:
         unit: milliliter
         amount: 500.0
+- Grape, spinach and pomegranate salad:
+    owner: 704796629
+    name: Grape, spinach and pomegranate salad
+    serves: 6
+    cooking_time: 0
+    preparation_time: 300
+    description: Easy, quick autumnal salad
+    method: Assemble salad by layering spinach in shallow salad bowl, topped with
+      crumbled feta, halved grapes, pomegranate, pine nuts then drizzle with a little
+      olive oil and balsamic glaze.
+    requirements: Shallow salad bowl and servers
+    photo: 10151478032641630
+    users: []
+    tags: []
+    active_ingredients:
+    - name: 3 handfuls of grapes cut in half
+      quantity:
+        unit: 
+        amount: 0.0
+    - name: 1 packet baby spinach
+      quantity:
+        unit: 
+        amount: 0.0
+    - name: 1/2 pomgranate
+      quantity:
+        unit: 
+        amount: 0.0
+    - name: Several cubes of Persian feta, crumbled
+      quantity:
+        unit: 
+        amount: 0.0
+    - name: 1/2 cup of mixed toasted sesame and sunflower seeds
+      quantity:
+        unit: 
+        amount: 0.0
+    - name: 'Olive oil (perhaps from the feta jar) '
+      quantity:
+        unit: 
+        amount: 0.0
+    - name: Balsamic glaze
+      quantity:
+        unit: 
+        amount: 0.0
 - Lamb Salad:
     owner: 704796629
     name: Lamb Salad
@@ -175,21 +334,17 @@
     cooking_time: 600
     preparation_time: 10800
     description: Delicious middle-eastern inspired lamb salad.
-    method: ! 'Roast the seasoned lamb shoulder at 150°C for 3 hours, tightly covered
-      in foil to keep the juices in.
-
+    method: |-
+      Roast the seasoned lamb shoulder at 150°C for 3 hours, tightly covered in foil to keep the juices in.
       While the lamb is cooking, steam the cauliflower florets for 2 minutes.
-
       When the lamb is cooked, let it rest for 10 minutes, then slice into small chunks.
-
-      If you are using last night''s leftover roast lamb, gently fry it off in a non-stick
-      pan.
-
+      If you are using last night's leftover roast lamb, gently fry it off in a non-stick pan.
       Mix it all together in a large bowl and sprinkle with sumac.
-
-      Serve at room temperature.'
+      Serve at room temperature.
     requirements: Roasting pan, and a decent oven.
     photo: 
+    users:
+    - 677015415
     tags: []
     active_ingredients:
     - name: lamb shoulder
@@ -199,7 +354,7 @@
     - name: sprig of rosemary
       quantity:
         unit: 
-        amount: 
+        amount: 0.0
     - name: cauliflower florets
       quantity:
         unit: 
@@ -220,6 +375,78 @@
       quantity:
         unit: cup
         amount: 0.5
+- Pearl cous cous and herb salad:
+    owner: 704796629
+    name: Pearl cous cous and herb salad
+    serves: 6
+    cooking_time: 900
+    preparation_time: 300
+    description: Fluffy pearl cous cous tossed with herbs, sherry soaked sultanas,
+      fried eggplant and feta.
+    method: "Brown chopped onion in olive oil, remove\n\nFry off eggplant in a generous
+      dollop of oil\n\nWarm stock on stove\n\nAdd cous cous and stir until brown\n\nAdd
+      stock to cous cous, put a lid on and turn down the heat for 8 -10 mins\n\nAdd
+      sherry and boiling water to sultanas and leave to soak for 5 minutes\n\nWhen
+      cous cous is cooked, season to taste with salt and pepper and add to salad bowl
+      with herbs, crumbled feta and drained sultanas. \n\nServe topped with pine nuts
+      or optional extras."
+    requirements: Salad bowl
+    photo: 10151478032386630
+    users: []
+    tags: []
+    active_ingredients:
+    - name: pearl or Israeli cous cous
+      quantity:
+        unit: gram
+        amount: 250.0
+    - name: Coriander, chopped
+      quantity:
+        unit: 
+        amount: 
+    - name: Parsley, chopped
+      quantity:
+        unit: 
+        amount: 
+    - name: sultanas
+      quantity:
+        unit: cup
+        amount: 1.0
+    - name: Sherry or pedro ximinez or Marsala
+      quantity:
+        unit: tablespoon
+        amount: 2.0
+    - name: Boiling water
+      quantity:
+        unit: tablespoon
+        amount: 2.0
+    - name: Chicken or veg stock
+      quantity:
+        unit: milliliter
+        amount: 500.0
+    - name: 'Feta '
+      quantity:
+        unit: gram
+        amount: 100.0
+    - name: Onion, chopped
+      quantity:
+        unit: 
+        amount: 1.0
+    - name: salt, pepper
+      quantity:
+        unit: 
+        amount: 0.0
+    - name: small eggplant, diced in 2cm chunks
+      quantity:
+        unit: 
+        amount: 1.0
+    - name: olive oil
+      quantity:
+        unit: cup
+        amount: 1.0
+    - name: 'Optional: semi sundried tomatoes, roast pine nuts'
+      quantity:
+        unit: 
+        amount: 
 - Roadkill Salad:
     owner: 677015415
     name: Roadkill Salad
@@ -230,6 +457,7 @@
     method: Cook and eat. Yum!
     requirements: A roa, and the willingness to use it.
     photo: 
+    users: []
     tags: []
     active_ingredients:
     - name: wombat
@@ -259,13 +487,13 @@
     cooking_time: 1800
     preparation_time: 900
     description: Delicious and nutritious. A favourite in my home.
-    method: ! 'Flour the veal and coat with egg and breadcrumbs.
-
+    method: |-
+      Flour the veal and coat with egg and breadcrumbs.
       Fry in oil and butter for 5 mts per side.
-
-      Serve with lemon.'
+      Serve with lemon.
     requirements: A hot pan.
     photo: 
+    users: []
     tags: []
     active_ingredients:
     - name: veal fillets
@@ -302,6 +530,7 @@
     method: Add veggies to the water and boil it dry.
     requirements: A big pot.
     photo: 
+    users: []
     tags: []
     active_ingredients:
     - name: diced carrots
@@ -326,6 +555,7 @@
     method: test
     requirements: test
     photo: 
+    users: []
     tags: []
     active_ingredients:
     - name: chicken stock
@@ -354,6 +584,7 @@
     method: Yum!
     requirements: testing
     photo: 
+    users: []
     tags: []
     active_ingredients:
     - name: bleached flour
@@ -370,6 +601,7 @@
     method: test m
     requirements: blah
     photo: 
+    users: []
     tags: []
     active_ingredients:
     - name: liquid nitrogen
@@ -390,6 +622,7 @@
     method: just cook it.
     requirements: time and space
     photo: 
+    users: []
     tags: []
     active_ingredients:
     - name: fish

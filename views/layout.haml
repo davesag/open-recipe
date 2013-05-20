@@ -23,6 +23,7 @@
     %script{ :src => "/scripts/jquery-ui-1.10.0.custom.min.js" }
     %script{ :src => "/scripts/jquery.dataTables.min.js" }
     %script{ :src => "/scripts/jquery.validate.min.js" }
+    /[if lt IE 9] <script src="/scripts/html5shiv.js"></script>
     :javascript
       var debugging = true,
       ERROR_MESSAGES = {
@@ -58,28 +59,28 @@
         js.src = "//connect.facebook.net/#{locale_code}/all" + (debug ? "/debug" : "") + ".js";
         ref.parentNode.insertBefore(js, ref);
       }(document, debugging));
-    - if logged_in? && any_tags?
-      :javascript
-        $(function () {
-          $.get('/favourite-tags', function(data) {
-            // console.log("using data", data);
-            var tag, hover_text,
-                tag_data = data.tags,
-                tags_html = '<h2>#{UnicodeUtils::titlecase(t.ui.tags)}</h2><ul>';
-          
-            for (i in tag_data) {
-              tag = tag_data[i];
-              // todo: finish i18n.
-              hover_text = (tag.counts.recipes === 0 ? 'No' : tag.counts.recipes) + ' recipe' + (tag.counts.recipes === 1 ? '' : 's') + " " +
-                            (tag.counts.meals === 0 ? 'No' : tag.counts.meals) + ' meal' + (tag.counts.meals === 1 ? '' : 's') +  " " +
-                            (tag.counts.ingredients === 0 ? 'No' : tag.counts.ingredients) + ' ingredient' + (tag.counts.ingredients === 1 ? '' : 's');
-              tags_html = tags_html + '<li><a class="tag" href="#" title="' + hover_text + '">' +
-                          tag.name + ' <span class="tag-count">' + tag.count + '</span>';
-            }
-            tags_html = tags_html + '</a></li>';
-            $("#tag-cloud").html(tags_html);
-          })
-        });
+    -# if logged_in? && any_tags?
+    -# :javascript
+    -#   $(function () {
+    -#     $.get('/favourite-tags', function(data) {
+    -#       // console.log("using data", data);
+    -#       var tag, hover_text,
+    -#           tag_data = data.tags,
+    -#           tags_html = '<h2>#{UnicodeUtils::titlecase(t.ui.tags)}</h2><ul>';
+    -#     
+    -#       for (i in tag_data) {
+    -#         tag = tag_data[i];
+    -#         // todo: finish i18n.
+    -#         hover_text = (tag.counts.recipes === 0 ? 'No' : tag.counts.recipes) + ' recipe' + (tag.counts.recipes === 1 ? '' : 's') + " " +
+    -#                       (tag.counts.meals === 0 ? 'No' : tag.counts.meals) + ' meal' + (tag.counts.meals === 1 ? '' : 's') +  " " +
+    -#                       (tag.counts.ingredients === 0 ? 'No' : tag.counts.ingredients) + ' ingredient' + (tag.counts.ingredients === 1 ? '' : 's');
+    -#         tags_html = tags_html + '<li><a class="tag" href="#" title="' + hover_text + '">' +
+    -#                     tag.name + ' <span class="tag-count">' + tag.count + '</span>';
+    -#       }
+    -#       tags_html = tags_html + '</a></li>';
+    -#       $("#tag-cloud").html(tags_html);
+    -#     })
+    -#   });
     %title #{settings.name}
   %body
     #fb-root

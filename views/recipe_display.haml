@@ -1,7 +1,9 @@
 -can_read = allowed_to_view?(recipe)
 -can_edit = allowed_to_edit?(recipe)
 -owns = user_owns?(recipe)
--fave = active_user.favourite_recipes.include?(recipe)
+-fave = (active_user != nil) ? active_user.favourite_recipes.include?(recipe) : false
+-if recipe.photos.length > 0
+  #recipe-photobox(style = "background-image: url(#{recipe.photos[0].image_url});")
 -if can_read
   %h2<
     -if owns
@@ -9,26 +11,26 @@
     -else
       =t.ui.recipe_title.someone(UnicodeUtils::titlecase(recipe.owner.name), UnicodeUtils::titlecase(recipe.name))
   #recipe
-    -if recipe.photos.length > 0
-      #recipe-photobox(style = "background-image: url(#{recipe.photos[0].image_url});")
     %dl
       %dt<= UnicodeUtils::titlecase(t.ui.serves)
       %dd<= t.people(recipe.serves)
-      %dt<= UnicodeUtils::titlecase(t.ui.description)
-      %dd<~ recipe.description
+      -if recipe.description != ''
+        %dt<= UnicodeUtils::titlecase(t.ui.description)
+        %dd<~ recipe.description
       %dt<= UnicodeUtils::titlecase(t.ui.preparation_time)
       %dd<= human_readable_time(recipe.preparation_time)
       %dt<= UnicodeUtils::titlecase(t.ui.cooking_time)
       %dd<= human_readable_time(recipe.cooking_time)
-      %dt<= UnicodeUtils::titlecase(t.ui.requirements)
-      %dd<~ recipe.requirements
+      -if recipe.requirements != ''
+        %dt<= UnicodeUtils::titlecase(t.ui.requirements)
+        %dd<~ recipe.requirements
       %dt<= UnicodeUtils::titlecase(t.ui.ingredients)
       %dd<
         %ul<
           -for i in recipe.active_ingredients
             -if i.quantity != nil
               - q = human_readable_quantity i.quantity
-              %li< #{UnicodeUtils::titlecase(i.ingredient.name)} #{q == '' ? '' : ': ' << q}
+              %li #{q} #{i.ingredient.name}
             -else
               %li<= UnicodeUtils::titlecase(i.ingredient.name)
       %dt<= UnicodeUtils::titlecase(t.ui.the_method)
@@ -41,7 +43,7 @@
         %button#favourite-recipe<= UnicodeUtils::titlecase(t.ui.favourite_this_recipe)
     -if can_edit
       %button#change-recipe<= UnicodeUtils::titlecase(t.ui.edit_this_recipe)
-    %div.fb-like(data-layout="button_count" data-width="450" data-show-faces="true" data-font="tahoma")
+    %div.fb-like{:href => request.url, :data => {:send => 'true', :layout => "button_count", :width => "450", :'show-faces' => "true", :font => "tahoma"}}
   -if can_edit
     :javascript
       $(function() {
@@ -62,5 +64,5 @@
       });
 -else
   #recipe.ui-state-error.ui-widget-content.ui-corner-all
-    %p.error #{t.error.view_recipe_details(UnicodeUtils::titlecase(recipe.name))}.
+    %p.error #{t.errors.view_recipe_details(UnicodeUtils::titlecase(recipe.name))}.
     %p<~ recipe.description

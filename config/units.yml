@@ -1,16 +1,16 @@
 ---
+- cooking:
+  - tablespoon
+  - teaspoon
+  - cup
+- imperial:
+  - ounce
+  - fluid-ounce
+  - pint
+  - quart
 - metric:
   - milliliter
   - deciliter
   - liter
   - gram
   - kilogram
-- imperial:
-  - ounce
-  - fluid-ounce
-  - pint
-  - quart
-- cooking:
-  - tablespoon
-  - teaspoon
-  - cup

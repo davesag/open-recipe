@@ -3,11 +3,11 @@
 ActiveRecord::Base.transaction do |tran|
   puts "Seeding Unit Types, and Units."
   unit_types = YAML.load(File.read('./config/units.yml'))
-  
+
   unit_types.each do |unit_type|
     key = unit_type.keys.first
     ut = UnitType.where(:name => key).first_or_create
-    
+
     unit_type[key].each do |unit|
       au = AllowedUnit.where(:name => unit.to_s).first_or_create(:unit_type => ut)
     end
@@ -18,7 +18,7 @@ end
 ActiveRecord::Base.transaction do |tran|
   puts "Seeding Seasons."
   seasons = YAML.load(File.read('./config/seasons.yml'))
-  
+
   seasons.each do |t|
     # puts "Season: #{t}"
     season = Season.where(:name => t).first_or_create
@@ -34,7 +34,7 @@ ActiveRecord::Base.transaction do |tran|
     # puts "name: #{name}"
     i = ihash[name]
     puts "i: #{i.inspect}"
-  
+
     core_ingredient = CoreIngredient.where(:name => name).first_or_create
     core_ingredient.description = i['description'] unless i['description'] == nil
     core_ingredient.energy = i['energy'] unless i['energy'] == nil
@@ -65,7 +65,7 @@ end
 ActiveRecord::Base.transaction do |tran|
   puts "Seeding Tags."
   tags = YAML.load(File.read('./config/tags.yml'))
-  
+
   tags.each do |t|
     # puts "Tag: #{t}"
     tag = Tag.where(:name => t).first_or_create
@@ -76,7 +76,7 @@ end
 ActiveRecord::Base.transaction do |tran|
   puts "Seeding Meal Types."
   meal_types = YAML.load(File.read('./config/meal_types.yml'))
-  
+
   meal_types.each do |mt|
     puts "Meal Type name is #{mt}"
     mtype = MealType.where(:name => mt).first_or_create
@@ -118,7 +118,7 @@ ActiveRecord::Base.transaction do |tran|
     puts "name: #{name}"
     i = ihash[name]
     puts "i: #{i.inspect}"
-  
+
     core_ingredient = CoreIngredient.match_core(i['core_ingredient'])
     puts "found core_ingredient #{core_ingredient.inspect}"
 
@@ -157,7 +157,7 @@ ActiveRecord::Base.transaction do |tran|
     user.email = i['email'] unless user.email == i['email']
     user.profile_picture_url = i['profile_picture_url'] unless user.profile_picture_url == i['profile_picture_url']
     user.locale = i['locale'] unless user.locale == i['locale']
-    # ignore tags, photos, preferences, recipes and favourite_recipes right now.
+    # todo: deal with tags and preferences
     user.save
   end
   puts "Users seeded."
@@ -189,7 +189,7 @@ ActiveRecord::Base.transaction do |tran|
     # puts "name: #{name}"
     i = ihash[name]
     # puts "i: #{i.inspect}"
-  
+
     recipe = Recipe.where(:name => name).first_or_create
     owner = User.where(:remote_id => i['owner']).first
     recipe.owner = owner unless recipe.owner == owner
@@ -202,8 +202,11 @@ ActiveRecord::Base.transaction do |tran|
     recipe.description = i['description'] unless recipe.description == i['description']
     recipe.method = i['method'] unless recipe.method == i['method']
     recipe.requirements = i['requirements'] unless recipe.requirements == i['requirements']
-
-    # now tags
+    i['users'].each do |u|
+      usr = User.where(:remote_id => u).first
+      recipe.users << usr unless recipe.users.include? usr
+    end
+    # todo: tags
     # now active_ingredients
     recipe.active_ingredients.destroy_all unless recipe.active_ingredients.empty?
     ais = i['active_ingredients']
@@ -213,7 +216,7 @@ ActiveRecord::Base.transaction do |tran|
         # puts "DEBUGGING ::: No Ingredient" if ingredient == nil
         # puts "DEBUGGING ::: #{ingredient.inspect}" unless ingredient == nil
         aiq = ai['quantity']
-         
+
         u = (aiq['unit'] != nil) ? AllowedUnit.where(:name => aiq['unit']).first : nil
         q = Quantity.create(:amount => aiq['amount'], :unit => u)
         active_ingredient = ActiveIngredient.create(:ingredient => ingredient, :quantity => q)

@@ -1,4 +1,76 @@
 ---
+- 1 packet baby spinach:
+    description: 
+- 1/2 cup of mixed toasted sesame and sunflower seeds:
+    description: 
+    core_ingredient: seeds
+- 1/2 packet pine nuts, toasted:
+    description: 
+- 1/2 pomgranate:
+    description: 
+- 3 handfuls of grapes cut in half:
+    description: 
+- A handful of Chopped Parsley:
+    description: 
+- Balsamic glaze:
+    description: 
+- Boiling water:
+    description: 
+- Chicken or veg stock:
+    description: 
+    core_ingredient: stock
+- Chilli:
+    description: 
+- Coriander, chopped:
+    description: 
+- Crusty bread:
+    description: 
+    core_ingredient: bread
+- 'Feta ':
+    description: 
+- Fresh Oregano:
+    description: 
+- Garlic Cloves:
+    description: 
+- Hot Corizos (whole):
+    description: 
+- Hot pancetta, thickly sliced:
+    description: 
+- Mild Pancetta, thickly sliced:
+    description: 
+- Nicola potatoes:
+    description: 
+- 'Olive oil (perhaps from the feta jar) ':
+    description: 
+    core_ingredient: oil
+- Onion, chopped:
+    description: 
+- 'Optional: roast eggplant, semi sundried tomatoes, roast pine nuts':
+    description: 
+    core_ingredient: nuts
+- 'Optional: semi sundried tomatoes, roast pine nuts':
+    description: 
+    core_ingredient: nuts
+- Parsley, chopped:
+    description: 
+- Red Capsicum:
+    description: 
+- Red Onion:
+    description: 
+- Salt:
+    description: 
+- Several cubes of Persian feta, crumbled:
+    description: 
+- Sherry or pedro ximinez or Marsala:
+    description: 
+- Smoked Paprika:
+    description: 
+- Tin of Tomatoes:
+    description: 
+- Waxy Potatoes:
+    description: 
+- White Onion:
+    description: 
 - a pinch of salt:
     description: A small amount of salt
     core_ingredient: salt
@@ -34,6 +106,8 @@
     description: the largest members of the grass family, and some of the fastest
       growing plants in the world
     core_ingredient: bamboo
+- barley, cooked (pearl or wholegrain):
+    description: 
 - beans:
     description: large plant seeds of several genera of the family Leguminosae
     core_ingredient: beans
@@ -49,6 +123,8 @@
 - black pepper:
     description: The dried fruit of the Piper nigrum vine
     core_ingredient: pepper
+- black peppercorns, whole:
+    description: 
 - bleached flour:
     description: any refined flour with a whitening agent added
     core_ingredient: flour
@@ -79,9 +155,13 @@
     core_ingredient: cardamom
     tags:
     - seed
+- carrots, 1 roughly chopped, 2 diced:
+    description: 
 - cauliflower florets:
     description: 
     core_ingredient: cauliflower
+- celery sticks, chopped:
+    description: 
 - cheese:
     description: 
     core_ingredient: cheese
@@ -107,6 +187,8 @@
 - chickpeas:
     description: 
     core_ingredient: chickpeas
+- chickpeas, cooked:
+    description: 
 - cinnamon:
     description: A spice obtained from the inner bark of several trees from the genus
       Cinnamomum, native to Sri Lanka, that is used in both sweet and savoury foods.
@@ -204,6 +286,8 @@
 - lamb shoulder:
     description: 
     core_ingredient: lamb
+- leeks, 1 roughly chopped, 2 finely shredded:
+    description: 
 - lentils:
     description: an edible pulse
     core_ingredient: lentils
@@ -250,6 +334,8 @@
     - Mediterranean
     - Greek
     - Italian
+- onion, chopped:
+    description: 
 - onions:
     description: the most widely cultivated species of the genus Allium
     core_ingredient: onions
@@ -260,6 +346,8 @@
     tags:
     - Thai
     - Asian
+- parsley, small bunch separated into stalks and leaves:
+    description: 
 - pastry:
     description: The dough from which baked products are made
     core_ingredient: pastry
@@ -269,6 +357,8 @@
     tags:
     - peanut
     - frying
+- pearl or Israeli cous cous:
+    description: 
 - peas:
     description: an edible pulse
     core_ingredient: peas
@@ -325,6 +415,9 @@
 - salt:
     description: 
     core_ingredient: salt
+- salt, pepper:
+    description: 
+    core_ingredient: pepper
 - self raising flour:
     description: flour sold premixed with chemical leavening agents
     core_ingredient: flour
@@ -346,6 +439,8 @@
 - sliced red onions:
     description: 
     core_ingredient: onions
+- small eggplant, diced in 2cm chunks:
+    description: 
 - soy beans:
     description: an edible pulse
     core_ingredient: beans
@@ -411,6 +506,12 @@
 - white vinegar:
     description: a colorless solution of acetic acid diluted in water
     core_ingredient: vinegar
+- white wine:
+    description: 
+    core_ingredient: wine
+- whole chicken (organic, free range if possible):
+    description: 
+    core_ingredient: chicken
 - wine:
     description: 
     core_ingredient: wine

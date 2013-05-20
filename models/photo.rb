@@ -11,7 +11,7 @@ class Photo < ActiveRecord::Base
   validates_presence_of :name
   validates_presence_of :image_url
   validates_presence_of :thumbnail_url
-  
+
   belongs_to :owner, :class_name => 'User'
   has_and_belongs_to_many :core_ingredients
   has_and_belongs_to_many :ingredients

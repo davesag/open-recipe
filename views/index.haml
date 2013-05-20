@@ -13,5 +13,19 @@
         for more details concerning the information we pull from Facebook and how we use it.
 -else
   %h2 #{t.ui.greeting(UnicodeUtils::titlecase(active_user.name))}
-  %p< Put something interesting and attractive here.
-  %p< Probably some yummy pictures of food.
+  %h3 The five most recent recipes.
+  %ul
+  -latest_recipes = Recipe.find(:all, :order => "id desc", :limit => 5)
+  -for r in latest_recipes
+    <!-- #{r.inspect} -->
+    %li<
+      %a(href='/recipe/#{r.id}') #{r.name}
+      &nbsp;by #{r.owner.name}
+      , serves #{r.serves}
+  %button#add-recipe< #{UnicodeUtils::titlecase(t.ui.add_a_recipe)}
+  :javascript
+    $(document).ready(function() {
+      $('#add-recipe').button({icons: {primary:'ui-icon-circle-plus'}}).click(function() {
+        location.href = '/create-recipe';
+      });
+    });

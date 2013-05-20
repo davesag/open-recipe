@@ -12,12 +12,12 @@ class UserTest < HandlerTestBase
       lunch = Tag.create(:name => 'not quite lunch')
       assert lunch != nil, "Expected lunch to be non nil."
       lunch.reload
-      
+
       # now check - is the Tag saved to the database?
       loaded_lunch = Tag.where(:name => 'not quite lunch').first
       assert loaded_lunch != nil, "Expected loaded_lunch to be non nil."
       assert loaded_lunch.id == lunch.id, "The loaded lunch (id=#{loaded_lunch.id}) was not the same as the created lunch (id=#{lunch.id}.)"
-   
+
       # create a User
       user = User.create(:username => 'bob',
         :name => "Bob Smith",
@@ -28,18 +28,18 @@ class UserTest < HandlerTestBase
         :remote_id => 1234567,
         :profile_picture_url => 'http://blah.com/picture/blah',
         :locale => 'en_GB')
-  
+
       # The user adds the tag 'lunch' to their favourites
        user.favourite_tags << lunch unless user.favourite_tags.include? lunch
        user.save!
-  
-      
+
+
       # now check - is the User saved to the database?
       bob = User.where(:username => 'bob').first
       assert bob != nil, "Expected bob to be non nil."
       assert bob.id == user.id, "Bob (id=#{bob.id}) was not the same as the created user (id=#{user.id}.)"
       assert bob.favourite_tags.include?(lunch), "expected bob to have favouite tag 'lunch'."
-      
+
       # create a photo
       photo = Photo.create(:name => 'a test pic',
                            :caption => 'just testing',
@@ -47,7 +47,7 @@ class UserTest < HandlerTestBase
                            :thumbnail_url => 'http://testing.photo/test2',
                            :remote_id => 153)
       assert photo != nil, "expected photo to be non-nil."
-      
+
       # add it to bob's list of photos.
       bob.photos << photo
       bob.save!
@@ -60,7 +60,7 @@ class UserTest < HandlerTestBase
       assert pref != nil, "expected pref to be non-nil."
       bob.preferences << pref
       bob.save!
-      
+
       assert pref.user == bob, "expected the pref's user to be bob."
 
       # Create some units and ingredients
@@ -72,11 +72,11 @@ class UserTest < HandlerTestBase
       ingredients << water = Ingredient.create(:name => "Water")
       ingredients << wine = Ingredient.create(:name => "White Wine")
       ingredients << chinesespice = Ingredient.create(:name => "Star Anise")
-      
+
       unit_types = []
       unit_types << metric = UnitType.create(:name => 'metric')
       unit_types << cooking = UnitType.create(:name => 'cooking')
-      
+
       allowed_units =[]
       allowed_units << none_unit = AllowedUnit.create(:name => 'none', :unit_type => nil)
       allowed_units << totaste_unit = AllowedUnit.create(:name => ' to taste', :unit_type => nil)
@@ -85,7 +85,7 @@ class UserTest < HandlerTestBase
       allowed_units << cup_unit = AllowedUnit.create(:name => 'cup', :unit_type => cooking)
       allowed_units << mm_unit = AllowedUnit.create(:name => 'mm', :unit_type => metric)
       allowed_units << ml_unit = AllowedUnit.create(:name => 'ml', :unit_type => metric)
-      
+
       active_ingredients = []
       active_ingredients << ActiveIngredient.create(:ingredient => frog,
                           :quantity => Quantity.create(:amount => 1, :unit => none_unit))
@@ -108,15 +108,15 @@ class UserTest < HandlerTestBase
       tags << chinese = Tag.where(:name => 'Chinese').first_or_create
       tags << soup = Tag.where(:name => 'soup').first_or_create
       tags << easy = Tag.where(:name => 'easy').first_or_create
-      
+
       meal_types =[]
       meal_types << food = MealType.create(:name => 'food')
-      
+
       meals =[]
       meals << duck_soup = Meal.create(:name => "Duck Soup", :description => "Duck in soup.",
                                       :tags => [soup, lunch, dinner],
                                       :meal_type => food)
-      
+
       # Create a recipe
       recipes = []
       recipes << frog_and_duck_soup = Recipe.create(:name => 'Frog and Duck Soup - Dave\'s Style',
@@ -129,7 +129,7 @@ class UserTest < HandlerTestBase
                              :active_ingredients => active_ingredients,
                              :tags => [dinner,chinese,soup,easy],
                              :meal => duck_soup)
-      
+
       active_ingredients_2 = []
       active_ingredients_2 << ActiveIngredient.create(:ingredient => frog,
                           :quantity => Quantity.create(:amount => 1, :unit => none_unit))
@@ -163,7 +163,7 @@ class UserTest < HandlerTestBase
       assert frog_and_duck_soup.active_ingredients.first.quantity.amount == 1, "Expected one frog but it got #{frog_and_duck_soup.active_ingredients.first.quantity.amount}"
       assert frog_and_duck_soup.active_ingredients.first.ingredient == frog, "Expected it to be a frog."
       assert easy.recipes.include?(frog_and_duck_soup), "expected frog and duck soup to be easy"
-      
+
       # favourite_recipes
       bob.favourite_recipes << frog_and_duck_soup
       assert bob.favourite_recipes.first.name == frog_and_duck_soup.name, "expected bob's fave to be frog and duck soup but it was #{bob.favourite_recipes.first.name}."

@@ -6,10 +6,10 @@ class Recipe < ActiveRecord::Base
   validates_presence_of :name
   # validates_uniqueness_of :slug
   validates_presence_of :serves
-  
+
   # todo: make this cleaner.
   # before_save :tweak_slug
-  
+
   # :cooking_time, Integer # seconds.
   # :preparation_time, Integer # seconds.
   # :description, Text
@@ -22,10 +22,10 @@ class Recipe < ActiveRecord::Base
                                         # in addition to their quantities.
   has_and_belongs_to_many :tags # tags for this recipe.
   has_and_belongs_to_many :photos # photos of this recipe.
-  
+
   belongs_to :owner, :class_name => 'User'
   belongs_to :meal
-  
+
   # see http://stackoverflow.com/questions/1302022/best-way-to-generate-slugs-human-readable-ids-in-rails
 #   def to_slug
 #     #strip the string
@@ -49,5 +49,5 @@ class Recipe < ActiveRecord::Base
 # 
 #      ret
 #   end
-  
+
 end

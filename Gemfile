@@ -16,7 +16,6 @@ gem 'tactful_tokenizer'
 
 group :development do
 	gem 'sqlite3'
-	gem 'ruby-debug19'
   gem 'simplecov'
 end
 
@@ -24,7 +23,6 @@ group :test do
 	gem 'sqlite3'
   gem 'test-unit'
   gem 'rack-test'
-	gem 'ruby-debug19'
   gem 'simplecov'
 end
 
