@@ -2,6 +2,7 @@
 #coding: utf-8
 
 APP_ROOT = File.dirname(__FILE__)
+$stdout.sync = true # don't buffer output
 
 require 'sinatra/base'
 require 'sinatra/r18n'
