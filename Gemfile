@@ -14,16 +14,14 @@ gem 'rabl'
 gem 'oj' # add either `oj` or `yajl-ruby` as the JSON parser
 gem 'tactful_tokenizer'
 
-group :development do
+group :development, :test do
 	gem 'sqlite3'
   gem 'simplecov'
 end
 
 group :test do
-	gem 'sqlite3'
   gem 'test-unit'
   gem 'rack-test'
-  gem 'simplecov'
 end
 
 group :production do
